@@ -61,16 +61,14 @@ body {
 .canva-toggler {
   display: none;
 }
-#productNav ul {
+
+.product-nav-dist ul {
   list-style: none;
   padding: 0;
-  margin: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-direction: row;
-  flex-wrap: wrap;
-  width: 100%;
+  display: grid;
+  margin: auto;
+  grid-template-columns: 1fr .2fr 1fr 1fr 1fr;
+  gap: 0 16px;
 }
 .filter-divider {
   border: hidden;
@@ -78,10 +76,14 @@ body {
   display: block;
   margin-top: 0.5rem;
 }
+#productNav ul li {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
 #productNav ul li a {
-  padding-inline: 12rem;
+  padding-inline: 2rem;
   color: #441b9b;
-  width: fit-content;
   text-decoration: none;
   transition: all 250ms ease-in-out;
   text-align: center;

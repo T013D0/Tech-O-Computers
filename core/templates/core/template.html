@@ -23,7 +23,7 @@
   <body>
     <nav class="navbar back-primary">
       <div class="navbar-dist">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="{% url 'index' %}">
           <img
             src="{% static 'src/logo.webp'%}"
             alt="Logo"
@@ -80,18 +80,24 @@
         </div>
       </div>
     </nav>
-    <nav class="navbar bg-white color-primary" id="productNav">
-      <ul>
-        <li>
-          <a href="#">Notebook</a>
-        </li>
-        <li>
-          <a href="#">Escritorio</a>
-        </li>
-        <li>
-          <a href="#">All in One</a>
-        </li>
-      </ul>
+    <nav class="navbar bg-white color-primary justify-content-center" id="productNav">
+      <div class="product-nav-dist">
+        <ul>
+          <li>
+            <a href="{% url 'store'%}">Todos los productos</a>
+          </li>
+          <li></li>
+          <li>
+            <a href="#">Notebook</a>
+          </li>
+          <li>
+            <a href="#">Escritorio</a>
+          </li>
+          <li>
+            <a href="#">All in One</a>
+          </li>
+        </ul>
+      </div>
     </nav>
     <div
       class="offcanvas offcanvas-start"
