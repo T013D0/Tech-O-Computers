@@ -1,0 +1,84 @@
+{% extends "core/template.html" %} {% load static %} {% block content %}
+<div class="d-flex flex-row px-5 mt-3">
+  <div class="col-sm-3 col-lg-2">
+    <h6 class="product-header color-primary">Productos</h6>
+  </div>
+  <div class="col-xs 12 col-sm-9 col-lg-10 d-flex justify-content-between">
+    <p class="color-gray fs-6" id="productInfo">0 - 1 de 1 Productos</p>
+    <label for="orderBy" class="color-gray fs-6">
+      Orderdar por:
+      <select class="" name="orderBy" id="orderBy">
+        <option value="revelance" selected>Relevancia</option>
+        <option value="minor-mayor">Menor a mayor precio</option>
+        <option value="mayor-minor">Mayor a menor precio</option>
+      </select>
+    </label>
+  </div>
+</div>
+<div class="container-fluid row px-5">
+  <div class="col-sm-3 col-lg-2">
+    <div class="bg-white p-2 rounded">
+      <span class="filter-divider">
+        <h6 class="filter-header">Marca</h6>
+        <div class="filter-body">
+          <div class="checkbox-wrapper-46">
+            <input type="checkbox" id="cbx-46" class="inp-cbx" />
+            <label for="cbx-46" class="cbx"
+              ><span>
+                <svg viewBox="0 0 12 10" height="10px" width="12px">
+                  <polyline points="1.5 6 4.5 9 10.5 1"></polyline></svg></span
+              ><span>ASUS</span>
+            </label>
+          </div>
+          <div class="checkbox-wrapper-46">
+            <input type="checkbox" id="cbx-47" class="inp-cbx" />
+            <label for="cbx-47" class="cbx"
+              ><span>
+                <svg viewBox="0 0 12 10" height="10px" width="12px">
+                  <polyline points="1.5 6 4.5 9 10.5 1"></polyline></svg></span
+              ><span>HP</span>
+            </label>
+          </div>
+          <div class="checkbox-wrapper-46">
+            <input type="checkbox" id="cbx-48" class="inp-cbx" />
+            <label for="cbx-48" class="cbx"
+              ><span>
+                <svg viewBox="0 0 12 10" height="10px" width="12px">
+                  <polyline points="1.5 6 4.5 9 10.5 1"></polyline></svg></span
+              ><span>LENOVO</span>
+            </label>
+          </div>
+          <div class="checkbox-wrapper-46">
+            <input type="checkbox" id="cbx-49" class="inp-cbx" />
+            <label for="cbx-49" class="cbx"
+              ><span>
+                <svg viewBox="0 0 12 10" height="10px" width="12px">
+                  <polyline points="1.5 6 4.5 9 10.5 1"></polyline></svg></span
+              ><span>MSI</span>
+            </label>
+          </div>
+        </div>
+      </span>
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-9 col-lg-10">
+    <div class="d-flex flex-row flex-wrap gap-2">
+      <a class="card border-0" style="width: 18rem" href="#">
+        <img
+          src="{% static 'src/pc_escritorio_asus.jpg' %}"
+          class="card-img-top"
+          alt="Pc Escritorio Asus"
+        />
+        <div class="card-body">
+          <h5 class="card-title fs-6 fw-bold">Asus</h5>
+          <p class="card-text fs-sm">
+            PC de Escritorio Asus ExpertCenter D5 SFF, Intel® Core™ i3-10105,
+            Ram 4GB, SSD 256GB, FreeDOS
+          </p>
+          <p class="card-text color-primary fs-5 fw-bolder">$999.999</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock content %}

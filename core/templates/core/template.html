@@ -73,14 +73,21 @@
               <i class="fa-solid fa-bars text-white"></i>
             </button>
             <span class="divider"></span>
-            <a href="#">
+            <a
+              data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasRight"
+              aria-controls="offcanvasRight"
+            >
               <i class="fa-solid fa-cart-shopping text-white"></i>
             </a>
           </div>
         </div>
       </div>
     </nav>
-    <nav class="navbar bg-white color-primary justify-content-center" id="productNav">
+    <nav
+      class="navbar bg-white color-primary justify-content-center"
+      id="productNav"
+    >
       <div class="product-nav-dist">
         <ul>
           <li>
@@ -88,13 +95,13 @@
           </li>
           <li></li>
           <li>
-            <a href="#">Notebook</a>
+            <a href="{% url 'store'%}?type=notebooks">Notebook</a>
           </li>
           <li>
-            <a href="#">Escritorio</a>
+            <a href="{% url 'store'%}?type=desktop">Escritorio</a>
           </li>
           <li>
-            <a href="#">All in One</a>
+            <a href="{% url 'store'%}?type=all-in-one">All in One</a>
           </li>
         </ul>
       </div>
@@ -129,6 +136,53 @@
             <a href="#">All in One</a>
           </li>
         </ul>
+      </div>
+    </div>
+    <div
+      class="offcanvas offcanvas-end"
+      tabindex="-1"
+      id="offcanvasRight"
+      aria-labelledby="offcanvasRightLabel"
+    >
+      <div class="offcanvas-header">
+        <h5
+          class="offcanvas-title color-primary fw-semibold"
+          id="offcanvasRightLabel"
+        >
+          Resumen
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="offcanvas"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="offcanvas-body">
+        <div class="d-flex flex-column h-100 justify-content-between">
+          <div class="resumen-cart"></div>
+          <div class="module-cart p-4">
+            <span class="resumen-divider"></span>
+            <p class="d-flex flex-row justify-content-between text-secondary">
+              Pago con Webpay/Onepay: <span>$0</span>
+            </p>
+            <p class="d-flex flex-row justify-content-between text-secondary">
+              Envio: <span></span>
+            </p>
+            <span class="resumen-divider"></span>
+            <p class="d-flex flex-row justify-content-between text-secondary">
+              Total: <span></span>
+            </p>
+            <div class="d-flex flex-row gap-2">
+              <button class="btn fw-semibold back-secondary text-white w-100">
+                Pagar
+              </button>
+              <button class="btn fw-semibold back-secondary text-white w-100">
+                Ir al carro
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     {% block content %} {% endblock content %}
