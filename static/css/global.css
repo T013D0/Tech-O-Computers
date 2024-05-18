@@ -13,7 +13,12 @@ body {
   background-color: #6226d9 !important;
 }
 .color-primary {
-  color: #441b9b;
+  color: #441b9b !important;
+}
+.back-secondary.page-link:hover {
+  background-color: #6226d9 !important;
+  color: white !important;
+  filter: brightness(1.1);
 }
 .border-b-primary {
   border-bottom: 5px solid #29d6d6;

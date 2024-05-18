@@ -1,10 +1,13 @@
-{% extends "core/template.html" %} {% load static %} {% block content %}
+{% extends "core/template.html" %} {% load static %} {% load humanize %} 
+{% block content %}
 <div class="d-flex flex-row px-5 mt-3">
   <div class="col-sm-3 col-lg-2">
     <h6 class="product-header color-primary">Productos</h6>
   </div>
   <div class="col-xs 12 col-sm-9 col-lg-10 d-flex justify-content-between">
-    <p class="color-gray fs-6" id="productInfo">0 - 1 de 1 Productos</p>
+    <p class="color-gray fs-6" id="productInfo">
+      {{page_obj.object_list.count}} - {{ per_page }} de {{total}} Productos
+    </p>
     <label for="orderBy" class="color-gray fs-6">
       Orderdar por:
       <select class="" name="orderBy" id="orderBy">
@@ -63,6 +66,7 @@
   </div>
   <div class="col-xs-12 col-sm-9 col-lg-10">
     <div class="d-flex flex-row flex-wrap gap-2">
+      {% for product in products %}
       <a class="card border-0" style="width: 18rem" href="#">
         <img
           src="{% static 'src/pc_escritorio_asus.jpg' %}"
@@ -70,15 +74,80 @@
           alt="Pc Escritorio Asus"
         />
         <div class="card-body">
-          <h5 class="card-title fs-6 fw-bold">Asus</h5>
-          <p class="card-text fs-sm">
-            PC de Escritorio Asus ExpertCenter D5 SFF, Intel® Core™ i3-10105,
-            Ram 4GB, SSD 256GB, FreeDOS
+          <h5 class="card-title fs-6 fw-bold">{{product.brand}}</h5>
+          <p class="card-text fs-sm">{{ product.name }}</p>
+          <p class="card-text color-primary fs-5 fw-bolder">
+            ${{product.price | intcomma}}
           </p>
-          <p class="card-text color-primary fs-5 fw-bolder">$999.999</p>
         </div>
       </a>
+      {% endfor %}
     </div>
+  </div>
+</div>
+<div class="row me-0 pe-2">
+  <div class="col-12 d-flex justify-content-end">
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a
+            class="page-link color-secondary"
+            href="?page={{ page_obj.previous_page_number }}"
+            aria-label="Previous"
+          >
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        {% endif %} 
+
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link color-secondary" href="?page={{ page_obj.previous_page_number }}"
+            >{{ page_obj.previous_page_number }}</a
+          >
+        </li>
+        {% endif %}
+
+        <li class="page-item">
+          <a class="page-link back-secondary text-white" href="?page={{ page_obj.number }}"
+            >{{ page_obj.number }}</a
+          >
+        </li>
+
+        {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link color-secondary" href="?page={{ page_obj.next_page_number }}"
+            >{{ page_obj.next_page_number }}</a
+          >
+        </li>
+        {% endif %} 
+
+        {% if page_obj.has_next %}
+        <li class="page-item">
+          <a
+            class="page-link color-secondary"
+            href="?page={{ page_obj.next_page_number }}"
+            aria-label="Next"
+          >
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+        {% endif%}
+      </ul>
+    </nav>
   </div>
 </div>
 {% endblock content %}
