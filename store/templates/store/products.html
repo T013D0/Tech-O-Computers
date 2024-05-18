@@ -65,17 +65,20 @@
     </div>
   </div>
   <div class="col-xs-12 col-sm-9 col-lg-10">
-    <div class="d-flex flex-row flex-wrap gap-2">
+    <div class="product-list">
       {% for product in products %}
-      <a class="card border-0" style="width: 18rem" href="#">
+      <a class="card-product border-0" href="#">
         <img
-          src="{% static 'src/pc_escritorio_asus.jpg' %}"
+          src="{{product.getImage}}"
           class="card-img-top"
           alt="Pc Escritorio Asus"
+          style="height: 300px; object-fit: contain;"
         />
-        <div class="card-body">
-          <h5 class="card-title fs-6 fw-bold">{{product.brand}}</h5>
-          <p class="card-text fs-sm">{{ product.name }}</p>
+        <div class="body-card">
+          <h5 class="card-title color-secondary fs-6 fw-bold">{{product.brand}}</h5>
+          <p class="text-card text-secondary fs-sm">{{ product.name }}</p>
+        </div>
+        <div class="footer-card">
           <p class="card-text color-primary fs-5 fw-bolder">
             ${{product.price | intcomma}}
           </p>
