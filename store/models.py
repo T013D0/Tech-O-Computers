@@ -125,6 +125,13 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name    
+    
+    @property
+    def getImage(self):
+        try:
+            return self.image.url
+        except:
+            return ""
 
 class Computer(Product):
 
