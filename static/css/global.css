@@ -91,6 +91,38 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.btn-border {
+  border: 1px solid #441b98;
+  color: #441b98;
+  padding: 0.5rem 0;
+  font-size: large;
+  font-weight: 550;
+}
+.btn-back {
+  background-color: #441b98;
+  color: white;
+  padding: 0.5rem 0;
+  font-size: large;
+  font-weight: 700;
+}
+.btn-back:hover {
+  background-color: #441b98;
+  color: white;
+  filter: brightness(1.1);
+}
+.btn-border:hover {
+  border: 1px solid #441b98;
+  color: #441b98;
+  filter: brightness(1.1);
+}
+.desc-header {
+  font-size: 1.148rem;
+  line-height: 150%;
+  color: #262626;
+  border-bottom: 5px solid #29d6d6;
+  width: fit-content;
+  padding: 0 .5rem;
+}
 .card-product {
   background-color: white;
   border-radius: 4px;

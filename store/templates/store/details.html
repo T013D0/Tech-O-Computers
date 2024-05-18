@@ -1,0 +1,74 @@
+{% extends 'core/template.html' %}
+{% load humanize %}
+{% block content %}
+    <div class="container mt-2 mb-2 bg-white p-4 rounded">
+        <div class="row ">
+            <div class="col-md-8">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid">
+            </div>
+            <div class="col-md-4">
+                <h5>{{ product.name }}</h5>
+                <p class="text-secondary"><small>ID: {{product.id}}</small></p>
+                <p class="mb-5">{{ product.brand }}</p>
+                <p class="d-flex flex-row justify-content-between fs-5 color-secondary fw-bold align-items-center"><strong class="text-black fs-6">Pago con WebPay: </strong>${{ product.price | intcomma }}</p>
+                <div class="d-flex flex-column gap-2 mb-2">
+                    <button class="btn btn-border">Agregar al carro</button>
+                    <button class="btn btn-back">Comprar ahora</button>
+                </div>
+                <span class="filter-divider mb-3"></span>
+                <p class="d-flex flex-row justify-content-between fw-bold align-items-center"><span class="color-secondary d-flex flex-row align-items-center"><i class="fa-solid fa-shopping-cart color-secondary"></i>Stock</span> <span class="{% if product.stock < 6 %}text-danger {% else %} text-success {% endif %}">{{product.stock}} disponible</span></p>
+                <span class="filter-divider mb-3"></span>
+                <p class="d-flex flex-row align-items-center gap-2"><i class="fa-solid fa-truck text-secondary"></i><span><span class="color-secondary">Despachos a domicilio</span> en todo Chile por medio de Starken, Bluexpress y Chilexpress</span></p>
+                <span class="filter-divider mb-3"></span>
+                <p class="d-flex flex-row align-items-center gap-2"><i class="fa-regular fa-credit-card text-secondary"></i><span><span class="color-secondary">3 a 6 cuotas sin interés</span> con Mercadopago</span></p>
+                <span class="filter-divider"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h5 class="desc-header">Descripción</h5>
+                <p class="text-secondary">{{ product.description | safe }}</p>
+                <span class="filter-divider mb-3"></span>
+                <h6 class="text-secondary fw-bold">Especificaciones Técnicas:</h6>
+                <div class="row">
+                    <div class="col-md-2 border border-secondary">
+                        <p>Procesador</p>
+                    </div>
+                    <div class="col-md-10 border border-secondary border-start-0">
+                        <p>{{ product.processor }}</p>
+                    </div>
+                    <div class="col-md-2 border border-secondary border-top-0">
+                        <p>Almacenamiento</p>
+                    </div>
+                    <div class="col-md-10 border border-secondary border-start-0 border-top-0">
+                        {% for storage in product.storage.all %}
+                        <p>{{ storage.name }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="col-md-2 border border-secondary border-top-0">
+                        <p>Memoria</p>
+                    </div>
+                    <div class="col-md-10 border border-secondary border-start-0 border-top-0">
+                        {% for ram in product.ram.all %}
+                        <p>{{ ram.name }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="col-md-2 border border-secondary border-top-0">
+                        <p>Grafica</p>
+                    </div>
+                    <div class="col-md-10 border border-secondary border-start-0 border-top-0">
+                        <p>{{ product.graphicscard }}</p>
+                    </div>
+                    {% if product.screen %}
+                    <div class="col-md-2 border border-secondary border-top-0">
+                        <p>Pantalla</p>
+                    </div>
+                    <div class="col-md-10 border border-secondary border-start-0 border-top-0">
+                        <p>{{ product.screen }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content%}

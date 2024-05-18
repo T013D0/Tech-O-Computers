@@ -24,6 +24,17 @@
       <span class="filter-divider">
         <h6 class="filter-header">Marca</h6>
         <div class="filter-body">
+        {% for brand in brands%}
+        <div class="checkbox-wrapper-46">
+          <input type="checkbox" id="cbx-{{brand.name}}" class="inp-cbx" />
+          <label for="cbx-{{brand.name}}" class="cbx"
+            ><span>
+              <svg viewBox="0 0 12 10" height="10px" width="12px">
+                <polyline points="1.5 6 4.5 9 10.5 1"></polyline></svg></span
+            ><span>{{brand.name}}</span>
+          </label>
+        </div>
+        {% endfor %}
           <div class="checkbox-wrapper-46">
             <input type="checkbox" id="cbx-46" class="inp-cbx" />
             <label for="cbx-46" class="cbx"
@@ -67,7 +78,7 @@
   <div class="col-xs-12 col-sm-9 col-lg-10">
     <div class="product-list">
       {% for product in products %}
-      <a class="card-product border-0" href="#">
+      <a class="card-product border-0" href="{% url 'details' product.id %}">
         <img
           src="{{product.getImage}}"
           class="card-img-top"
