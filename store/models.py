@@ -1,5 +1,6 @@
 from django.db import models
 import uuid
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -27,341 +28,157 @@ class Example(models.Model):
 
 """
 
-
-
-
 #Entidades de productos
 
-class ram(models.Model):
-
-    TYPES = (
-        ('A', 'A'),
-        ('B', 'B'),
-        ('C', 'C'), 
-    )   
-
-
+class Ram(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    ram = models.CharField(max_length=100)
-    description = models.TextField()
-    technology = models.TextField()
-    speed = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    stock = models.IntegerField(default=0)
-    price = models.FloatField(default=0.0)
-    type = models.CharField(max_length=1, choices=TYPES, default='A')
+    name = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.ram
+        return self.name
     
 
-class storage(models.Model):
+class Storage(models.Model):
 
-    TYPES = (
-        ('A', 'A'),
-        ('B', 'B'),
-        ('C', 'C'), 
-    )   
-
+    TECH = {
+        "HDD": "HDD",
+        "SSD": "SSD",
+        "M.2": "M.2",
+    }
     
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    storage = models.CharField(max_length=100)
-    description = models.TextField()
-    capacity = models.TextField()
-    technology = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    stock = models.IntegerField(default=0)
-    price = models.FloatField(default=0.0)
-    type = models.CharField(max_length=1, choices=TYPES, default='A')
+    name = models.CharField(max_length=100)
+    capacity = models.IntegerField(default=520)
+    technology = models.CharField(max_length=3, choices=TECH)
 
     def __str__(self):
-        return self.storage
+        return self.name
 
     
 
-class processor(models.Model):
-
-    TYPES = (
-        ('A', 'A'),
-        ('B', 'B'),
-        ('C', 'C'), 
-    )   
-
+class Processor(models.Model):
     
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    processor = models.CharField(max_length=100)
-    description = models.TextField()
-    speed = models.TextField()
+    name = models.CharField(max_length=100)
+    speed = models.FloatField()
     coreq = models.IntegerField(default=0)
-    created_at = models.DateTimeField(auto_now_add=True)
-    stock = models.IntegerField(default=0)
-    price = models.FloatField(default=0.0)
-    type = models.CharField(max_length=1, choices=TYPES, default='A')
 
     def __str__(self):
-        return self.processor
+        return self.name
 
 
-class graphicscard(models.Model):
+class GraphicCard(models.Model):
 
-    TYPES = (
-        ('A', 'A'),
-        ('B', 'B'),
-        ('C', 'C'), 
-    )   
-
-    
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    graphicscard = models.CharField(max_length=100)
-    description = models.TextField()
+    name = models.CharField(max_length=100)
     vram = models.TextField()
     fanquantity = models.IntegerField(default=0)
-    created_at = models.DateTimeField(auto_now_add=True)
-    stock = models.IntegerField(default=0)
-    price = models.FloatField(default=0.0)
-    type = models.CharField(max_length=1, choices=TYPES, default='A')
 
     def __str__(self):
-        return self.graphicscard    
+        return self.name    
 
-class screen(models.Model):
+class Screen(models.Model):
 
-    TYPES = (
-        ('A', 'A'),
-        ('B', 'B'),
-        ('C', 'C'), 
-    )   
+    TECH = {
+        "LED": "LED",
+        "LCD": "LCD",
+        "OLED": "OLED",
+    }
+    
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=100)
+    inches = models.IntegerField(default=0)
+    refreshrate = models.IntegerField(default=0)
+    technology = models.CharField(max_length=4, choices=TECH)
+
+    def __str__(self):
+        return self.name
+
+class Brand(models.Model):
 
     
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    screen = models.CharField(max_length=100)
-    description = models.TextField()
-    inches = models.TextField()
-    refreshrate = models.TextField()
-    technology = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    stock = models.IntegerField(default=0)
-    price = models.FloatField(default=0.0)
-    type = models.CharField(max_length=1, choices=TYPES, default='A')
+    name = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.screen
-
-
-
-class brand(models.Model):
-
-    TYPES = (
-        ('A', 'A'),
-        ('B', 'B'),
-        ('C', 'C'), 
-    )   
-
-    
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    brand = models.CharField(max_length=100)
-    description = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    stock = models.IntegerField(default=0)
-    type = models.CharField(max_length=1, choices=TYPES, default='A')
-
-    def __str__(self):
-        return self.brand
+        return self.name
 
 
 #Entidades de computadores
 
-class computer(models.Model):
+class Product(models.Model):
 
-    TYPES = (
-        ('A', 'A'),
-        ('B', 'B'),
-        ('C', 'C'), 
-    )   
-
-    
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    computer = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
+    price = models.IntegerField(default=0)
     description = models.TextField()
-    ram = models.ManyToManyField(ram)
-    storage = models.ManyToManyField(storage)
-    processor = models.ManyToManyField(processor)
-    graphicscard = models.ManyToManyField(graphicscard)
-    brand = models.ManyToManyField(brand)
+    ram = models.ManyToManyField(Ram)
+    brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True, blank=True)
+    storage = models.ManyToManyField(Storage)
+    processor = models.ForeignKey(Processor, on_delete=models.SET_NULL, null=True, blank=True)
+    graphicscard = models.ForeignKey(GraphicCard, on_delete=models.SET_NULL, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     stock = models.IntegerField(default=0)
-    type = models.CharField(max_length=1, choices=TYPES, default='A')
-    class Meta:
-        abstract = True
-
-    def __str__(self):
-        return self.computer
-    
-class notebook(models.Model):
-
-    TYPES = (
-        ('A', 'A'),
-        ('B', 'B'),
-        ('C', 'C'), 
-    )   
-
-    
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    notebook = models.CharField(max_length=100)
-    description = models.TextField()
-    screen = models.ForeignKey(screen)
-    ram = models.ManyToManyField(ram)
-    storage = models.ManyToManyField(storage)
-    processor = models.ManyToManyField(processor)
-    graphicscard = models.ManyToManyField(graphicscard)
-    brand = models.ManyToManyField(brand)
-    created_at = models.DateTimeField(auto_now_add=True)
-    stock = models.IntegerField(default=0)
-    type = models.CharField(max_length=1, choices=TYPES, default='A')
-    class Meta:
-        abstract = True
-
-    def __str__(self):
-        return self.notebook
-    
-class allinone(models.Model):
-
-    TYPES = (
-        ('A', 'A'),
-        ('B', 'B'),
-        ('C', 'C'), 
-    )   
-
-    
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    allinone = models.CharField(max_length=100)
-    description = models.TextField()
-    screen = models.ForeignKey(screen)
-    ram = models.ManyToManyField(ram)
-    storage = models.ManyToManyField(storage)
-    processor = models.ManyToManyField(processor)
-    graphicscard = models.ManyToManyField(graphicscard)
-    brand = models.ManyToManyField(brand)
-    created_at = models.DateTimeField(auto_now_add=True)
-    stock = models.IntegerField(default=0)
-    type = models.CharField(max_length=1, choices=TYPES, default='A')
-    class Meta:
-        abstract = True
-
-    def __str__(self):
-        return self.allinone
-
-
-
-
-class product(computer,notebook,allinone):
-
-    TYPES = (
-        ('A', 'A'),
-        ('B', 'B'),
-        ('C', 'C'), 
-    )   
-
-    
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    product = models.CharField(max_length=100)
-    description = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    stock = models.IntegerField(default=0)
-    type = models.CharField(max_length=1, choices=TYPES, default='A')
-    class Meta:
-        abstract = True
+    image = models.ImageField(upload_to='static/products', null=True, blank=True)
 
 
     def __str__(self):
-        return self.product    
+        return self.name    
 
+class Computer(Product):
 
+    def __str__(self):
+        return self.name
+    
+class Notebook(Product):
+    screen = models.ForeignKey(Screen, on_delete=models.SET_NULL, null=True, blank=True)
 
+    def __str__(self):
+        return self.name
+    
+class AllInOne(Product):
 
+    screen = models.ForeignKey(Screen, on_delete=models.SET_NULL, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
 
 
 
 #Entidades de delivery y boletas
+class Recipe(models.Model):  
 
-
-
-
-
-
-class recipe(models.Model):
-
-    TYPES = (
-        ('A', 'A'),
-        ('B', 'B'),
-        ('C', 'C'), 
-    )   
-
-    
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    recipe = models.CharField(max_length=100)
-    description = models.TextField()
+    client = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
-    type = models.CharField(max_length=1, choices=TYPES, default='A')
 
     def __str__(self):
-        return self.recipe
+        return self.id
     
 
-class recipeDetails(models.Model):
+class RecipeDetails(models.Model):
 
-    TYPES = (
-        ('A', 'A'),
-        ('B', 'B'),
-        ('C', 'C'), 
-    )   
-
-    
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    recipeDetails = models.CharField(max_length=100)
-    description = models.TextField()
-    products = models.ForeignKey(product)
-    created_at = models.DateTimeField(auto_now_add=True)
-    type = models.CharField(max_length=1, choices=TYPES, default='A')
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True)
+    quantity = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.recipeDetails 
+        return self.recipe + '-' + self.product.name
     
-class delivery(models.Model):
+class Delivery(models.Model):
 
-    TYPES = (
-        ('A', 'A'),
-        ('B', 'B'),
-        ('C', 'C'), 
-    )   
-
-    
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    delivery = models.CharField(max_length=100)
-    description = models.TextField()
-    adress = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    type = models.CharField(max_length=1, choices=TYPES, default='A')
-
-    def __str__(self):
-        return self.delivery
-    
-
-class deliveryDetails(models.Model):
-
-    TYPES = (
-        ('A', 'A'),
-        ('B', 'B'),
-        ('C', 'C'), 
-    )   
-
+    STATUS = {
+        "P": "PENDIENTE",
+        "E": "ENVIADO",
+        "R": "RECIBIDO",
+    }
     
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    deliveryDetails = models.CharField(max_length=100)
-    description = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    type = models.CharField(max_length=1, choices=TYPES, default='A')
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, null=True, blank=True)
+    comments = models.TextField()
+    address = models.TextField()
+    status = models.CharField(max_length=1, choices=STATUS, default='P')
 
     def __str__(self):
-        return self.deliveryDetails     
+        return str(self.id)  
