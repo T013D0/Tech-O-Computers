@@ -138,6 +138,10 @@ class Computer(Product):
     def __str__(self):
         return self.name
     
+    @property
+    def getType(self):
+        return self.__class__.__name__
+    
 class Notebook(Product):
     screen = models.ForeignKey(Screen, on_delete=models.SET_NULL, null=True, blank=True)
 
@@ -150,7 +154,6 @@ class AllInOne(Product):
 
     def __str__(self):
         return self.name
-
 
 
 #Entidades de delivery y boletas
