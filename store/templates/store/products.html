@@ -1,40 +1,80 @@
 {% extends "core/template.html" %} {% load static %} {% load humanize %} 
+{% block sources %}
+<script src="{% static 'js/filter.js' %}"></script>
+{% endblock sources %}
 {% block content %}
-<div class="d-flex flex-row px-5 mt-3">
+<div class="row px-5 mt-3">
   <div class="col-sm-3 col-lg-2">
-    <h6 class="product-header color-primary">Productos</h6>
+    <a href="{% url 'store'%}" class="product-header color-primary text-decoration-none">Productos</a>
   </div>
-  <div class="col-xs 12 col-sm-9 col-lg-10 d-flex justify-content-between">
+  <div class="col-sm-8 col-lg-10 d-flex justify-content-between">
     <p class="color-gray fs-6" id="productInfo">
       {{page_obj.object_list.count}} - {{ per_page }} de {{total}} Productos
     </p>
     <label for="orderBy" class="color-gray fs-6">
-      Orderdar por:
+      Ordenar por:
       <select class="" name="orderBy" id="orderBy">
-        <option value="revelance" selected>Relevancia</option>
-        <option value="minor-mayor">Menor a mayor precio</option>
-        <option value="mayor-minor">Mayor a menor precio</option>
+        <option value="revelance" {% if "revelance" in request.GET.orderBy %} selected {% endif %}>Relevancia</option>
+        <option value="minor-mayor" {% if "minor-mayor" in request.GET.orderBy %} selected {% endif %}>Menor a mayor precio</option>
+        <option value="mayor-minor" {% if "mayor-minor" in request.GET.orderBy %} selected {% endif %}>Mayor a menor precio</option>
       </select>
     </label>
+  </div>
+  <div class="col-sm-4 mobile-filter">
+    <a class="" data-bs-toggle="offcanvas" href="#offcanvasFilter" role="button" aria-controls="offcanvasFilter">
+      <i class="fa-solid fa-filter"></i>
+    </a>
+  </div>
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasFilter" aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title color-secondary fw-bold fs-2" id="offcanvasFilterLabel">Filtrar</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <span class="filter-divider">
+          <h6 class="filter-header">Marca</h6>
+          <div class="filter-body">
+            {% for brand in brands%}
+            <a class="text-decoration-none text-secondary" href="?brand={{brand.name}}">
+              {{brand.name}}
+            </a>
+            {% endfor %}
+          </div>
+        </span>
+        <span class="filter-divider mb-3">
+          <h6 class="filter-header">Precio</h6>
+          <div class="filter-body">
+            <a class="text-decoration-none text-secondary" href="?price=0-20000">Hasta $20,000</a>
+            <a class="text-decoration-none text-secondary" href="?price=20000-300000">$20,000 - $300,000</a>
+            <a class="text-decoration-none text-secondary" href="?price=300000-500000">$300,000 - $500,000</a>
+            <a class="text-decoration-none text-secondary" href="?price=500000-800000">$500,000 - $800,000</a>
+            <a class="text-decoration-none text-secondary" href="?price=800000-999999999">Mas de $800,000</a>
+          </div>
+        </span>
+    </div>
   </div>
 </div>
 <div class="container-fluid row px-5">
   <div class="col-sm-3 col-lg-2">
-    <div class="bg-white p-2 rounded">
+    <div class="bg-white p-2 rounded filters">
       <span class="filter-divider">
         <h6 class="filter-header">Marca</h6>
         <div class="filter-body">
         {% for brand in brands%}
-        <div class="checkbox-wrapper-46">
-          <input type="checkbox" id="cbx-{{brand.name}}" class="inp-cbx" />
-          <label for="cbx-{{brand.name}}" class="cbx"
-            ><span>
-              <svg viewBox="0 0 12 10" height="10px" width="12px">
-                <polyline points="1.5 6 4.5 9 10.5 1"></polyline></svg></span
-            ><span>{{brand.name}}</span>
-          </label>
-        </div>
+        <a class="text-decoration-none text-secondary" href="?brand={{brand.name}}">
+          {{brand.name}}
+        </a>
         {% endfor %}
+        </div>
+      </span>
+      <span class="filter-divider mb-3">
+        <h6 class="filter-header">Precio</h6>
+        <div class="filter-body">
+          <a class="text-decoration-none text-secondary" href="?price=0-20000">Hasta $20,000</a>
+          <a class="text-decoration-none text-secondary" href="?price=20000-300000">$20,000 - $300,000</a>
+          <a class="text-decoration-none text-secondary" href="?price=300000-500000">$300,000 - $500,000</a>
+          <a class="text-decoration-none text-secondary" href="?price=500000-800000">$500,000 - $800,000</a>
+          <a class="text-decoration-none text-secondary" href="?price=800000-999999999">Mas de $800,000</a>
         </div>
       </span>
     </div>
