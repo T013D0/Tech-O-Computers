@@ -1,5 +1,8 @@
 from django.shortcuts import render
+from store.models import Product
 
 # Create your views here.
 def index(request):
-    return render(request, 'core/index.html')
+    top_prods = Product.objects.all().order_by('price')[:3]
+    context = { 'top_prods': top_prods }
+    return render(request, 'core/index.html', context)

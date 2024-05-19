@@ -7,7 +7,7 @@ def products(request):
     products = Product.objects.all().filter(stock__gt=0)
     brands =  Brand.objects.all()
     type = request.GET.get("type")
-    if type != "" or type is not None:
+    if type != "" and type is not None:
         match(type):
             case "desktop":
                 products = Computer.objects.all().filter(stock__gt=0)
@@ -15,6 +15,29 @@ def products(request):
                 products = Notebook.objects.all().filter(stock__gt=0)
             case "all-in-one":
                 products = AllInOne.objects.all().filter(stock__gt=0)
+
+    orderBy = request.GET.get("orderBy")
+    if orderBy != "" and orderBy is not None:
+        match(orderBy):
+            case "revelance":
+                products = products
+            case "minor-mayor":
+                products = products.order_by("price")
+            case "mayor-minor":
+                products = products.order_by("-price")
+
+    brandp = request.GET.get("brand")
+    if brandp != "" and brandp is not None:
+        if Brand.objects.filter(name=brandp).exists():
+            brand = Brand.objects.get(name=brandp)
+            products = products.filter(brand=brand)
+
+    price = request.GET.get("price")
+    if price != "" and price is not None:
+        filter_price = price.split("-")
+        if len(filter_price) == 2:
+            products = products.filter(price__range=(int(filter_price[0]), int(filter_price[1])))
+    
     paginator = Paginator(products, 25)
     page = request.GET.get('page')
     if page is None or page == "":
