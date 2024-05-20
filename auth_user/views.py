@@ -11,7 +11,7 @@ def login(request):
         user = authenticate(email=request.POST.get('email'), password=request.POST.get('password'))
         if user is not None:
             auth_login(request, user)
-            messages.success(request, 'Bienvenido')
+            messages.success(request, 'Bienvenido ' + user.first_name + ' ' + user.last_name + '!')
             return redirect('index')
         else:
             messages.error(request, 'Email o Contraseña incorrectos')
