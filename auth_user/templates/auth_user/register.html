@@ -1,0 +1,81 @@
+{% extends 'core/template.html' %}
+{% load static %}
+{% block sources %}
+<link rel="stylesheet" href="{% static 'css/auth.css'%}">
+<script src="{% static 'js/register.js'%}"></script>
+{% endblock sources %}
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h4 class="fw-bold color-secondary footer-header">Registrate</h4>
+            <div class="card p-2 border-0">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control border-0 border-bottom rounded-0 bg-transparent" name="email" id="email" placeholder="name@example.com" required>
+                        <label for="email">Email address</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control border-0 border-bottom rounded-0 bg-transparent" minlength="7" maxlength="12" name="rut" id="rut" placeholder="11111111-1" required>
+                        <label for="rut">Rut</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" minlength="3" class="form-control border-0 border-bottom rounded-0 bg-transparent" name="first_name" id="first_name" placeholder="Juan" required>
+                        <label for="first_name">Nombre</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" minlength="3" class="form-control border-0 border-bottom rounded-0 bg-transparent" name="last_name" id="last_name" placeholder="Rozas" required>
+                        <label for="last_name">Apellido</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control border-0 border-bottom rounded-0 bg-transparent" name="password" id="password" placeholder="password" required>
+                        <label for="password">Contraseña</label>
+                    </div>
+
+                    <div
+                        data-mdb-alert-init class="alert px-4 py-3 mb-0 d-none"
+                        role="alert"
+                        data-mdb-color="warning"
+                        id="password-alert"
+                        >
+                        <ul class="list-unstyled mb-0">
+                          <li class="requirements leng">
+                            <i class="fas fa-check text-success me-2"></i>
+                            <i class="fas fa-times text-danger me-3"></i>
+                            Your password must have at least 8 chars</li>
+                          <li class="requirements big-letter">
+                            <i class="fas fa-check text-success me-2"></i>
+                            <i class="fas fa-times text-danger me-3"></i>
+                            Your password must have at least 1 big letter.</li>
+                          <li class="requirements num">
+                            <i class="fas fa-check text-success me-2"></i>
+                            <i class="fas fa-times text-danger me-3"></i>
+                            Your password must have at least 1 number.</li>
+                        </ul>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control border-0 border-bottom rounded-0 bg-transparent" name="password2" id="password2" placeholder="password2" required>
+                        <label for="password2">Confirmar contraseña</label>
+                        <div
+                        data-mdb-alert-init class="alert px-4 py-3 mb-0 d-none"
+                        role="alert"
+                        data-mdb-color="warning"
+                        id="password-alert-match"
+                        >
+                        <ul class="list-unstyled mb-0">
+                          <li class="requirements match">
+                            <i class="fas fa-check text-success me-2"></i>
+                            <i class="fas fa-times text-danger me-3"></i>
+                            Your passwords dont match</li>
+                        </ul>
+                    </div>
+                    </div>
+                    <button type="submit" class="btn btn-back w-100">Registrarse</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

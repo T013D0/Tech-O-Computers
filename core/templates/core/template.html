@@ -24,6 +24,23 @@
     <link rel="stylesheet" href="{%static 'css/global.css'%}" />
   </head>
   <body class="overflow-x-hidden">
+    {% if messages %}
+    <div class="toast-container position-static">
+    {% for message in messages %}
+    <div class="toast-container position-fixed top-0 start-0 p-3">
+      <div id="liveToast" class="toast show bg-white" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header back-secondary text-white">
+          <strong class="me-auto">{{message.tags | title}}</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body color-secondary">
+          {{message}}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    </div>
+    {% endif %}
     <nav class="navbar back-primary">
       <div class="navbar-dist">
         <a class="navbar-brand" href="{% url 'index' %}">
@@ -57,13 +74,13 @@
             class="container-fluid d-flex flex-row navbar-responsive-icons align-items-center"
           >
             <a
-              href="#"
+              {% if not user.is_authenticated %}href="{% url 'login'%}" {%else%} href="{% url 'index'%}" {% endif %}
               class="d-flex flex-row align-items-center text-decoration-none gap-2"
             >
               <i class="fa-regular fa-user text-white"></i>
               <div class="text-white user-navbar">
                 <p class="fw-semibold mb-0">Hola!</p>
-                <p class="fw-bold">Inicia Sesión</p>
+                <p class="fw-bold">{% if not user.is_authenticated %}Inicia Sesión{% else %}{{user.first_name | title}} {{user.last_name | title}} {% endif %}</p>
               </div>
             </a>
             <button
