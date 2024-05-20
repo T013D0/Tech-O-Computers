@@ -54,3 +54,21 @@ def logout_view(request):
 @login_required
 def dashboard(request):
     return render(request, 'auth_user/admin/dashboard.html')
+
+@login_required
+def orders(request):
+    return render(request, 'auth_user/admin/orders.html')
+
+@login_required
+def packages(request):
+    return render(request, 'auth_user/admin/packages.html')
+
+@login_required
+def transactions(request):
+    return render(request, 'auth_user/admin/transactions.html')
+
+@login_required
+def users(request):
+    user = User.objects.all()
+    data = {'usuarios' : user}
+    return render(request, 'auth_user/admin/users.html', data)
