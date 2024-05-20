@@ -38,7 +38,7 @@ def products(request):
         if len(filter_price) == 2:
             products = products.filter(price__range=(int(filter_price[0]), int(filter_price[1])))
     
-    paginator = Paginator(products, 24)
+    paginator = Paginator(products, 25)
     page = request.GET.get('page')
     if page is None or page == "":
         page = 1

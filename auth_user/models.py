@@ -29,7 +29,7 @@ class CustomUserManager(UserManager):
 class User(AbstractBaseUser, PermissionsMixin):
 
     email = models.EmailField(unique=True)
-    run = models.CharField(max_length=12, unique=True, primary_key=True)
+    rut = models.CharField(max_length=12, unique=True, primary_key=True, verbose_name='RUT')
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
 
