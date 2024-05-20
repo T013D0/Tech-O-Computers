@@ -56,10 +56,13 @@
           <form
             class="d-flex bg-white rounded-1 pl-1 pe-1 me-2 searchForm"
             role="search"
+            action="{% url 'store'%}"
           >
             <input
               class="form-control-sm w-100 outline-0 border-0"
               type="search"
+              name="search"
+              autocomplete="off"
               placeholder="Busca dentro de nuestros productos"
               aria-label="Search"
             />

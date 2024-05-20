@@ -16,6 +16,10 @@ def products(request):
             case "all-in-one":
                 products = AllInOne.objects.all().filter(stock__gt=0)
 
+    name = request.GET.get("search")
+    if name != "" and name is not None:
+        products = products.filter(name__icontains=name)
+    
     orderBy = request.GET.get("orderBy")
     if orderBy != "" and orderBy is not None:
         match(orderBy):
