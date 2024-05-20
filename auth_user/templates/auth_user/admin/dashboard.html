@@ -1,5 +1,31 @@
 {% extends "auth_user/admin/template.html" %}
 {% block content %}
 <h1>Este es el dashboard</h1>
+
+
+<div class="col-xs-12 col-sm-9 col-lg-10">
+    <div class="product-list">
+      {% for product in productos %}
+      <a class="card-product border-0" href="{% url 'details' product.id %}">
+        <img
+          src="{{product.getImage}}"
+          class="card-img-top"
+          alt="PC"
+          style="height: 300px; object-fit: contain;"
+        />
+        <div class="body-card">
+          <h5 class="card-title color-secondary fs-6 fw-bold">{{product.brand}}</h5>
+          <p class="text-card text-secondary fs-sm">{{ product.name }}</p>
+        </div>
+        <div class="footer-card">
+          <p class="card-text color-primary fs-5 fw-bolder">
+            ${{product.price}}
+          </p>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</div>
 <a href="{% url 'index'%}">Esto lleva al index</a>
 {% endblock content %}
