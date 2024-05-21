@@ -164,7 +164,7 @@ class Recipe(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.id
+        return str(self.id) + '-' + self.client.email
     
 
 class RecipeDetails(models.Model):
@@ -174,7 +174,7 @@ class RecipeDetails(models.Model):
     quantity = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.recipe + '-' + self.product.name
+        return str(self.recipe.id) + '-' + self.product.name
     
 class Delivery(models.Model):
 
