@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Ram, Storage, Processor, GraphicCard, Screen, Brand, Notebook, Computer, AllInOne, Recipe
+from .models import Ram, Storage, Processor, GraphicCard, Screen, Brand, Notebook, Computer, AllInOne, Recipe, RecipeDetails
 
 # Register your models here.
 admin.site.register(Ram)
@@ -12,4 +12,5 @@ admin.site.register(Notebook)
 admin.site.register(Computer)
 admin.site.register(AllInOne)
 admin.site.register(Recipe)
+admin.site.register(RecipeDetails)
 
