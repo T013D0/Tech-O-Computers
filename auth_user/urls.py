@@ -11,4 +11,8 @@ urlpatterns = [
     path('administration/packages/', views.packages, name='dash-packages'),
     path('administration/transactions/', views.transactions, name='dash-transactions'),
     path('administration/users/', views.users, name='dash-users'),
+    path('administration/brands/', views.brands, name='dash-brands'),
+    path('administration/components/', views.components, name='dash-components'),
+    path('administration/addproduct/', views.addproduct, name='dash-addproduct'),
+
 ]
