@@ -29,37 +29,57 @@
     <div class="l-navbar" id="nav-bar">
       <nav class="nav">
         <div>
-          <a href="#" class="nav_logo">
+          <a href="{% url 'dashboard' %}" class="nav_logo">
             <img src="{% static 'src/logo_TC.webp'%}" alt="logo TC" class="nav_logo-icon"></img>
             <span class="nav_logo-name">Tech-o-Computers</span>
           </a>
           <div class="nav_list">
-            <a href="{% url 'dashboard'%}" class="nav_link active">
+            <a href="{% url 'dashboard'%}" class="nav_link {% if request.path == '/accounts/dashboard/' %} active {% endif %}">
                 <i class='bx bxs-dashboard nav_icon'></i>
                 <span class="nav_name">Dashboard</span>
             </a>
-<<<<<<< HEAD
-=======
-            <a href="{% url 'orders'%}" class="nav_link">
-                <i class='bx bx-cart nav_icon'></i>
-                <span class="nav_name">Ordenes</span>
+            <a data-bs-toggle="collapse" href="#collapseOrders" role="button" aria-expanded="false" aria-controls="collapseOrders" class="nav_link {% if request.path == '/accounts/products/' %} active {% endif %}">
+              <i class='bx bx-package nav_icon'></i>
+                <span class="nav_name">Productos</span>
             </a>
-            <a href="{% url 'users'%}" class="nav_link">
->>>>>>> 2b297b028af89b7f93708249f1bbaf82c9b82e1b
+            <div class="collapse" id="collapseOrders">
+              <a href="#" class="nav_link">
+                <i class='bx bx-plus nav_icon'></i>
+                <span>Añadir Producto</span>
+              </a>
+              <a href="{% url 'dash-list-products'%}" class="nav_link">
+                <i class='bx bx-list-ul nav_icon'></i>
+                <span>Listar Productos</span>
+              </a>
+              <a href="#" class="nav_link">
+                <i class='bx bx-purchase-tag-alt nav_icon'></i>
+                <span>Marcas</span>
+              </a>
+              <a href="#" class="nav_link">
+                <i class='bx bxs-component nav_icon'></i>
+                <span>Componentes</span>
+              </a>
+            </div>
+            
+            <a href="{% url 'dash-orders'%}" class="nav_link {% if request.path == '/accounts/orders/' %} active {% endif %}">
+              <i class='bx bx-cart nav_icon'></i>
+              <span class="nav_name">Ordenes</span>
+          </a>
+            <a href="{% url 'dash-users'%}" class="nav_link {% if request.path == '/accounts/users/' %} active {% endif %}">
                 <i class='bx bx-group nav_icon'></i>
                 <span class="nav_name">Usuarios</span>
             </a>
-            <a href="{% url 'transactions'%}" class="nav_link">
+            <a href="{% url 'dash-transactions'%}" class="nav_link {% if request.path == '/accounts/transactions/' %} active {% endif %}">
                 <i class='bx bx-credit-card nav_icon'></i>
                 <span class="nav_name">Transacciones</span>
             </a>
-            <a href="{% url 'packages'%}" class="nav_link">
-                <i class='bx bx-package nav_icon'></i>
+            <a href="{% url 'dash-packages'%}" class="nav_link {% if request.path == '/accounts/packages/' %} active {% endif %}">
+              <i class='bx bxs-truck nav_icon'></i>
               <span class="nav_name">Envios</span>
             </a>
           </div>
         </div>
-        <a href="#" class="nav_link">
+        <a href="{% url 'index'%}" class="nav_link">
           <i class="bx bx-log-out nav_icon"></i>
           <span class="nav_name">Salir</span>
         </a>
