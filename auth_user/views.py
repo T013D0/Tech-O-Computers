@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from auth_user.models import User
-from store.models import Product, Brand
+from store.models import Product, Brand, Ram, Storage, Processor, GraphicCard, Screen
 from django.core.paginator import Paginator
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.decorators import login_required, permission_required
@@ -88,6 +88,30 @@ def packages(request):
 @permission_required('auth_user.view_user')
 def transactions(request):
     return render(request, 'auth_user/admin/transactions.html')
+
+@login_required
+@permission_required('auth_user.view_user')
+def brands(request):
+    brands = Brand.objects.all()
+    data = {'brands' : brands}
+    return render(request, 'auth_user/admin/products/brands.html', data)
+
+@login_required
+@permission_required('auth_user.view_user')
+def components(request):
+    components = {} 
+    components['storage'] = Storage.objects.all()
+    components['ram'] = Ram.objects.all()
+    components['processor'] = Processor.objects.all()
+    components['graphics'] = GraphicCard.objects.all()
+    components['screen'] =  Screen.objects.all
+    data = {"components" : components}
+    return render(request, 'auth_user/admin/products/components.html',data)
+
+@login_required
+@permission_required('auth_user.view_user')
+def addproduct(request):
+    return render(request, 'auth_user/admin/products/addproduct.html')
 
 @login_required
 @permission_required('auth_user.view_user')

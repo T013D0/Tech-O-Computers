@@ -1,0 +1,39 @@
+{% extends "auth_user/admin/template.html" %}
+{% block content %}
+<h5 class="product-header fw-bold fs-3">Componentes</h5>
+<table class="table ">
+    <thead>
+      <tr>
+        <th scope="col">Nombre</th>
+        <th scope="col">ID</th>
+      </tr>
+    </thead>
+    <tbody>
+
+    {% for u in components.storage %}
+      <tr scope="row">
+        <td>{{ u.name }}</td>
+        <td>{{ u.id }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <table class="table ">
+    <thead>
+      <tr>
+        <th scope="col">Nombre</th>
+        <th scope="col">ID</th>
+      </tr>
+    </thead>
+    <tbody>
+
+    {% for u in components.screen %}
+      <tr scope="row">
+        <td>{{ u.name }}</td>
+        <td>{{ u.id }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endblock content %}

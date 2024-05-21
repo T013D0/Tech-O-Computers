@@ -43,7 +43,7 @@
                 <span class="nav_name">Productos</span>
             </a>
             <div class="collapse" id="collapseOrders">
-              <a href="#" class="nav_link">
+              <a href="{% url 'dash-addproduct'%}" class="nav_link">
                 <i class='bx bx-plus nav_icon'></i>
                 <span>Añadir Producto</span>
               </a>
@@ -51,11 +51,11 @@
                 <i class='bx bx-list-ul nav_icon'></i>
                 <span>Listar Productos</span>
               </a>
-              <a href="#" class="nav_link">
+              <a href="{% url 'dash-brands'%}" class="nav_link">
                 <i class='bx bx-purchase-tag-alt nav_icon'></i>
                 <span>Marcas</span>
               </a>
-              <a href="#" class="nav_link">
+              <a href="{% url 'dash-components'%}" class="nav_link">
                 <i class='bx bxs-component nav_icon'></i>
                 <span>Componentes</span>
               </a>
