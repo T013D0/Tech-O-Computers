@@ -4,7 +4,7 @@
 <h5 class="product-header fw-bold fs-3">Componentes</h5>
 <div class="activity-container">
     <div class="image-container img-one">
-      <a href="#">
+      <a href="{% url 'dash-storage' %}">
         <img src="{% static 'src/ssd.webp'%}" alt="Storage" />
         <div class="overlay">
           <h3>Storage</h3>
@@ -13,7 +13,7 @@
     </div>
 
     <div class="image-container img-two">
-      <a href="#">
+      <a href="{% url 'dash-ram' %}">
         <img src="{% static 'src/ram.webp'%}" alt="ram" />
         <div class="overlay">
           <h3>Ram</h3>
@@ -21,7 +21,7 @@
       </a>
     </div>
     <div class="image-container img-three">
-      <a href="#">
+      <a href="{% url 'dash-graphics' %}">
         <img src="{% static 'src/graphic.webp'%}" alt="Graphic" />
         <div class="overlay">
           <h3>Tarjetas Graficas</h3>
@@ -30,7 +30,7 @@
     </div>
 
     <div class="image-container img-four">
-      <a href="#">
+      <a href="{% url 'dash-screen' %}">
         <img src="{% static 'src/screen.webp'%}" alt="screen" />
         <div class="overlay">
           <h3>Pantallas</h3>
@@ -39,7 +39,7 @@
     </div>
 
     <div class="image-container img-five">
-      <a href="#">
+      <a href="{% url 'dash-processor' %}">
         <img src="{% static 'src/processor.webp'%}" alt="Processor" />
         <div class="overlay">
           <h3>Procesador</h3>

@@ -98,6 +98,43 @@ def brands(request):
 
 @login_required
 @permission_required('auth_user.view_user')
+def graphics(request):
+    graphics = GraphicCard.objects.all()
+    context = {'graphics' : graphics}
+    return render(request, 'auth_user/admin/products/graphics.html', context)
+
+@login_required
+@permission_required('auth_user.view_user')
+def processor(request):
+    processor = Processor.objects.all()
+    context = {'processor' : processor}
+    return render(request, 'auth_user/admin/products/processor.html', context)
+
+@login_required
+@permission_required('auth_user.view_user')
+def ram(request):
+    ram = Ram.objects.all()
+    context = {'ram' : ram}
+    return render(request, 'auth_user/admin/products/ram.html', context)
+
+@login_required
+@permission_required('auth_user.view_user')
+def screen(request):
+    screen = Screen.objects.all()
+    context = {'screen' : screen}
+    return render(request, 'auth_user/admin/products/screen.html', context)
+
+
+@login_required
+@permission_required('auth_user.view_user')
+def storage(request):
+    storage = Storage.objects.all()
+    context = {'storage' : storage}
+    return render(request, 'auth_user/admin/products/storage.html', context)
+
+
+@login_required
+@permission_required('auth_user.view_user')
 def components(request):
     return render(request, 'auth_user/admin/products/components.html')
 
