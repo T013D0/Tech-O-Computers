@@ -1,39 +1,42 @@
 {% extends "auth_user/admin/template.html" %}
+{% load static %}
 {% block content %}
 <h5 class="product-header fw-bold fs-3">Componentes</h5>
-<table class="table ">
-    <thead>
-      <tr>
-        <th scope="col">Nombre</th>
-        <th scope="col">ID</th>
-      </tr>
-    </thead>
-    <tbody>
+<div class="activity-container">
+    <div class="image-container img-one">
+      <img src="{% static 'src/ssd.webp'%}" alt="Storage" />
+      <div class="overlay">
+        <h3>Storage</h3>
+      </div>
+    </div>
 
-    {% for u in components.storage %}
-      <tr scope="row">
-        <td>{{ u.name }}</td>
-        <td>{{ u.id }}</td>
-      </tr>
-    {% endfor %}
-    </tbody>
-  </table>
+    <div class="image-container img-two">
+      <img src="{% static 'src/ram.webp'%}" alt="ram" />
+      <div class="overlay">
+        <h3>Ram</h3>
+      </div>
+    </div>
 
-  <table class="table ">
-    <thead>
-      <tr>
-        <th scope="col">Nombre</th>
-        <th scope="col">ID</th>
-      </tr>
-    </thead>
-    <tbody>
+    <div class="image-container img-three">
+      <img src="{% static 'src/graphic.webp'%}" alt="Graphic" />
+      <div class="overlay">
+        <h3>Tarjetas Graficas</h3>
+      </div>
+    </div>
 
-    {% for u in components.screen %}
-      <tr scope="row">
-        <td>{{ u.name }}</td>
-        <td>{{ u.id }}</td>
-      </tr>
-    {% endfor %}
-    </tbody>
-  </table>
+    <div class="image-container img-four">
+      <img src="{% static 'src/screen.webp'%}" alt="screen" />
+      <div class="overlay">
+        <h3>Pantallas</h3>
+      </div>
+    </div>
+
+    <div class="image-container img-five">
+      <img src="{% static 'src/processor.webp'%}" alt="Processor" />
+      <div class="overlay">
+        <h3>Procesador</h3>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock content %}
