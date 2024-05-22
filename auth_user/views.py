@@ -93,20 +93,13 @@ def transactions(request):
 @permission_required('auth_user.view_user')
 def brands(request):
     brands = Brand.objects.all()
-    data = {'brands' : brands}
-    return render(request, 'auth_user/admin/products/brands.html', data)
+    context = {'brands' : brands}
+    return render(request, 'auth_user/admin/products/brands.html', context)
 
 @login_required
 @permission_required('auth_user.view_user')
 def components(request):
-    components = {} 
-    components['storage'] = Storage.objects.all()
-    components['ram'] = Ram.objects.all()
-    components['processor'] = Processor.objects.all()
-    components['graphics'] = GraphicCard.objects.all()
-    components['screen'] =  Screen.objects.all
-    data = {"components" : components}
-    return render(request, 'auth_user/admin/products/components.html',data)
+    return render(request, 'auth_user/admin/products/components.html')
 
 @login_required
 @permission_required('auth_user.view_user')
@@ -165,5 +158,5 @@ def list_products(request):
 @login_required
 def users(request):
     user = User.objects.all()
-    data = {'usuarios' : user}
-    return render(request, 'auth_user/admin/users.html', data)
+    context = {'usuarios' : user}
+    return render(request, 'auth_user/admin/users.html', context)
