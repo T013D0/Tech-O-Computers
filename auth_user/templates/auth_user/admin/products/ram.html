@@ -4,16 +4,16 @@
 <table class="table ">
     <thead>
       <tr>
-        <th scope="col">Nombre</th>
         <th scope="col">ID</th>
+        <th scope="col">Nombre</th>
       </tr>
     </thead>
     <tbody>
 
     {% for u in ram %}
       <tr scope="row">
-        <td>{{ u.name }}</td>
         <td>{{ u.id }}</td>
+        <td>{{ u.name }}</td>
       </tr>
     {% endfor %}
     </tbody>

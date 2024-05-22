@@ -141,7 +141,90 @@ def components(request):
 @login_required
 @permission_required('auth_user.view_user')
 def addproduct(request):
-    return render(request, 'auth_user/admin/products/addproduct.html')
+
+    brands = Brand.objects.all()
+    screens = Screen.objects.all()
+    processors = Processor.objects.all()
+    graphics = GraphicCard.objects.all()
+    rams = Ram.objects.all()
+    storages = Storage.objects.all()
+
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        price = request.POST.get('price')
+        stock = request.POST.get('stock')
+        description = request.POST.get('description')
+        brand = request.POST.get('brand')
+        screen = request.POST.get('screen')
+        type = request.POST.get('type')
+        processor = request.POST.get('processor')
+        graphic = request.POST.get('graphicscard')
+        ram = request.POST.get('ram')
+        storage = request.POST.get('storage')
+        image = request.FILES.get('avatar')
+
+        if Product.objects.filter(name=name).exists():
+            messages.error(request, 'El producto ya se encuentra registrado')
+            return render(request, 'auth_user/admin/products/addproduct.html')
+        
+        brnd = Brand.objects.get(id=brand)
+        if brnd is None:
+            messages.error(request, 'La marca no existe')
+            return render(request, 'auth_user/admin/products/addproduct.html')
+        
+        if type == "notebook" or type == "all-in-one":
+            scrn = Screen.objects.get(id=screen)
+            if scrn is None:
+                messages.error(request, 'La pantalla no existe')
+                return render(request, 'auth_user/admin/products/addproduct.html')
+
+        ram_array = ram.split(",")
+
+        rms = Ram.objects.all().filter(id__in=ram_array)
+        if not rms.exists():
+            messages.error(request, 'La memoria ram no existe')
+            return render(request, 'auth_user/admin/products/addproduct.html')
+        
+        prcsr = Processor.objects.get(id=processor)
+        if prcsr is None:
+            messages.error(request, 'El procesador no existe')
+            return render(request, 'auth_user/admin/products/addproduct.html')
+        
+        grphc = GraphicCard.objects.get(id=graphic)
+        if grphc is None:
+            messages.error(request, 'La tarjeta grafica no existe')
+            return render(request, 'auth_user/admin/products/addproduct.html')
+        
+        strg_array = storage.split(",")
+
+        strg = Storage.objects.all().filter(id__in=strg_array)
+        if not strg.exists():
+            messages.error(request, 'El almacenamiento no existe')
+            return render(request, 'auth_user/admin/products/addproduct.html')
+        
+        if image is None:
+            messages.error(request, 'La imagen es requerida')
+            return render(request, 'auth_user/admin/products/addproduct.html')
+        
+        
+        match (type):
+            case "computer":
+                product = Computer.objects.create(name=name, price=price, stock=stock, description=description, brand=brnd, processor=prcsr, graphicscard=grphc, image=image)
+            case "notebook":
+                product = Notebook.objects.create(name=name, price=price, stock=stock, description=description, brand=brnd, screen=Screen.objects.get(id=screen), processor=prcsr, graphicscard=grphc, image=image)
+            case "all-in-one":
+                product = AllInOne.objects.create(name=name, price=price, stock=stock, description=description, brand=brnd, screen=Screen.objects.get(id=screen), processor=prcsr, graphicscard=grphc, image=image)
+        
+        product.ram.set(rms)
+        product.storage.set(strg)
+        product.save()
+
+        messages.success(request, f'Producto {product.name} registrado correctamente')
+        return redirect('dash-list-products')
+    
+    context = {'brands': brands, 'screens': screens, 'processors': processors, 'graphics': graphics, 'rams': rams, 'storages': storages}
+
+    return render(request, 'auth_user/admin/products/addproduct.html', context)
 
 @login_required
 @permission_required('auth_user.view_user')
