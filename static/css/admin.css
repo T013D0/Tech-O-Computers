@@ -104,7 +104,7 @@ a {
 .nav_icon {
   font-size: 1.25rem;
 }
-.show {
+.show-nav {
   left: 0;
 }
 .body-pd {
@@ -164,7 +164,12 @@ a {
   border-radius: 10px;
   object-fit: contain;
 }
-
+.ck-balloon-panel {
+  display: none !important;
+}
+.ck-content {
+  cursor: text;
+}
 .overlay {
   position: absolute;
   display: flex;
@@ -242,7 +247,7 @@ a {
     left: 0;
     padding: 1rem 1rem 0 0;
   }
-  .show {
+  .show-nav {
     width: calc(var(--nav-width) + 156px);
   }
   .body-pd {

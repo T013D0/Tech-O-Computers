@@ -280,3 +280,117 @@ def users(request):
     user = User.objects.all()
     context = {'usuarios' : user}
     return render(request, 'auth_user/admin/users.html', context)
+
+@login_required
+@permission_required('auth_user.view_user')
+def editproduct(request, id):
+    product = Product.objects.get(id=id)
+
+    brands = Brand.objects.all()
+    screens = Screen.objects.all()
+    processors = Processor.objects.all()
+    graphics = GraphicCard.objects.all()
+    rams = Ram.objects.all()
+    storages = Storage.objects.all()
+
+    if product is None:
+        messages.error(request, 'El producto no existe')
+        return redirect('dash-list-products')
+    
+    
+    if Notebook.objects.filter(id=id).exists():
+        product = Notebook.objects.get(id=id)
+    elif Computer.objects.filter(id=id).exists():
+        product = Computer.objects.get(id=id)
+    elif AllInOne.objects.filter(id=id).exists():
+        product = AllInOne.objects.get(id=id)
+
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        price = request.POST.get('price')
+        stock = request.POST.get('stock')
+        description = request.POST.get('description')
+        brand = request.POST.get('brand')
+        screen = request.POST.get('screen')
+        type = request.POST.get('type')
+        processor = request.POST.get('processor')
+        graphic = request.POST.get('graphicscard')
+        ram = request.POST.get('ram')
+        storage = request.POST.get('storage')
+        image = request.FILES.get('avatar')
+
+        if not Product.objects.filter(name=name).exists():
+            messages.error(request, 'El producto no existe')
+            return render(request, 'auth_user/admin/products/addproduct.html')
+        
+        brnd = Brand.objects.get(id=brand)
+        if brnd is None:
+            messages.error(request, 'La marca no existe')
+            return render(request, 'auth_user/admin/products/addproduct.html')
+        
+        if type == "notebook" or type == "all-in-one":
+            scrn = Screen.objects.get(id=screen)
+            if scrn is None:
+                messages.error(request, 'La pantalla no existe')
+                return render(request, 'auth_user/admin/products/addproduct.html')
+
+        ram_array = ram.split(",")
+
+        rms = Ram.objects.all().filter(id__in=ram_array)
+        if not rms.exists():
+            messages.error(request, 'La memoria ram no existe')
+            return render(request, 'auth_user/admin/products/addproduct.html')
+        
+        prcsr = Processor.objects.get(id=processor)
+        if prcsr is None:
+            messages.error(request, 'El procesador no existe')
+            return render(request, 'auth_user/admin/products/addproduct.html')
+        
+        grphc = GraphicCard.objects.get(id=graphic)
+        if grphc is None:
+            messages.error(request, 'La tarjeta grafica no existe')
+            return render(request, 'auth_user/admin/products/addproduct.html')
+        
+        strg_array = storage.split(",")
+
+        strg = Storage.objects.all().filter(id__in=strg_array)
+        if not strg.exists():
+            messages.error(request, 'El almacenamiento no existe')
+            return render(request, 'auth_user/admin/products/addproduct.html')
+        
+        if image is None and product.image is None:
+            messages.error(request, 'La imagen es requerida')
+            return render(request, 'auth_user/admin/products/addproduct.html')
+        
+        if image is None:
+            image = product.image
+        
+        product.name = name
+        product.price = price
+        product.stock = stock
+        product.description = description
+        product.brand = brnd
+        product.processor = prcsr
+        product.graphicscard = grphc
+        product.image = image
+        product.ram.set(rms)
+        product.storage.set(strg)
+        product.save()
+
+        messages.success(request, f'Producto {product.name} actualizado correctamente')
+        return redirect('dash-list-products')
+
+    context = { "product": product, "brands": brands, "screens": screens, "processors": processors, "graphics": graphics, "rams": rams, "storages": storages}
+    return render(request, 'auth_user/admin/products/edit.html', context)
+
+@login_required
+@permission_required('auth_user.view_user')
+def removeproduct(request, id):
+    product = Product.objects.get(id=id)
+    if product is None:
+        messages.error(request, 'El producto no existe')
+        return redirect('dash-list-products')
+    
+    product.delete()
+    messages.success(request, 'Producto eliminado correctamente')
+    return redirect('dash-list-products')
