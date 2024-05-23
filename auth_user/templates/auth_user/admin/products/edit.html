@@ -1,0 +1,135 @@
+{% extends "auth_user/admin/template.html" %}
+{% load static %}
+{% block sources %}
+<link rel="stylesheet" href="{% static 'css/auth.css'%}">
+<script src="{% static 'js/addProduct.js'%}"></script>
+{% endblock sources %}
+{% block content %}
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h1 class="modal-title fs-5" id="deleteModalLabel">Estas seguro?</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Estas seguro que deseas eliminar este producto?</p>
+                {{product.name}}
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <a type="button" href="{% url 'dash-removeproduct' product.id %}" class="btn btn-danger">Eliminar</a>
+            </div>
+        </div>
+    </div>
+</div>
+<h5 class="product-header fw-bold fs-3">Añadir producto</h5>
+<form action="" method="post" class="card border-0 p-4" enctype="multipart/form-data">
+<div class="row row-gap-2">
+    <div class="col-md-6 col-sm-12">
+            {% csrf_token %}
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control border-0 border-bottom rounded-0 bg-transparent"value="{{product.name}}" name="name" id="name" placeholder="name" required>
+                <label for="name">Nombre</label>
+            </div>
+            <div class="mb-3">
+                <label for="description">Descripcion</label>
+                <textarea name="description" id="description" required>
+                    {{product.description}}
+                </textarea>
+                <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+                <script>
+                    ClassicEditor
+                        .create( document.querySelector( '#description' ) )
+                        .catch( error => {
+                            console.error( error );
+                        } );
+                </script>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="number" class="form-control border-0 border-bottom rounded-0 bg-transparent" value="{{product.price}}" name="price" id="price" placeholder="Juan" required>
+                <label for="price">Precio</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="number" class="form-control border-0 border-bottom rounded-0 bg-transparent" value="{{product.stock}}" name="stock" id="stock" placeholder="Rozas" required>
+                <label for="stock">Stock</label>
+            </div>
+            <div class="mb-3">
+                <label for="ram">Memoria RAM</label>
+                
+                <select class="form-select" name="ram" id="ram" required multiple>
+                    {% for ram in rams %}
+                        <option value="{{ram.id}}" {% if ram in product.ram.all %} selected {% endif %}>{{ram.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="storage">Almacenamiento</label>
+                <select class="form-select" name="storage" id="storage" required multiple>
+                    {% for storage in storages %}
+                        <option value="{{storage.id}}" {% if storage in product.storage.all %} selected {% endif %}>{{storage.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-border w-100 mb-3">Guardar</button>
+            <button type="button" class="btn btn-back w-100" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                Eliminar
+              </button>
+              
+        
+    </div>
+    <div class="col-md-6 col-sm-12">
+        <div class="card border-0" style="width: fit-content;">
+            <label for="avatar">
+                <div class="avatar-container">
+                    <i class='bx bx-edit color-secondary fs-1'></i>
+                    <img class="profile-avatar p-4" style="width: 40rem; object-fit: contain; height: 28rem;" id="avatar-updated" src="{{product.getImage}}"
+                    alt="Product Image">
+                </div>
+            </label>
+            <input type="file" name="avatar" id="avatar" accept="image/*" style="display: none;"
+                            onchange="displayImage()">
+        </div>
+        <div class="mb-3">
+            <label for="processor">Procesador</label>
+            <select class="form-select" name="processor" id="processor" required>
+                <option>Selecciona un procesador</option>
+                {% for processor in processors %}
+                    <option value="{{processor.id}}" {% if processor == product.processor %} selected {% endif %}>{{processor.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="graphicscard">Tarjeta Grafica</label>
+            <select class="form-select" name="graphicscard" id="graphicscard" required>
+                <option>Selecciona una tarjeta grafica</option>
+                {% for graphicscard in graphics %}
+                    <option value="{{graphicscard.id}}" {% if graphicscard == product.graphicscard %} selected {% endif %}>{{graphicscard.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="brand">Marca</label>
+            <select class="form-select" name="brand" id="brand" required>
+                <option>Selecciona una marca</option>
+                {% for brand in brands %}
+                    <option value="{{brand.id}}" {% if brand == product.brand %} selected {% endif %}>{{brand.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        {% if product.screen %}
+        <div class="mb-3" id="screenSelect" style="display: none;">
+            <label for="screen">Pantalla</label>
+            <select class="form-select" name="screen" id="screen" required>
+                <option>Selecciona una pantalla</option>
+                {% for screen in screens %}
+                    <option value="{{screen.id}}" {% if screen == product.screen %} selected {% endif %}>{{screen.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        {% endif %}
+    </div>
+</div>
+</form>
+  
+{% endblock content %}

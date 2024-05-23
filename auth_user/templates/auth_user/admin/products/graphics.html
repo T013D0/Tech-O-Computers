@@ -4,16 +4,20 @@
 <table class="table ">
     <thead>
       <tr>
-        <th scope="col">Nombre</th>
         <th scope="col">ID</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">VRAM</th>
+        <th scope="col">Ventiladores</th>
       </tr>
     </thead>
     <tbody>
 
     {% for u in graphics %}
       <tr scope="row">
-        <td>{{ u.name }}</td>
         <td>{{ u.id }}</td>
+        <td>{{ u.name }}</td>
+        <td>{{u.vram}} GB</td>
+        <td>{{u.fanquantity}}</td>
       </tr>
     {% endfor %}
     </tbody>
