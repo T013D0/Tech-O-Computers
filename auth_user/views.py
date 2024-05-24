@@ -444,12 +444,18 @@ def addcomponent(request, type):
                 return redirect('dash-processor')
             return render(request, 'auth_user/admin/products/components/addProcessor.html', {'processor': processor})    
         case "screen":
-            screen = Screen.objects.all()
+            techs = Screen._meta.get_field('technology').choices
+
+            tech = []
+            for t in techs:
+                tech.append(t[0])
+
             if request.method == 'POST':
                 name = request.POST.get('name')
                 inches = request.POST.get('inches')
                 refreshrate = request.POST.get('refreshrate')
                 technology = request.POST.get('technology')
+                
                 if Screen.objects.filter(name=name).exists():
                     messages.error(request, 'La pantalla ya se encuentra registrada')
                     return render(request, 'auth_user/admin/products/components/addScreen.html')
@@ -458,10 +464,15 @@ def addcomponent(request, type):
                 screen.save()
                 messages.success(request, 'Pantalla registrada correctamente')
                 return redirect('dash-screen')
-            return render(request, 'auth_user/admin/products/components/addScreen.html', {'screen': screen})
+            return render(request, 'auth_user/admin/products/components/addScreen.html', {'screen': tech})
 
         case "storage":
-            storage = Storage.objects.all()
+            storage = Storage._meta.get_field('technology').choices
+
+            tech = []
+            for t in storage:
+                tech.append(t[0])
+
             if request.method == 'POST':
                 name = request.POST.get('name')
                 capacity = request.POST.get('capacity')
@@ -474,7 +485,7 @@ def addcomponent(request, type):
                 storage.save()
                 messages.success(request, 'Almacenamiento registrado correctamente')
                 return redirect('dash-storage')
-            return render(request, 'auth_user/admin/products/components/addStorage.html', {'storage': storage})
+            return render(request, 'auth_user/admin/products/components/addStorage.html', {'storage': tech})
         case _:
             messages.error(request, 'Tipo de componente no valido')
             return redirect('dash-components')
