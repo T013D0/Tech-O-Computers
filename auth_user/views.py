@@ -398,26 +398,83 @@ def removeproduct(request, id):
 @login_required
 @permission_required('auth_user.view_user')
 def addcomponent(request, type):
-
     match (type):
         case "ram":
-            ram = Ram.objects.get(id=id)
-            if ram is None:
-                messages.error(request, 'La memoria ram no existe')
-                return redirect('dash-components')
-            return render(request, 'auth_user/admin/products/components/addRam.html')
+            rams = Ram.objects.all()
+            if request.method == 'POST':
+                name = request.POST.get('name')
+                if Ram.objects.filter(name=name).exists():
+                    messages.error(request, 'La memoria ram ya se encuentra registrada')
+                    return render(request, 'auth_user/admin/products/components/addRam.html')
+                
+                ram = Ram.objects.create(name=name)
+                ram.save()
+                messages.success(request, 'Memoria ram registrada correctamente')
+                return redirect('dash-ram')
+            return render(request, 'auth_user/admin/products/components/addRam.html', {'rams': rams})
         case "graphics":
-            #Aqui va el codigo para agregar tarjeta grafica
-            return render(request, 'auth_user/admin/products/components/addGraphics.html')
+            graphics = GraphicCard.objects.all()
+            if request.method == 'POST':
+                name = request.POST.get('name')
+                vram = request.POST.get('vram')
+                fanquantity = request.POST.get('fanquantity')
+                if GraphicCard.objects.filter(name=name).exists():
+                    messages.error(request, 'La tarjeta grafica ya se encuentra registrada')
+                    return render(request, 'auth_user/admin/products/components/addGraphics.html')
+                
+                graphics = GraphicCard.objects.create(name=name, vram=vram, fanquantity=fanquantity)
+                graphics.save()
+                messages.success(request, 'Tarjeta grafica registrada correctamente')
+                return redirect('dash-graphics')
+            return render(request, 'auth_user/admin/products/components/addGraphics.html', {'graphics': graphics})
+
         case "processor":
-            #Aqui va el codigo para agregar procesador
-            return render(request, 'auth_user/admin/products/components/addProcessor.html')
+            processor = Processor.objects.all()
+            if request.method == 'POST':
+                name = request.POST.get('name')
+                speed = request.POST.get('speed')
+                coreq = request.POST.get('coreq')
+                if Processor.objects.filter(name=name).exists():
+                    messages.error(request, 'El procesador ya se encuentra registrado')
+                    return render(request, 'auth_user/admin/products/components/addGraphics.html')
+                
+                processor = Processor.objects.create(name=name,speed=speed, coreq=coreq)
+                processor.save()
+                messages.success(request, 'Procesador registrado correctamente')
+                return redirect('dash-processor')
+            return render(request, 'auth_user/admin/products/components/addProcessor.html', {'processor': processor})    
         case "screen":
-            #Aqui va el codigo para agregar pantalla
-            return render(request, 'auth_user/admin/products/components/addScreen.html')
+            screen = Screen.objects.all()
+            if request.method == 'POST':
+                name = request.POST.get('name')
+                inches = request.POST.get('inches')
+                refreshrate = request.POST.get('refreshrate')
+                technology = request.POST.get('technology')
+                if Screen.objects.filter(name=name).exists():
+                    messages.error(request, 'La pantalla ya se encuentra registrada')
+                    return render(request, 'auth_user/admin/products/components/addScreen.html')
+                
+                screen = Screen.objects.create(name=name, inches=inches, refreshrate=refreshrate, technology=technology)
+                screen.save()
+                messages.success(request, 'Pantalla registrada correctamente')
+                return redirect('dash-screen')
+            return render(request, 'auth_user/admin/products/components/addScreen.html', {'screen': screen})
+
         case "storage":
-            #Aqui va el codigo para agregar almacenamiento
-            return render(request, 'auth_user/admin/products/components/addStorage.html')
+            storage = Storage.objects.all()
+            if request.method == 'POST':
+                name = request.POST.get('name')
+                capacity = request.POST.get('capacity')
+                technology = request.POST.get('technology')
+                if Storage.objects.filter(name=name).exists():
+                    messages.error(request, 'El almacenamiento ya se encuentra registrado')
+                    return render(request, 'auth_user/admin/products/components/addStorage.html')
+                
+                storage = Storage.objects.create(name=name, capacity=capacity, technology=technology)
+                storage.save()
+                messages.success(request, 'Almacenamiento registrado correctamente')
+                return redirect('dash-storage')
+            return render(request, 'auth_user/admin/products/components/addStorage.html', {'storage': storage})
         case _:
             messages.error(request, 'Tipo de componente no valido')
             return redirect('dash-components')

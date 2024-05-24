@@ -2,4 +2,25 @@
 
 {% block content %}
 <h5 class="product-header fw-bold fs-3">Añadir Almacenamiento</h5>
+
+
+<form method="POST" action="{% url 'dash-addcomponent' 'storage' %}">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="name" class="form-label">Nombre</label>
+        <input type="text" class="form-control" id="name" name="name" required>
+
+        <label for="inches" class="form-label">Capacidad (GB)</label>
+        <input type="number" class="form-control" id="capacity" name="capacity" required>
+
+        <label for="technology" class="form-label">Tecnología</label>
+        <select class="form-select" name="technology" id="technology" required>
+            <option>Selecciona una tecnologia</option>
+            {% for technology in storage %}
+                <option value=>{{technology.technology}}</option>
+            {% endfor %}</select>
+
+    </div>
+    <button type="submit" class="btn btn-back">Agregar</button>
+
 {% endblock content %}

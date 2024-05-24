@@ -2,4 +2,24 @@
 
 {% block content %}
 <h5 class="product-header fw-bold fs-3">Añadir Tarjetas Graficas</h5>
+
+
+<form method="POST" action="{% url 'dash-addcomponent' 'graphics' %}">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="name" class="form-label">Nombre</label>
+        <input type="text" class="form-control" id="name" name="name" required>
+
+        <label for="vram" class="form-label">VRAM</label>
+        <input type="number" class="form-control" id="vram" name="vram" required>
+
+        <label for="fanquantity" class="form-label">Ventiladores</label>
+        <input type="number" class="form-control" id="fanquantity" name="fanquantity" required>
+
+    </div>
+    <button type="submit" class="btn btn-back">Agregar</button>
+    
+
+
+
 {% endblock content %}

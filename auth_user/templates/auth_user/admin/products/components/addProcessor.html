@@ -2,4 +2,22 @@
 
 {% block content %}
 <h5 class="product-header fw-bold fs-3">Añadir Procesadores</h5>
+
+
+<form method="POST" action="{% url 'dash-addcomponent' 'processor' %}">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="name" class="form-label">Nombre</label>
+        <input type="text" class="form-control" id="name" name="name" required>
+
+        <label for="vram" class="form-label">Frecuencia</label>
+        <input type="number" class="form-control" id="speed" name="speed" required>
+
+        <label for="fanquantity" class="form-label">Nucleos</label>
+        <input type="number" class="form-control" id="coreq" name="coreq" required>
+
+    </div>
+    <button type="submit" class="btn btn-back">Agregar</button>
+    
+
 {% endblock content %}

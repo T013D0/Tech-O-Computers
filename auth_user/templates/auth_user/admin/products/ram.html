@@ -18,11 +18,7 @@
       {% endfor %}
     </tbody>
   </table>
+  
+  <a href="{% url 'dash-addcomponent' 'ram' %}" class="btn btn-back">Agregar</a>
 
-  <form method="POST" action="{% url 'dash-addcomponent' 1 %}">
-    {% csrf_token %}
-    <label for="name">Nombre:</label>
-    <input type="text" name="name" required>
-    <button type="submit">Agregar</button>
-  </form>
 {% endblock content %}
