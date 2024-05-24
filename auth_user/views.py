@@ -394,3 +394,27 @@ def removeproduct(request, id):
     product.delete()
     messages.success(request, 'Producto eliminado correctamente')
     return redirect('dash-list-products')
+
+@login_required
+@permission_required('auth_user.view_user')
+def addcomponent(request, type):
+
+    match (type):
+        case "ram":
+            #Aqui va el codigo para agregar ram
+            return render(request, 'auth_user/admin/products/components/addRam.html')
+        case "graphics":
+            #Aqui va el codigo para agregar tarjeta grafica
+            return render(request, 'auth_user/admin/products/components/addGraphics.html')
+        case "processor":
+            #Aqui va el codigo para agregar procesador
+            return render(request, 'auth_user/admin/products/components/addProcessor.html')
+        case "screen":
+            #Aqui va el codigo para agregar pantalla
+            return render(request, 'auth_user/admin/products/components/addScreen.html')
+        case "storage":
+            #Aqui va el codigo para agregar almacenamiento
+            return render(request, 'auth_user/admin/products/components/addStorage.html')
+        case _:
+            messages.error(request, 'Tipo de componente no valido')
+            return redirect('dash-components')
