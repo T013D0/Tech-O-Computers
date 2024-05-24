@@ -401,7 +401,10 @@ def addcomponent(request, type):
 
     match (type):
         case "ram":
-            #Aqui va el codigo para agregar ram
+            ram = Ram.objects.get(id=id)
+            if ram is None:
+                messages.error(request, 'La memoria ram no existe')
+                return redirect('dash-components')
             return render(request, 'auth_user/admin/products/components/addRam.html')
         case "graphics":
             #Aqui va el codigo para agregar tarjeta grafica

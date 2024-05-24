@@ -1,7 +1,8 @@
 {% extends "auth_user/admin/template.html" %}
+
 {% block content %}
-<h5 class="product-header fw-bold fs-3">Ram</h5>
-<table class="table ">
+  <h5 class="product-header fw-bold fs-3">Ram</h5>
+  <table class="table">
     <thead>
       <tr>
         <th scope="col">ID</th>
@@ -9,13 +10,19 @@
       </tr>
     </thead>
     <tbody>
-
-    {% for u in ram %}
-      <tr scope="row">
-        <td>{{ u.id }}</td>
-        <td>{{ u.name }}</td>
-      </tr>
-    {% endfor %}
+      {% for u in ram %}
+        <tr scope="row">
+          <td>{{ u.id }}</td>
+          <td>{{ u.name }}</td>
+        </tr>
+      {% endfor %}
     </tbody>
   </table>
+
+  <form method="POST" action="{% url 'dash-addcomponent' 1 %}">
+    {% csrf_token %}
+    <label for="name">Nombre:</label>
+    <input type="text" name="name" required>
+    <button type="submit">Agregar</button>
+  </form>
 {% endblock content %}

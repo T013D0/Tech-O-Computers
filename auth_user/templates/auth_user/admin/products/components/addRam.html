@@ -2,4 +2,14 @@
 
 {% block content %}
 <h5 class="product-header fw-bold fs-3">Añadir Ram</h5>
+
+
+
+<form method="POST" action="{% url 'dash-addcomponent' 1 %}">
+  {% csrf_token %}
+  <div class="mb-3">
+    <label for="name" class="form-label">Nombre:</label>
+
+
+    
 {% endblock content %}
