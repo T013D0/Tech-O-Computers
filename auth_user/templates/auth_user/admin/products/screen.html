@@ -1,11 +1,14 @@
 {% extends "auth_user/admin/template.html" %}
 {% block content %}
-<h5 class="product-header fw-bold fs-3">Screen</h5>
+<h5 class="product-header fw-bold fs-3">Pantallas</h5>
 <table class="table ">
     <thead>
       <tr>
         <th scope="col">ID</th>
         <th scope="col">Nombre</th>
+        <th scope="col">Pulgadas</th>
+        <th scope="col">Tasa de refresco</th>
+        <th scope="col">Tecnologia</th>
       </tr>
     </thead>
     <tbody>
@@ -14,8 +17,12 @@
       <tr scope="row">
         <td>{{ u.id }}</td>
         <td>{{ u.name }}</td>
+        <td>{{ u.inches }}</td>
+        <td>{{ u.refreshrate }}</td>
+        <td>{{ u.technology }}</td>
       </tr>
     {% endfor %}
     </tbody>
   </table>
+  <a href="{% url 'dash-addcomponent' 'screen' %}" class="btn btn-back">Agregar</a>
 {% endblock content %}

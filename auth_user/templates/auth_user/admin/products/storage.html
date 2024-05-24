@@ -6,6 +6,8 @@
       <tr>
         <th scope="col">ID</th>
         <th scope="col">Nombre</th>
+        <th scope="col">Capacidad (GB)</th>
+        <th scope="col">Tecnologia</th>
       </tr>
     </thead>
     <tbody>
@@ -14,8 +16,11 @@
       <tr scope="row">
         <td>{{ u.id }}</td>
         <td>{{ u.name }}</td>
+        <td>{{ u.capacity }}</td>
+        <td>{{ u.technology }}</td>
       </tr>
     {% endfor %}
     </tbody>
   </table>
+  <a href="{% url 'dash-addcomponent' 'storage' %}" class="btn btn-back">Agregar</a>
 {% endblock content %}
