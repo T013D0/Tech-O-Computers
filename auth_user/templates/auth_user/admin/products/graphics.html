@@ -1,6 +1,14 @@
 {% extends "auth_user/admin/template.html" %}
 {% block content %}
-<h5 class="product-header fw-bold fs-3">Graphics</h5>
+
+<div class="row mb-3">
+  <div class="col-md-10 col-sm-12">
+    <h5 class="product-header fw-bold fs-3">Graficas</h5>
+  </div>
+  <div class="col-md-2 col-sm-12">
+    <a href="{% url 'dash-addcomponent' 'graphics' %}" class="btn btn-back px-4">Agregar</a>
+  </div>
+</div>
 <table class="table ">
     <thead>
       <tr>
@@ -22,5 +30,5 @@
     {% endfor %}
     </tbody>
   </table>
-  <a href="{% url 'dash-addcomponent' 'graphics' %}" class="btn btn-back">Agregar</a>
+  
 {% endblock content %}

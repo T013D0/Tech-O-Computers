@@ -91,6 +91,7 @@ class Screen(models.Model):
     inches = models.IntegerField(default=0)
     refreshrate = models.IntegerField(default=0)
     technology = models.CharField(max_length=4, choices=TECH)
+    
 
     def __str__(self):
         return self.name
@@ -124,7 +125,7 @@ class Product(models.Model):
 
 
     def __str__(self):
-        return self.name    
+        return self.name
     
     @property
     def getImage(self):
