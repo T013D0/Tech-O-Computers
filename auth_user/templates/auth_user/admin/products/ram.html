@@ -1,5 +1,4 @@
 {% extends "auth_user/admin/template.html" %}
-
 {% block content %}
 <div class="row mb-3">
   <div class="col-md-10 col-sm-12">
@@ -9,24 +8,50 @@
     <a href="{% url 'dash-addcomponent' 'ram' %}" class="btn btn-back px-4">Agregar</a>
   </div>
 </div>
-  
-  <table class="table">
+<table class="table ">
     <thead>
       <tr>
         <th scope="col">ID</th>
         <th scope="col">Nombre</th>
+        <th scope="col">Acciones</th>
       </tr>
     </thead>
     <tbody>
-      {% for u in ram %}
-        <tr scope="row">
-          <td>{{ u.id }}</td>
-          <td>{{ u.name }}</td>
-        </tr>
-      {% endfor %}
+
+    {% for u in ram %}
+    <div class="modal fade" id="deleteModal{{u.id}}" tabindex="-1" aria-labelledby="deleteModal{{u.id}}Label" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="deleteModal{{u.id}}Label">Estas seguro?</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>Estas seguro que deseas eliminar el componente {{u.name}}?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <a href="{% url 'dash-removecomponent' 'ram' u.id %}" class="btn btn-danger">Eliminar</a>
+          </div>
+        </div>
+      </div>
+    </div>
+      <tr scope="row">
+        <td>{{ u.id }}</td>
+        <td>{{ u.name }}</td>
+        <td>
+          <div class="dropdown">
+            <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class='bx bx-dots-horizontal-rounded fs-3 color-secondary'></i>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{% url 'dash-editcomponent' 'ram' u.id %}">Editar</a></li>
+              <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deleteModal{{u.id}}">Eliminar</a></li>
+            </ul>
+          </div>
+        </td>
+      </tr>
+    {% endfor %}
     </tbody>
   </table>
-  
-  
-
 {% endblock content %}
