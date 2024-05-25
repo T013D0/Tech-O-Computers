@@ -1,0 +1,37 @@
+{% extends "auth_user/admin/template.html" %}
+{% load static %}
+
+{% block sources %}
+<link rel="stylesheet" href="{% static 'css/auth.css'%}">
+{% endblock sources %}
+{% block content %}
+<h5 class="product-header fw-bold fs-3">Añadir Almacenamiento</h5>
+
+<div class="row">
+    <div class="col-md-6 col-sm-12">
+        <form method="POST" class="card p-4 border-0" action="{% url 'dash-addcomponent' 'storage' %}">
+            {% csrf_token %}
+            <div class="form-floating mb-3">
+                <input type="text" value="{{storage.name}}" class="form-control border-0 border-bottom rounded-0 bg-transparent" placeholder="nombre" id="name" name="name" required>
+                <label for="name">Nombre</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input type="number" value="{{storage.capacity}}"" class="form-control border-0 border-bottom rounded-0 bg-transparent" placeholder="capacidad" id="capacity" name="capacity" required>
+                <label for="inches">Capacidad (GB)</label>
+            </div>
+            <div class="mb-3">
+                <label for="technology" class="form-label">Tecnología</label>
+                <select class="form-select" name="technology" id="technology" required>
+                    <option>Selecciona una tecnologia</option>
+                    {% for technology in tech %}
+                        <option value="{{technology}}" {% if technology == storage.technology %} selected {% endif %} >{{technology}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-back px-4">Guardar</button>
+        </form>
+    </div>
+</div>
+
+{% endblock content %}

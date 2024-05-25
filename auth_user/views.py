@@ -489,3 +489,164 @@ def addcomponent(request, type):
         case _:
             messages.error(request, 'Tipo de componente no valido')
             return redirect('dash-components')
+        
+@login_required
+@permission_required('auth_user.view_user')
+def editComponent(request, type, id):
+    match (type):
+        case "ram":
+            ram = Ram.objects.get(id=id)
+            if request.method == 'POST':
+                name = request.POST.get('name')
+                if not Ram.objects.filter(name=name).exists():
+                    messages.error(request, 'La memoria ram no existe')
+                    return redirect('dash-ram')
+                
+                ram.name = name
+                ram.save()
+                messages.success(request, 'Memoria ram actualizada correctamente')
+                return redirect('dash-ram')
+            return render(request, 'auth_user/admin/products/components/editRam.html', {'ram': ram})
+        case "graphics":
+            graphic = GraphicCard.objects.get(id=id)
+            if request.method == 'POST':
+                name = request.POST.get('name')
+                vram = request.POST.get('vram')
+                fanquantity = request.POST.get('fanquantity')
+                if not GraphicCard.objects.filter(name=name).exists():
+                    messages.error(request, 'La tarjeta grafica no exite')
+                    return redirect('dash-graphics')
+                
+                graphic.name = name
+                graphic.vram = vram
+                graphic.fanquantity = fanquantity
+                graphic.save()
+                messages.success(request, 'Tarjeta grafica actualizada correctamente')
+                return redirect('dash-graphics')
+            return render(request, 'auth_user/admin/products/components/editGraphics.html', {'graphic': graphic})
+        case "processor":
+            processor = Processor.objects.get(id=id)
+            if request.method == 'POST':
+                name = request.POST.get('name')
+                speed = request.POST.get('speed')
+                coreq = request.POST.get('coreq')
+
+                if not Processor.objects.filter(name=name).exists():
+                    messages.error(request, 'El procesador no existe')
+                    return redirect('dash-processor')
+                
+                processor.name = name
+                processor.speed = speed
+                processor.coreq = coreq
+                processor.save()
+                messages.success(request, 'Procesador actualizado correctamente')
+                return redirect('dash-processor')
+            return render(request, 'auth_user/admin/products/components/editProcessor.html', {'processor': processor})
+        case "screen":
+            screen = Screen.objects.get(id=id)
+            techs = Screen._meta.get_field('technology').choices
+
+            tech = []
+            for t in techs:
+                tech.append(t[0])
+
+            if request.method == 'POST':
+                name = request.POST.get('name')
+                inches = request.POST.get('inches')
+                refreshrate = request.POST.get('refreshrate')
+                technology = request.POST.get('technology')
+                
+                if not Screen.objects.filter(name=name).exists():
+                    messages.error(request, 'La pantalla no existe')
+                    return redirect('dash-screen')
+                
+                screen.name = name
+                screen.inches = inches
+                screen.refreshrate = refreshrate
+                screen.technology = technology
+                screen.save()
+                messages.success(request, 'Pantalla actualizada correctamente')
+                return redirect('dash-screen')
+            return render(request, 'auth_user/admin/products/components/editScreen.html', {'screen': screen, 'tech': tech})
+        case "storage":
+
+            storage = Storage.objects.get(id=id)
+            storage_choices = Storage._meta.get_field('technology').choices
+
+            tech = []
+
+            for t in storage_choices:
+                tech.append(t[0])
+
+            if request.method == 'POST':
+                name = request.POST.get('name')
+                capacity = request.POST.get('capacity')
+                technology = request.POST.get('technology')
+                if not Storage.objects.filter(name=name).exists():
+                    messages.error(request, 'El almacenamiento no existe')
+                    return redirect('dash-storage')
+                
+                storage.name = name
+                storage.capacity = capacity
+                storage.technology = technology
+                storage.save()
+                messages.success(request, 'Almacenamiento actualizado correctamente')
+                return redirect('dash-storage')
+            return render(request, 'auth_user/admin/products/components/editStorage.html', {'storage': storage, 'tech': tech})
+        case _:
+            messages.error(request, 'Tipo de componente no valido')
+            return redirect('dash-components')
+        
+@login_required
+@permission_required('auth_user.view_user')
+def removeComponent(request, type, id):
+
+    match (type):
+        case "ram":
+            ram = Ram.objects.get(id=id)
+            if ram is None:
+                messages.error(request, 'La memoria ram no existe')
+                return redirect('dash-ram')
+            
+            ram.delete()
+            messages.success(request, 'Memoria ram eliminada correctamente')
+            return redirect('dash-ram')
+        case "graphics":
+            graphic = GraphicCard.objects.get(id=id)
+            if graphic is None:
+                messages.error(request, 'La tarjeta grafica no existe')
+                return redirect('dash-graphics')
+            
+            graphic.delete()
+            messages.success(request, 'Tarjeta grafica eliminada correctamente')
+            return redirect('dash-graphics')
+        case "processor":
+            processor = Processor.objects.get(id=id)
+            if processor is None:
+                messages.error(request, 'El procesador no existe')
+                return redirect('dash-processor')
+            
+            processor.delete()
+            messages.success(request, 'Procesador eliminado correctamente')
+            return redirect('dash-processor')
+        case "screen":
+            screen = Screen.objects.get(id=id)
+            if screen is None:
+                messages.error(request, 'La pantalla no existe')
+                return redirect('dash-screen')
+            
+            screen.delete()
+            messages.success(request, 'Pantalla eliminada correctamente')
+            return redirect('dash-screen')
+        case "storage":
+            storage = Storage.objects.get(id=id)
+            if storage is None:
+                messages.error(request, 'El almacenamiento no existe')
+                return redirect('dash-storage')
+            
+            storage.delete()
+            messages.success(request, 'Almacenamiento eliminado correctamente')
+            return redirect('dash-storage')
+        case _:
+            messages.error(request, 'Tipo de componente no valido')
+            return redirect('dash-components')
