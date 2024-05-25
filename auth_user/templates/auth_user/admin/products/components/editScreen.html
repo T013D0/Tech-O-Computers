@@ -1,0 +1,43 @@
+{% extends "auth_user/admin/template.html" %}
+{% load static %}
+
+{% block sources %}
+<link rel="stylesheet" href="{% static 'css/auth.css'%}">
+{% endblock sources %}
+{% block content %}
+<h5 class="product-header fw-bold fs-3">Añadir Pantallas</h5>
+
+<div class="row">
+    <div class="col-md-6 col-sm-12">
+        <form method="POST" class="card p-4 border-0" action="{% url 'dash-addcomponent' 'screen' %}">
+            {% csrf_token %}
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control border-0 border-bottom rounded-0 bg-transparent" placeholder="nombre" id="name" name="name" required>
+                <label for="name">Nombre</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="number" class="form-control border-0 border-bottom rounded-0 bg-transparent" placeholder="pulgadas" id="inches" name="inches" required>
+                <label for="inches">Pulgadas</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="number" class="form-control border-0 border-bottom rounded-0 bg-transparent" placeholder="tasa de refresco" id="refreshrate" name="refreshrate" required>
+                <label for="refreshrate">Tasa de refresco</label>
+            </div>
+            <div class="mb-3">
+                <label for="technology" class="form-label">Tecnología</label>
+                <select class="form-select" name="technology" id="technology" required>
+                    <option>Selecciona una tecnologia</option>
+                    {% for technology in screen %}
+                        <option value="{{technology}}">{{technology}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-back px-4">Guardar</button>
+        </form>
+    </div>
+</div>
+    
+
+
+
+{% endblock content %}

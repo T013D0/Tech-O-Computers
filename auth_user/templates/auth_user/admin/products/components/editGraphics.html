@@ -1,0 +1,37 @@
+{% extends "auth_user/admin/template.html" %}
+{% load static %}
+
+{% block sources %}
+<link rel="stylesheet" href="{% static 'css/auth.css'%}">
+{% endblock sources %}
+{% block content %}
+<h5 class="product-header fw-bold fs-3">Añadir Tarjetas Graficas</h5>
+
+
+<div class="row">
+    <div class="col-md-6 col-sm-12">
+        <form method="POST" class="card p-4 border-0">
+            {% csrf_token %}
+            <div class="form-floating mb-3">
+                <input type="text" value="{{graphic.name}}" class="form-control border-0 border-bottom rounded-0 bg-transparent" placeholder="nombre" id="name"  name="name" required>
+                <label for="name">Nombre</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="number" value="{{graphic.vram}}" class="form-control border-0 border-bottom rounded-0 bg-transparent" placeholder="vram" id="vram" name="vram" required>
+                <label for="vram" >VRAM</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="number" value="{{graphic.fanquantity}}" class="form-control border-0 border-bottom rounded-0 bg-transparent" placeholder="cantidad de ventiladores" id="fanquantity" name="fanquantity" required>
+                <label for="fanquantity">Ventiladores</label>
+            </div>
+        
+            <button type="submit" class="btn btn-back px-4">Guardar</button>
+        </form>
+    </div>
+</div>
+
+    
+
+
+
+{% endblock content %}

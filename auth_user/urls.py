@@ -22,6 +22,8 @@ urlpatterns = [
     path('administration/storage/', views.storage, name='dash-storage'),
     path('administration/screen/', views.screen, name='dash-screen'),
     path('administration/components/add/<str:type>', views.addcomponent, name='dash-addcomponent'),
+    path('administration/components/edit/<str:type>/<uuid:id>', views.editComponent, name='dash-editcomponent'),
+    path('administration/components/remove/<str:type>/<uuid:id>', views.removeComponent, name='dash-removecomponent'),
 
 
 
