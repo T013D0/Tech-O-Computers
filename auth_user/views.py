@@ -501,7 +501,6 @@ def editComponent(request, type, id):
                 if not Ram.objects.filter(name=name).exists():
                     messages.error(request, 'La memoria ram no existe')
                     return redirect('dash-ram')
-                
                 ram.name = name
                 ram.save()
                 messages.success(request, 'Memoria ram actualizada correctamente')
@@ -514,7 +513,7 @@ def editComponent(request, type, id):
                 vram = request.POST.get('vram')
                 fanquantity = request.POST.get('fanquantity')
                 if not GraphicCard.objects.filter(name=name).exists():
-                    messages.error(request, 'La tarjeta grafica no exite')
+                    messages.error(request, 'La tarjeta grafica no existe')
                     return redirect('dash-graphics')
                 
                 graphic.name = name
