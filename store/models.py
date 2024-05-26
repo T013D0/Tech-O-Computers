@@ -160,9 +160,23 @@ class Recipe(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     client = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+    complete = models.BooleanField(default=False)
+    transaction_id = models.CharField(max_length=100, null=True)
 
     def __str__(self):
         return str(self.id) + '-' + self.client.email
+    
+    @property
+    def get_cart_total(self):
+        recipeDetails = self.recipedetails_set.all()
+        total = sum([item.product.price * item.quantity for item in recipeDetails])
+        return total
+    
+    @property
+    def get_cart_items(self):
+        recipeDetails = self.recipedetails_set.all()
+        total = sum([item.quantity for item in recipeDetails])
+        return total
     
 
 class RecipeDetails(models.Model):
@@ -173,6 +187,11 @@ class RecipeDetails(models.Model):
 
     def __str__(self):
         return str(self.recipe.id) + '-' + self.product.name
+    
+    @property
+    def get_total(self):
+        total = self.product.price * self.quantity
+        return total
     
 class Delivery(models.Model):
 
@@ -189,4 +208,4 @@ class Delivery(models.Model):
     status = models.CharField(max_length=1, choices=STATUS, default='P')
 
     def __str__(self):
-        return str(self.id)  
+        return str(self.id) + '-' + self.recipe.client.email

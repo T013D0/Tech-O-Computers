@@ -1,8 +1,23 @@
 from django.shortcuts import render, redirect
-from .models import Product, Notebook, Computer, AllInOne, Brand
+from .models import Product, Notebook, Computer, AllInOne, Brand, Recipe, RecipeDetails
 from django.core.paginator import Paginator
+from django.http import JsonResponse
+import json
 
 # Create your views here.
+
+#Global variables
+def cart_data(request):
+    if request.user.is_authenticated:
+        recipe, created = Recipe.objects.get_or_create(client=request.user, complete=False)
+        items = recipe.recipedetails_set.all()
+        cartItems = recipe.get_cart_items
+    else:
+        items = []
+        recipe = {'get_cart_total':0, 'get_cart_items':0}
+        cartItems = recipe['get_cart_items']
+    return {'cartItems': cartItems, 'items': items, 'recipe': recipe}
+
 def products(request):
     products = Product.objects.all().filter(stock__gt=0)
     brands =  Brand.objects.all()
@@ -63,3 +78,38 @@ def details(request, id):
         product = AllInOne.objects.get(id=id)
     context = { "product": product}
     return render(request, 'store/details.html', context)
+
+def updateItem(request):
+    data = json.loads(request.body)
+    print(data)
+    productId = data['productId']
+    action = data['action']
+    print('Action:', action)
+    print('ProductId:', productId)
+
+    product = Product.objects.get(id=productId)
+    recipe, created = Recipe.objects.get_or_create(client=request.user, complete=False)
+
+    recipeDetails, created = RecipeDetails.objects.get_or_create(recipe=recipe, product=product)
+
+    if action == 'add':
+        recipeDetails.quantity = (recipeDetails.quantity + 1)
+    elif action == 'remove':
+        recipeDetails.quantity = (recipeDetails.quantity - 1)
+    elif action == 'delete':
+        recipeDetails.quantity = 0
+
+    recipeDetails.save()
+
+    if recipeDetails.quantity <= 0:
+        recipeDetails.delete()
+    
+
+    return JsonResponse('Item was added', safe=False)
+
+def cart(request):
+    data = cart_data(request)
+    items = data['items']
+    recipe = data['recipe']
+    context = { "items": items, "recipe": recipe}
+    return render(request, 'store/cart.html', context)

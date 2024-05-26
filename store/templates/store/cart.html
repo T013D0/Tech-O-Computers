@@ -1,0 +1,64 @@
+{% extends "core/template.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+<div class="container">
+    <div class="row my-4">
+        <div class="col-md-7 col-sm-12">
+            <h2 class="footer-header">Carrito de compras</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio</th>
+                        <th>Total</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <td>{{item.product.name}}</td>
+                        <td>
+                            <a class="update-cart text-decoration-none color-primary" style="cursor: pointer;" data-product="{{item.product.id}}" data-action="remove">-</a>
+                            {{item.quantity}}
+                            <a class="update-cart text-decoration-none color-primary" style="cursor: pointer;" data-product="{{item.product.id}}" data-action="add">+</a>
+                        </td>
+                        <td>${{item.product.price | intcomma}}</td>
+                        <td>${{item.get_total | intcomma}}</td>
+                        <td>
+                            <a class="update-cart text-decoration-none color-primary" style="cursor: pointer;" data-product="{{item.product.id}}" data-action="delete">
+                                <i class="fa-solid fa-trash fs-6 text-danger"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-5">
+            <h2 class="footer-header">Resumen de compra</h2>
+            <table class="table">
+                <tr>
+                    <td>Subtotal</td>
+                    <td class="color-secondary fw-semibold">${{recipe.get_cart_total | intcomma}}</td>
+                </tr>
+                <tr>
+                    <td>Envio</td>
+                    <td class="color-secondary fw-semibold">$0</td>
+                </tr>
+                <tr>
+                    <td>Total</td>
+                    <td class="color-secondary fw-semibold">${{recipe.get_cart_total | intcomma}}</td>
+                </tr>
+            </table>
+            <div class="">
+                <a href="{% url 'store' %}" class="btn btn-back px-4">Volver a la tienda</a>
+                <a href="#" class="btn btn-border px-4">Proceder al pago</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content%}

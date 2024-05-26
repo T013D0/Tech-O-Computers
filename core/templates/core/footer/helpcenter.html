@@ -1,9 +1,49 @@
-{% extends "core/index.html" %}
-{% load static %}
-{% block content %}
-<div
-            class="container-fluid d-flex flex-row navbar-responsive-icons align-items-center"
-          >  <h2 style="text-align: center;"><strong>De momento no hay personal suficiente para atender tus requisitos,
-            por favor intente mas tarde.
-          </strong></h2>  </div>
+{% extends "core/index.html" %} {% load static %} {% block sources %}
+<link rel="stylesheet" href="{% static 'css/auth.css'%}" />
+{% endblock sources %} {% block content %}
+<div class="row justify-content-center my-4">
+  <div class="col-md-6">
+    <h4 class="fw-bold color-secondary footer-header">Centro de ayuda</h4>
+    <div class="card border-0 p-2">
+      <form action="#">
+        <div class="form-floating mb-3">
+          <input
+            type="email"
+            class="form-control border-0 border-bottom rounded-0 bg-transparent"
+            name="email"
+            id="email"
+            placeholder="name@example.com"
+            required
+          />
+          <label for="email">Correo</label>
+        </div>
+        <div class="form-floating mb-3">
+          <input
+            type="text"
+            class="form-control border-0 border-bottom rounded-0 bg-transparent"
+            name="name"
+            id="name"
+            placeholder="name@example.com"
+            required
+          />
+          <label for="name">Nombre</label>
+        </div>
+        <div class="mb-3 d-flex flex-column">
+          <label for="message">Mensaje</label>
+          <textarea
+            name="message"
+            id="message"
+            rows="10"
+            maxlength="500"
+            required
+            style="resize: none"
+          ></textarea>
+        </div>
+        <div class="d-grid gap-2 my-4">
+          <button type="submit" class="btn btn-back rounded-0">Enviar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 {% endblock content %}

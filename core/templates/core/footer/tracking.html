@@ -1,27 +1,38 @@
-{% extends "core/index.html" %}
-{% load static %}
-{% block content %}
-<divclass="container-fluid d-flex flex-row navbar-responsive-icons align-items-center">
-  <h2 style="text-align: center;"><strong>La persona especializada en llevar el equipo a tus manos aun se encuentra fabricando los componentes
-    necesarios para ti, por favor espera una nueva actualización.</strong></h2>  
+{% extends "core/index.html" %} {% load static %} {% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6 mt-3">
+    <div class="mb-4">
+      <h2 style="text-align: center">
+        <strong
+          >La persona especializada en llevar el equipo a tus manos aun se
+          encuentra fabricando los componentes necesarios para ti, por favor
+          espera una nueva actualización.</strong
+        >
+      </h2>
 
-          
-          </div>
-          <divclass="container-fluid d-flex flex-row navbar-responsive-icons align-items-center">  
-            <h2 style="text-align: center;"><strong>   
-              <a href="https://www.youtube.com/watch?v=W84gyW6-Ph4"><img
-              src="{% static 'src/fabrica.jpg'%}"
-              alt="fabrica"
-              width="auto"
-              height="auto"
-              class="d-inline-block align-text-top"
-            /></a></strong></h2>    
-       
-          </div>
-          <divclass="container-fluid d-flex flex-row navbar-responsive-icons align-items-center">
-            <h2 style="text-align: center;"><strong>Haz click en la foto para conocer el estado de nuestra fabrica</strong></h2>  
-          
-          </div>
-          
-        
+      <div class="container">
+        <h2 style="text-align: center">
+          <strong>
+            <a href="https://www.youtube.com/watch?v=W84gyW6-Ph4"
+              ><img
+                src="{% static 'src/fabrica.jpg'%}"
+                alt="fabrica"
+                width="auto"
+                height="auto"
+                class="d-inline-block align-text-top" /></a
+          ></strong>
+        </h2>
+      </div>
+      <div class="container-fluid">
+        <h2 style="text-align: center">
+          <strong
+            >Haz click en la foto para conocer el estado de nuestra
+            fabrica</strong
+          >
+        </h2>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock content %}
