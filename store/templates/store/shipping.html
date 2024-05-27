@@ -1,0 +1,70 @@
+{% extends "core/template.html" %}
+{% load static %}
+{% load humanize %}
+{% block sources %}
+<link rel="stylesheet" href="{% static 'css/auth.css'%}">
+<script src="{% static 'js/payment.js'%}"></script>
+<script>
+    const total = {{recipe.get_cart_total}};
+</script>
+{% endblock sources %} 
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-7">
+        <div class="footer-header">Shipping</div>
+        <div class="card border-0">
+          <div class="card-body">
+            <form action="" id="shippingForm">
+              {% csrf_token %}
+              <div class="form-floating mb-3">
+                  <input
+                    type="text"
+                    name="address"
+                    id="address"
+                    placeholder="address"
+                    class="form-control border-0 border-bottom rounded-0 bg-transparent" required
+                  />
+                <label for="address">Direccion</label>
+              </div>
+              <div class="form-floating mb-3">
+                  <input type="text" name="state" id="state" class="form-control border-0 border-bottom rounded-0 bg-transparent" placeholder="Region" required/>
+                <label for="state">Region</label>
+              </div>
+              <div class="form-floating mb-3">
+                  <input type="text" name="city" id="city" class="form-control border-0 border-bottom rounded-0 bg-transparent" placeholder="ciudad" required/>
+                <label for="city">Ciudad</label>
+              </div>
+              <div class="form-floating mb-3">
+                  <input type="text" name="zip" id="zip" class="form-control border-0 border-bottom rounded-0 bg-transparent" placeholder="Codigo postal" required/>
+                <label for="zip">Codigo postal</label>
+              </div>
+              <div class="mb-3">
+                  <label for="zip">Comentarios</label>
+                    <textarea name="comments" id="comments" class="form-control border-0 border-bottom rounded-0 bg-transparent" style="resize: none;" required></textarea>
+            </div>
+              <button type="submit" id="shipping-btn" class="btn btn-back mt-4 w-100">Pagar</button>
+            </form>
+          </div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <h2 class="footer-header">Resumen de compra</h2>
+        <table class="table">
+            <tr>
+                <td>Subtotal</td>
+                <td class="color-secondary fw-semibold">${{recipe.get_cart_total | intcomma}}</td>
+            </tr>
+            <tr>
+                <td>Envio</td>
+                <td class="color-secondary fw-semibold">$0</td>
+            </tr>
+            <tr>
+                <td>Total</td>
+                <td class="color-secondary fw-semibold">${{recipe.get_cart_total | intcomma}}</td>
+            </tr>
+        </table>
+    </div>
+  </div>
+</div>
+{% endblock content %}

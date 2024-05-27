@@ -1,8 +1,20 @@
 from django.shortcuts import render, redirect
-from .models import Product, Notebook, Computer, AllInOne, Brand, Recipe, RecipeDetails
+from .models import Product, Notebook, Computer, AllInOne, Brand, Recipe, RecipeDetails, Payment, Delivery
 from django.core.paginator import Paginator
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 import json
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
+from django.contrib import messages
+import datetime as dt
+from transbank.error.transbank_error import TransbankError
+from transbank.webpay.webpay_plus.transaction import Transaction
+from transbank.common.options import WebpayOptions
+from transbank.common.integration_commerce_codes import IntegrationCommerceCodes
+from transbank.common.integration_api_keys import IntegrationApiKeys
+import random
 
 # Create your views here.
 
@@ -107,9 +119,123 @@ def updateItem(request):
 
     return JsonResponse('Item was added', safe=False)
 
+@login_required
 def cart(request):
     data = cart_data(request)
     items = data['items']
     recipe = data['recipe']
+
     context = { "items": items, "recipe": recipe}
     return render(request, 'store/cart.html', context)
+
+@login_required
+def shipping(request):
+    data = cart_data(request)
+    items = data['items']
+    recipe = data['recipe']
+    context = { "items": items, "recipe": recipe}
+    return render(request, 'store/shipping.html', context)
+
+@csrf_exempt
+@require_POST
+def deliveryPost(request):
+    data = cart_data(request)
+    items = data['items']
+    recipe = data['recipe']
+    body = json.loads(request.body)
+    address = body['address']
+    city = body['city']
+    state = body['state']
+    zip_code = body['postal_code']
+    comments = body['comments']
+    delivery = Delivery.objects.create(recipe=recipe, address=address, city=city, state=state, zip_code=zip_code, comments=comments)
+    payment = Payment.objects.create(recipe=recipe)
+    payment.save()
+    delivery.save()
+    return JsonResponse('Shipping sended', safe=False)
+
+@ensure_csrf_cookie
+@csrf_exempt
+def webpay_plus_create(request):
+    data = json.loads(request.body)
+    amount = data.get('amount')
+    buy_order = str(random.randrange(1000000, 99999999))
+    session_id = str(random.randrange(1000000, 99999999))
+    return_url = request.build_absolute_uri(location='commitpay/')
+
+    tx = Transaction(WebpayOptions(IntegrationCommerceCodes.WEBPAY_PLUS, IntegrationApiKeys.WEBPAY))
+    response = tx.create(buy_order, session_id, amount, return_url)
+    return JsonResponse({'url': response['url'], 'token': response['token']}) 
+
+@csrf_exempt 
+def commit_pay(request):
+    token = request.GET.get('token_ws')
+    TBK_TOKEN = request.POST.get('TBK_TOKEN')
+    TBK_ID_SESSION = request.POST.get('TBK_ID_SESSION')
+    TBK_ORDEN_COMPRA = request.POST.get('TBK_ORDEN_COMPRA')
+    
+    #TRANSACCIÓN REALIZADA
+    if TBK_TOKEN is None and TBK_ID_SESSION is None  and TBK_ORDEN_COMPRA is None and token is not None:
+        #APROBAR TRANSACCION
+        tx = Transaction(WebpayOptions(IntegrationCommerceCodes.WEBPAY_PLUS, IntegrationApiKeys.WEBPAY))
+        response = tx.commit(token)
+        status = response.get('status')
+        buy_order = response.get('buy_order')
+        session_id = response.get('session_id')
+
+        response_code = response.get('response_code')
+        #TRANSACCIÓN APROBADA
+        if status == 'AUTHORIZED' and response_code == 0:
+            state = ''
+            if response.get('status') == 'AUTHORIZED':
+                state = 'Aceptado'
+            pay_type = ''
+            print(response.get('payment_type_code'))
+            if response.get('payment_type_code') == 'VD':
+                pay_type = 'Tarjeta de Débito'
+            amount = int(response.get('amount'))
+            amount = f'{amount:,.0f}'.replace(',', '.')
+            transaction_date = dt.datetime.strptime(response.get('transaction_date'), '%Y-%m-%dT%H:%M:%S.%fZ')
+            transaction_date = '{:%d-%m-%Y %H%M:%S}'.format(transaction_date)
+            transaction_detail = {
+                'card_number': response.get('card_detail').get('card_number'),
+                'transaction_date': transaction_date,
+                'state': state,
+                'pay_type': pay_type,
+                'amount': amount,
+                'authorization_code': response.get('authorization_code'),
+                'buy_order': response.get('buy_order')
+            }
+
+            data = cart_data(request)
+            recipe = data['recipe']
+            recipe.complete = True
+            recipe.transaction_id = response.get('buy_order')
+            recipe.save()
+            payment = Payment.objects.get(recipe=recipe)
+
+            if response.get('payment_type_code') == 'VD':
+                payment.type = 'D'
+            elif response.get('payment_type_code') == 'VN':
+                payment.type = 'C'
+            else:
+                payment.type = 'T'
+
+            payment.paid = (response.get('status') == 'AUTHORIZED')
+            payment.authorization_code = response.get('authorization_code')
+
+            if response.get('status') == 'AUTHORIZED':
+                payment.status = 'A'
+            else:
+                payment.status = 'R'
+            payment.save()
+
+            return render(request, 'store/commitpay.html', {'transaction_detail': transaction_detail})
+        else:
+            payment = Payment.objects.get(recipe=recipe)
+            payment.status = 'R'
+            return HttpResponse('ERROR EN LA TRANSACCIÓN, SE RECHAZA LA TRANSACCIÓN')
+    else:                             
+        payment = Payment.objects.get(recipe=recipe)
+        payment.status = 'R'
+        return HttpResponse('ERROR EN LA TRANSACCIÓN, SE CANCELO EL PAGO')

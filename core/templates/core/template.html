@@ -20,7 +20,7 @@
     />
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="{% static 'js/cart.js' %}"></script>
-
+    <script src="{% static 'js/payment.js' %}"></script>
     <script>
       const user = "{{request.user}}";
 
@@ -263,7 +263,7 @@
               Total: <span>${{recipe.get_cart_total | intcomma}}</span>
             </p>
             <div class="d-flex flex-row gap-2">
-              <a class="btn fw-semibold back-secondary text-white w-100">
+              <a class="btn fw-semibold back-secondary text-white w-100" href="{% url 'shipping' %}">
                 Pagar
               </a>
               <a href="{% url 'cart'%}" class="btn fw-semibold back-secondary text-white w-100">

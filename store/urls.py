@@ -6,4 +6,5 @@ urlpatterns = [
     path('store/<uuid:id>', views.details, name='details'),
     path('update_item/', views.updateItem, name='update_item'),
     path('cart/', views.cart, name='cart'),
+    path('shipping-cart/', views.shipping, name='shipping'),
 ]

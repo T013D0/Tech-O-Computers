@@ -155,7 +155,7 @@ class AllInOne(Product):
 
 
 #Entidades de delivery y boletas
-class Recipe(models.Model):  
+class Recipe(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     client = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -202,10 +202,36 @@ class Delivery(models.Model):
     }
     
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, null=True, blank=True)
-    comments = models.TextField()
-    address = models.TextField()
+    recipe = models.OneToOneField(Recipe, on_delete=models.CASCADE, null=True, blank=True)
+    comments = models.TextField(max_length=100, null=True, blank=True)
+    address = models.CharField(max_length=100, null=True, blank=True)
+    city = models.CharField(max_length=100, null=True, blank=True)
+    state = models.CharField(max_length=100, null=True, blank=True)
+    zip_code = models.CharField(max_length=10, null=True, blank=True)
     status = models.CharField(max_length=1, choices=STATUS, default='P')
 
     def __str__(self):
         return str(self.id) + '-' + self.recipe.client.email
+    
+class Payment(models.Model):
+
+    STATUS = {
+        "P": "PENDIENTE",
+        "A": "ACEPTADO",
+        "R": "RECHAZADO",
+    }
+
+    TYPE = {
+        "T": "TRANSFERENCIA",
+        "C": "CREDITO",
+        "D": "DEBITO",
+    }
+
+    paid = models.BooleanField(default=False)
+    type = models.CharField(max_length=1, choices=TYPE)
+    recipe = models.OneToOneField(Recipe, on_delete=models.CASCADE, null=True, blank=True)
+    status = models.CharField(max_length=1, choices=STATUS, default='P')
+    authorization_code = models.CharField(max_length=100, null=True, blank=True)
+
+    def __str__(self):
+        return str(self.recipe.id)
