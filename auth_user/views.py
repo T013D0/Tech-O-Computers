@@ -479,13 +479,13 @@ def addcomponent(request, type):
                 technology = request.POST.get('technology')
                 if Storage.objects.filter(name=name).exists():
                     messages.error(request, 'El almacenamiento ya se encuentra registrado')
-                    return render(request, 'auth_user/admin/products/components/addStorage.html')
+                    return redirect('dash-storage')
                 
                 storage = Storage.objects.create(name=name, capacity=capacity, technology=technology)
                 storage.save()
                 messages.success(request, 'Almacenamiento registrado correctamente')
                 return redirect('dash-storage')
-            return render(request, 'auth_user/admin/products/components/addStorage.html', {'storage': tech})
+            return render(request, 'auth_user/admin/products/components/editStorage.html', {'storage': tech})
         case _:
             messages.error(request, 'Tipo de componente no valido')
             return redirect('dash-components')
@@ -498,7 +498,7 @@ def editComponent(request, type, id):
             ram = Ram.objects.get(id=id)
             if request.method == 'POST':
                 name = request.POST.get('name')
-                if not Ram.objects.filter(name=name).exists():
+                if not Ram.objects.filter(ram=ram.id).exists():
                     messages.error(request, 'La memoria ram no existe')
                     return redirect('dash-ram')
                 ram.name = name
@@ -512,7 +512,7 @@ def editComponent(request, type, id):
                 name = request.POST.get('name')
                 vram = request.POST.get('vram')
                 fanquantity = request.POST.get('fanquantity')
-                if not GraphicCard.objects.filter(name=name).exists():
+                if not GraphicCard.objects.filter(id=graphic.id).exists():
                     messages.error(request, 'La tarjeta grafica no existe')
                     return redirect('dash-graphics')
                 
@@ -530,7 +530,7 @@ def editComponent(request, type, id):
                 speed = request.POST.get('speed')
                 coreq = request.POST.get('coreq')
 
-                if not Processor.objects.filter(name=name).exists():
+                if not Processor.objects.filter(id=processor.id).exists():
                     messages.error(request, 'El procesador no existe')
                     return redirect('dash-processor')
                 
@@ -555,7 +555,7 @@ def editComponent(request, type, id):
                 refreshrate = request.POST.get('refreshrate')
                 technology = request.POST.get('technology')
                 
-                if not Screen.objects.filter(name=name).exists():
+                if not Screen.objects.filter(id=screen.id).exists():
                     messages.error(request, 'La pantalla no existe')
                     return redirect('dash-screen')
                 
@@ -581,7 +581,8 @@ def editComponent(request, type, id):
                 name = request.POST.get('name')
                 capacity = request.POST.get('capacity')
                 technology = request.POST.get('technology')
-                if not Storage.objects.filter(name=name).exists():
+
+                if not Storage.objects.filter(id=storage.id).exists():
                     messages.error(request, 'El almacenamiento no existe')
                     return redirect('dash-storage')
                 

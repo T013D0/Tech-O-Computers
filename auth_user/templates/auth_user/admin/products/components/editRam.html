@@ -5,11 +5,11 @@
 <link rel="stylesheet" href="{% static 'css/auth.css'%}">
 {% endblock sources %}
 {% block content %}
-<h5 class="product-header fw-bold fs-3">Añadir Ram</h5>
+<h5 class="product-header fw-bold fs-3">Editar Ram</h5>
 
 <div class="row">
     <div class="col-md-6 col-sm-12">
-        <form method="POST" class="card p-4 border-0" action="{% url 'dash-addcomponent' 'ram' %}">
+        <form method="POST" class="card p-4 border-0">
             {% csrf_token %}
             <div class="form-floating mb-3">
                 <input type="text" value="{{ram.name}}" class="form-control border-0 border-bottom rounded-0 bg-transparent" placeholder="nombre" id="name" name="name" required>

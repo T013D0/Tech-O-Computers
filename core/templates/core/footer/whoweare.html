@@ -1,44 +1,42 @@
-{% extends "core/index.html" %}
-{% load static %}
-{% block content %}
-<divclass="container-fluid d-flex flex-row navbar-responsive-icons align-items-center">  
-            
-            <h2 style="text-align: center;"><strong>En Tech - o - Computers nos hemos dedicado a ofrecer soluciones
-              tecnológicas innovadoras para satisfacer las necesidades informáticas de
-              nuestros clientes, nos enorgullece estar a la vanguardia de las últimas
-              tendencias y avances en el mundo de la tecnología. Ya sea que estés
-              buscando un potente ordenador de sobremesa, un portátil versátil o
-              componentes para construir tu propia máquina, estamos aquí para ayudarte
-              a encontrar la solución perfecta. Nuestro equipo de expertos está
-              comprometido en proporcionarte asesoramiento personalizado y un servicio
-              al cliente excepcional en cada paso del camino. </strong></h2>  
-          </div>
-          
-         
-          <h2 style="text-align: center;"><strong> <divclass="container-fluid d-flex flex-row navbar-responsive-icons align-items-center">  
-            Nuestra misión en Tech -
-            o - Computers es mejorar tu experiencia tecnológica ofreciéndote
-            productos de calidad y un servicio excepcional. 
-          </div></strong></h2>
-         
+{% extends "core/index.html" %} {% load static %} {% block content %}
+<div class="container">
+  <div class="row justify-content-center mt-4">
+    <div class="col-md-6 mb-4">
+      <h4 class="fw-bold color-secondary footer-header">Quiénes somos</h4>
+      <div class="d-flex flex-column align-items-center">
+        <p style="text-align: justify;">
+          En Tech - o - Computers nos hemos dedicado a ofrecer soluciones
+          tecnológicas innovadoras para satisfacer las necesidades informáticas
+          de nuestros clientes, nos enorgullece estar a la vanguardia de las
+          últimas tendencias y avances en el mundo de la tecnología. Ya sea que
+          estés buscando un potente ordenador de sobremesa, un portátil versátil
+          o componentes para construir tu propia máquina, estamos aquí para
+          ayudarte a encontrar la solución perfecta. Nuestro equipo de expertos
+          está comprometido en proporcionarte asesoramiento personalizado y un
+          servicio al cliente excepcional en cada paso del camino.
+        </p>
 
-          <divclass="container-fluid d-flex flex-row navbar-responsive-icons align-items-center">  
-            <h1 style="text-align: center;"><strong>  
-                ¡Gracias por confiar en
-                nosotros para todas tus necesidades informáticas!
-            </strong></h1></div>
-            
-         
+        <p style="text-align: justify;">
+          Nuestra misión en Tech - o - Computers es mejorar tu experiencia
+          tecnológica ofreciéndote productos de calidad y un servicio
+          excepcional.
+        </p>
 
-          <divclass="container-fluid d-flex flex-row navbar-responsive-icons align-items-center">  
-            <h1 style="text-align: center;"><strong>  
-                <img
-                  src="{% static 'src/logo_TC.webp'%}"
-                  alt="logo"
-                  width="100"
-                  height="100"
-                  class="d-inline-block align-text-top"
-                />
-            </strong></h1></div>
-        
+        <h1 style="text-align: center;">
+          ¡Gracias por confiar en nosotros para todas tus necesidades
+          informáticas!
+        </h1>
+
+        <div class="p-2" style="width: fit-content;">
+          <img
+          src="{% static 'src/logo_TC.webp'%}"
+          alt="logo"
+          width="100"
+          style="filter: drop-shadow(0.5px 1px 3px rgba(0, 0, 0, 0.671));"
+        />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock content %}
