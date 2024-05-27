@@ -16,10 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from store.views import commit_pay, webpay_plus_create, deliveryPost
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('core.urls')),
     path('', include('store.urls')),
     path('', include('auth_user.urls')),
+    path('webpay-plus-create/', webpay_plus_create),
+    path('shipping/', deliveryPost),
+    path('webpay-plus-create/commitpay/', commit_pay, name='commit_pay'),
 ]

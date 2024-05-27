@@ -64,11 +64,11 @@ def logout_view(request):
 @permission_required('auth_user.view_user')
 def dashboard(request):
     count_products = Product.objects.all().count()
-    count_sell = Recipe.objects.all().count()
+    count_sell = Recipe.objects.filter(complete=True).all().count()
     profit = RecipeDetails.objects.all().aggregate(profit=Sum(F('product__price') * F('quantity'), output_field=IntegerField()))['profit']
     data = []
     for i in range(1, 13):
-        data.append(Recipe.objects.filter(created_at__month=i).count())
+        data.append(Recipe.objects.filter(created_at__month=i,complete=True).count())
 
     products = Product.objects.all()
     context = { "count_products": count_products, "count_sell": count_sell, "profit": profit, "data": data, "products": products}
