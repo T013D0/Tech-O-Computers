@@ -108,21 +108,44 @@
           <div
             class="container-fluid d-flex flex-row navbar-responsive-icons align-items-center"
           >
+            {% if not user.is_authenticated %}
             <a
-              {% if not user.is_authenticated%} href="{% url 'login'%}"
-              {%else%}
-              href="{% url 'index'%}"
-              {%endif%}
+              href="{% url 'login'%}"
               class="d-flex flex-row align-items-center text-decoration-none gap-2"
             >
               <i class="fa-regular fa-user text-white"></i>
               <div class="text-white user-navbar">
                 <p class="fw-semibold mb-0">Hola!</p>
-                <p class="fw-bold">
-                  {% if not user.is_authenticated %}Inicia Sesión {% else%} {{user.first_name | title}} {{user.last_name | title}} {%endif %}
-                </p>
+                <p class="fw-bold">Inicia Sesión</p>
               </div>
             </a>
+              {% else %}
+              <div class="dropdown">
+                <button
+                  class="btn bg-transparent d-flex flex-row align-items-center justify-content-start gap-2"
+                  type="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <i class="fa-regular fa-user text-white"></i>
+                  <div class="text-white user-navbar">
+                    <p class="fw-semibold mb-0" style="text-align: start;">Hola!</p>
+                    <p class="fw-bold">
+                      {{user.first_name | title}} {{user.last_name | title}}
+                    </p>
+                  </div>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">Mis compras</a></li>
+                  {% if user.is_staff %}
+                  <li><a class="dropdown-item" href="{% url 'dashboard'%}">Administracion</a></li>
+                  {% endif%}
+                  <li>
+                    <a class="dropdown-item" href="{% url 'logout'%}">Cerrar Sesion</a>
+                  </li>
+                </ul>
+              </div>
+              {% endif %}
             <button
               class="btn bg-transparent canva-toggler"
               type="button"
@@ -138,7 +161,9 @@
               data-bs-target="#offcanvasRight"
               aria-controls="offcanvasRight"
             >
-              <i class="fa-solid fa-cart-shopping text-white"></i>
+              <i class="fa-solid fa-cart-shopping text-white cart-icon">
+                <span class="cart-quantity">{{recipe.get_cart_items}}</span>
+              </i>
             </a>
           </div>
         </div>
@@ -224,7 +249,7 @@
       <div class="offcanvas-body">
         <div class="d-flex flex-column h-100 justify-content-between">
           <div class="d-flex flex-row justify-content-between">
-            <p class="fw-semibold" style="width: 250px;">Producto</p>
+            <p class="fw-semibold" style="width: 250px">Producto</p>
             <p class="fw-semibold">Cantidad</p>
             <p class="fw-semibold">Precio</p>
           </div>
@@ -233,16 +258,33 @@
             {% for item in items %}
             <div class="d-flex flex-row justify-content-between">
               <div class="d-flex flex-row gap-2">
-                <img src="{{item.product.getImage}}" width="80px" height="auto" style="object-fit: contain;" alt="{{item.product.name}}">
-                <p style="text-overflow: ellipsis; overflow: hidden; width: 250px; max-height: 100px; display: -webkit-box;-webkit-line-clamp: 3;-webkit-box-orient: vertical;">
+                <img
+                  src="{{item.product.getImage}}"
+                  width="80px"
+                  height="auto"
+                  style="object-fit: contain"
+                  alt="{{item.product.name}}"
+                />
+                <p
+                  style="
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    width: 250px;
+                    max-height: 100px;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 3;
+                    -webkit-box-orient: vertical;
+                  "
+                >
                   {{item.product.name}}
                 </p>
               </div>
               <div class="">
                 <a
                   class="mx-2 text-decoration-none color-primary"
-                  style="height: fit-content;"
-                  >{{item.quantity}}</a>
+                  style="height: fit-content"
+                  >{{item.quantity}}</a
+                >
               </div>
               <p class="color-secondary fw-semibold">
                 ${{item.product.price | intcomma}}
@@ -253,7 +295,8 @@
           <div class="module-cart p-4">
             <span class="resumen-divider"></span>
             <p class="d-flex flex-row justify-content-between text-secondary">
-              Pago con Webpay/Onepay: <span>${{recipe.get_cart_total | intcomma}}</span>
+              Pago con Webpay/Onepay:
+              <span>${{recipe.get_cart_total | intcomma}}</span>
             </p>
             <p class="d-flex flex-row justify-content-between text-secondary">
               Envio: <span>$0</span>
@@ -263,10 +306,16 @@
               Total: <span>${{recipe.get_cart_total | intcomma}}</span>
             </p>
             <div class="d-flex flex-row gap-2">
-              <a class="btn fw-semibold back-secondary text-white w-100" href="{% url 'shipping' %}">
+              <a
+                class="btn fw-semibold back-secondary text-white w-100"
+                href="{% url 'shipping' %}"
+              >
                 Pagar
               </a>
-              <a href="{% url 'cart'%}" class="btn fw-semibold back-secondary text-white w-100">
+              <a
+                href="{% url 'cart'%}"
+                class="btn fw-semibold back-secondary text-white w-100"
+              >
                 Ir al carro
               </a>
             </div>

@@ -1,16 +1,20 @@
 {% extends 'core/template.html' %}
 {% block content %}
 <div class="container">
-    <div class="transaction-details">
-        <h1>Detalle de la Transacción</h1>
-        <p><strong>Número de Tarjeta:</strong> {{ transaction_detail.card_number }}</p>
-        <p><strong>Fecha de la Transacción:</strong> {{ transaction_detail.transaction_date }}</p>
-        <p><strong>Estado:</strong> {{ transaction_detail.state }}</p>
-        <p><strong>Tipo de Pago:</strong> {{ transaction_detail.pay_type }}</p>
-        <p><strong>Monto:</strong> ${{ transaction_detail.amount }}</p>
-        <p><strong>Código de Autorización:</strong> {{ transaction_detail.authorization_code }}</p>
-        <p><strong>Orden de Compra:</strong> {{ transaction_detail.buy_order }}</p>
-        <a href="{% url 'index' %}" class="btn btn-primary mt-3">Volver al Inicio</a>
+    <div class="row justify-content- mt-2">
+        <div class="col-md-7 col-sm-12">
+            <h1 class="footer-header">Pago {% if transaction_detail.state == 'Aceptado' %} Recibido {% else %} Rechazado {% endif %}</h1>
+            <div class="card my-3 border-0 p-4">
+                <h3 class="footer-header">Detalle de la Transacción</h3>
+                <p class="color-secondary"><strong class="text-black">Fecha de la Transacción:</strong> {{ transaction_detail.transaction_date }}</p>
+                <p class="color-secondary"><strong class="text-black">Estado:</strong> {{ transaction_detail.state }}</p>
+                <p class="color-secondary"><strong class="text-black">Tipo de Pago:</strong> {{ transaction_detail.pay_type }}</p>
+                <p class="color-secondary"><strong class="text-black">Monto:</strong> ${{ transaction_detail.amount }}</p>
+                <p class="color-secondary"><strong class="text-black">Código de Autorización:</strong> {{ transaction_detail.authorization_code }}</p>
+                <p class="color-secondary"><strong class="text-black">Orden de Compra:</strong> {{ transaction_detail.buy_order }}</p>
+                <a href="{% url 'index' %}" class="btn btn-border w-100 mt-3">Volver al Inicio</a>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock content%}

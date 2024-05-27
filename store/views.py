@@ -93,11 +93,8 @@ def details(request, id):
 
 def updateItem(request):
     data = json.loads(request.body)
-    print(data)
     productId = data['productId']
     action = data['action']
-    print('Action:', action)
-    print('ProductId:', productId)
 
     product = Product.objects.get(id=productId)
     recipe, created = Recipe.objects.get_or_create(client=request.user, complete=False)
@@ -105,7 +102,8 @@ def updateItem(request):
     recipeDetails, created = RecipeDetails.objects.get_or_create(recipe=recipe, product=product)
 
     if action == 'add':
-        recipeDetails.quantity = (recipeDetails.quantity + 1)
+        if recipeDetails.quantity < product.stock:
+            recipeDetails.quantity = (recipeDetails.quantity + 1)
     elif action == 'remove':
         recipeDetails.quantity = (recipeDetails.quantity - 1)
     elif action == 'delete':
@@ -136,23 +134,44 @@ def shipping(request):
     context = { "items": items, "recipe": recipe}
     return render(request, 'store/shipping.html', context)
 
-@csrf_exempt
 @require_POST
 def deliveryPost(request):
-    data = cart_data(request)
-    items = data['items']
-    recipe = data['recipe']
-    body = json.loads(request.body)
-    address = body['address']
-    city = body['city']
-    state = body['state']
-    zip_code = body['postal_code']
-    comments = body['comments']
-    delivery = Delivery.objects.create(recipe=recipe, address=address, city=city, state=state, zip_code=zip_code, comments=comments)
-    payment = Payment.objects.create(recipe=recipe)
-    payment.save()
-    delivery.save()
-    return JsonResponse('Shipping sended', safe=False)
+    if request.method == "POST":
+        data = cart_data(request)
+        recipe = data['recipe']
+        address = request.POST.get('address')
+        city = request.POST.get('city')
+        state = request.POST.get('state')
+        zip_code = request.POST.get('zip_code')
+        comments = request.POST.get('comments')
+        payment, createdP = Payment.objects.get_or_create(recipe=recipe)
+
+        # Check if a Delivery object with the same recipe_id already exists
+        delivery, created = Delivery.objects.get_or_create(
+            recipe=recipe,
+            defaults={
+                'address': address,
+                'city': city,
+                'state': state,
+                'zip_code': zip_code,
+                'comments': comments
+            }
+        )
+
+        # If the Delivery object was created, send a success response
+        if created:
+            return JsonResponse({'success': True})
+        else:
+            # If the Delivery object already existed, update it with the new data
+            delivery.address = address
+            delivery.city = city
+            delivery.state = state
+            delivery.zip_code = zip_code
+            delivery.comments = comments
+            delivery.save()
+            return JsonResponse({'success': True})
+
+    return JsonResponse({'success': False})
 
 @ensure_csrf_cookie
 @csrf_exempt
@@ -183,6 +202,10 @@ def commit_pay(request):
         buy_order = response.get('buy_order')
         session_id = response.get('session_id')
 
+        data = cart_data(request)
+        recipe = data['recipe']
+        payment = Payment.objects.get(recipe=recipe)
+
         response_code = response.get('response_code')
         #TRANSACCIÓN APROBADA
         if status == 'AUTHORIZED' and response_code == 0:
@@ -190,7 +213,6 @@ def commit_pay(request):
             if response.get('status') == 'AUTHORIZED':
                 state = 'Aceptado'
             pay_type = ''
-            print(response.get('payment_type_code'))
             if response.get('payment_type_code') == 'VD':
                 pay_type = 'Tarjeta de Débito'
             amount = int(response.get('amount'))
@@ -212,7 +234,10 @@ def commit_pay(request):
             recipe.complete = True
             recipe.transaction_id = response.get('buy_order')
             recipe.save()
-            payment = Payment.objects.get(recipe=recipe)
+
+            for item in data['items']:
+                item.product.stock -= item.quantity
+                item.product.save()
 
             if response.get('payment_type_code') == 'VD':
                 payment.type = 'D'
@@ -232,10 +257,10 @@ def commit_pay(request):
 
             return render(request, 'store/commitpay.html', {'transaction_detail': transaction_detail})
         else:
-            payment = Payment.objects.get(recipe=recipe)
             payment.status = 'R'
+            payment.save()
             return HttpResponse('ERROR EN LA TRANSACCIÓN, SE RECHAZA LA TRANSACCIÓN')
     else:                             
-        payment = Payment.objects.get(recipe=recipe)
         payment.status = 'R'
+        payment.save()
         return HttpResponse('ERROR EN LA TRANSACCIÓN, SE CANCELO EL PAGO')

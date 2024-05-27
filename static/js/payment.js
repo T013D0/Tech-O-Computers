@@ -49,8 +49,15 @@ async function sendPayment(amount) {
     .catch((error) => console.error("Error:", error));
 }
 $(document).ready(() => {
-  $("#shippingForm").submit(function (event) {
+  let formSubmitted = false;
+
+  $("#shippingForm").submit(async (event) => {
     event.preventDefault();
+
+    if (formSubmitted) return; // prevent multiple submissions
+
+    formSubmitted = true;
+
     const amount = total;
 
     const address = $("#address").val();
@@ -68,16 +75,26 @@ $(document).ready(() => {
         "X-CSRFToken": csrftoken,
       },
       body: JSON.stringify({
-        'address': address,
-        'city': city,
-        'state': state,
-        'country': country,
-        'postal_code': postal_code,
-        'comments': comments,
+        address: address,
+        city: city,
+        state: state,
+        country: country,
+        postal_code: postal_code,
+        comments: comments,
       }),
-    }).then(() => {
-      console.log("Shipping data saved!");
-      sendPayment(amount);
-    });
+    })
+      .then((response) => {
+        console.log("Response Status:", response.status);
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Response Data:", data);
+        if (data.success) {
+          sendPayment(amount);
+        } else {
+          console.error("Error:", data.error);
+          alert("Error al guardar la dirección de envío: " + data.error);
+        }
+      });
   });
 });
