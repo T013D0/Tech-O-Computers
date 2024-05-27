@@ -193,6 +193,10 @@ def commit_pay(request):
     TBK_ID_SESSION = request.POST.get('TBK_ID_SESSION')
     TBK_ORDEN_COMPRA = request.POST.get('TBK_ORDEN_COMPRA')
     
+    data = cart_data(request)
+    recipe = data['recipe']
+    payment = Payment.objects.get(recipe=recipe)
+    
     #TRANSACCIÓN REALIZADA
     if TBK_TOKEN is None and TBK_ID_SESSION is None  and TBK_ORDEN_COMPRA is None and token is not None:
         #APROBAR TRANSACCION
@@ -202,9 +206,6 @@ def commit_pay(request):
         buy_order = response.get('buy_order')
         session_id = response.get('session_id')
 
-        data = cart_data(request)
-        recipe = data['recipe']
-        payment = Payment.objects.get(recipe=recipe)
 
         response_code = response.get('response_code')
         #TRANSACCIÓN APROBADA
@@ -259,20 +260,8 @@ def commit_pay(request):
         else:
             payment.status = 'R'
             payment.save() # replace with your condition
-            html = """
-                <html>
-                    <body>
-                        <script>
-                            setTimeout(function(){
-                                window.location.href = '/';
-                            }, 10000);
-                        </script>
-                        <p>ERROR EN LA TRANSACCIÓN, SE RECHAZA LA TRANSACCIÓN</p>
-                    </body>
-                </html>
-                """
-            return HttpResponse(html)
+            return render(request, 'store/refusedpay.html', {'transaction_detail': None})
     else:                             
         payment.status = 'R'
         payment.save()
-        return HttpResponse('ERROR EN LA TRANSACCIÓN, SE CANCELO EL PAGO')
+        return render(request, 'store/refusedpay.html', {'transaction_detail': None})

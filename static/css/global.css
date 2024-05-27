@@ -403,6 +403,18 @@ a i.fa-xmark {
   }
 }
 
+.progress-bar {
+  width: 0%;
+  animation: progress 10s linear;
+  background-color: #29d6d6 !important;
+}
+
+@keyframes progress {
+  to {
+    width: 100%;
+  }
+}
+
 .cart-icon {
   position: relative;
 }
