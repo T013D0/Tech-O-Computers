@@ -403,6 +403,32 @@ a i.fa-xmark {
   }
 }
 
+.cart-icon {
+  position: relative;
+}
+.cart-icon::after {
+  content: "";
+  width: 15px;
+  height: 15px;
+  background-color: #29d6d6;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%);
+}
+
+.cart-quantity {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%);
+  color: white;
+  font-size: 0.6rem;
+  font-weight: 600;
+  z-index: 1;
+}
+
 .resumen-cart {
   display: block;
   unicode-bidi: isolate;
