@@ -258,8 +258,20 @@ def commit_pay(request):
             return render(request, 'store/commitpay.html', {'transaction_detail': transaction_detail})
         else:
             payment.status = 'R'
-            payment.save()
-            return HttpResponse('ERROR EN LA TRANSACCIÓN, SE RECHAZA LA TRANSACCIÓN')
+            payment.save() # replace with your condition
+            html = """
+                <html>
+                    <body>
+                        <script>
+                            setTimeout(function(){
+                                window.location.href = '/';
+                            }, 10000);
+                        </script>
+                        <p>ERROR EN LA TRANSACCIÓN, SE RECHAZA LA TRANSACCIÓN</p>
+                    </body>
+                </html>
+                """
+            return HttpResponse(html)
     else:                             
         payment.status = 'R'
         payment.save()
