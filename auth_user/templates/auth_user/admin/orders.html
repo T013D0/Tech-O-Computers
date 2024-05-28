@@ -1,4 +1,5 @@
 {% extends "auth_user/admin/template.html" %}
+{%load humanize%}
 {% block content %}
 <h5 class="product-header fw-bold fs-3">Ordenes</h5>
 <table class="table ">
@@ -23,15 +24,17 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            
-            Cliente: {{u.client}}
-            Orden creada en:  {{u.created_at}}
+            <h5>Boleta: </h5>
+            Cliente: {{u.client}} <br>
+            Orden creada en:  {{u.created_at}}<br>
             {%for p in u.recipedetails_set.all %}
-            
-            Detalles de la compra: {{p}}
-            Cantidad : {{p.quantity}}
-            Total de compra: {{p.get_total}}
+            <h5>----------------------------------------</h5>
+            <h5>Detalles de la compra:</h5>
+            Producto: {{p.product}}<br>
+            Cantidad : {{p.quantity}}<br>
+            Total de compra: ${{p.get_total | intcomma}}<br>
             {%endfor%}
+            
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
