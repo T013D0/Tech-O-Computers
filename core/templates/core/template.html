@@ -42,6 +42,17 @@
         return cookieValue;
       }
       const csrftoken = getCookie("csrftoken");
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const loader = document.getElementById("loader");
+        const loaderContainer = document.querySelector(".loader-container");
+        const content = document.getElementById("content");
+
+        setTimeout(() => {
+          loaderContainer.style.display = "none";
+          content.style.display = "block";
+        }, 500);
+      });
     </script>
     {% block sources %} {% endblock sources %}
     <link rel="stylesheet" href="{%static 'css/global.css'%}" />
@@ -323,7 +334,19 @@
         </div>
       </div>
     </div>
-    {% block content %} {% endblock content %}
+    <div class="loader-container">
+      <div class="typing-indicator" id="loader">
+        <div class="typing-circle"></div>
+        <div class="typing-circle"></div>
+        <div class="typing-circle"></div>
+        <div class="typing-shadow"></div>
+        <div class="typing-shadow"></div>
+        <div class="typing-shadow"></div>
+    </div>
+    </div>
+    <div id="content" style="display: none;">
+      {% block content %} {% endblock content %}
+    </div>
     <footer class="back-primary">
       <div class="footer-container">
         <div class="w-full footer text-white">
