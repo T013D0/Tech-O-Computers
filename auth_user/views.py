@@ -5,7 +5,7 @@ from store.models import Product, Brand, Ram, Storage, Processor, GraphicCard, S
 from django.core.paginator import Paginator
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.decorators import login_required, permission_required
-from store.models import Product, Notebook, Computer, AllInOne, Brand, Recipe, RecipeDetails
+from store.models import Product, Notebook, Computer, AllInOne, Brand, Recipe, RecipeDetails, Delivery, Payment
 from django.db.models import Sum, F, IntegerField
 
 # Create your views here.
@@ -280,6 +280,18 @@ def users(request):
     user = User.objects.all()
     context = {'usuarios' : user}
     return render(request, 'auth_user/admin/users.html', context)
+
+@login_required
+def delivery(request):
+    delivery = Delivery.objects.all()
+    context = {'delivery' : delivery}
+    return render(request, 'auth_user/admin/delivery.html', context)
+
+@login_required
+def orders(request):
+    orders = Recipe.objects.filter(complete=True).all()
+    context = {'orders' : orders}
+    return render(request, 'auth_user/admin/orders.html', context)
 
 @login_required
 @permission_required('auth_user.view_user')

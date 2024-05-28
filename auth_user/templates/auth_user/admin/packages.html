@@ -1,4 +1,32 @@
 {% extends "auth_user/admin/template.html" %}
 {% block content %}
 <h5 class="product-header fw-bold fs-3">Envios</h5>
+<table class="table ">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Comentarios</th>
+        <th scope = "col">Estado del envio</th>
+        <th scope = "col">Direccion de envio</th>
+        <th scope = "col">Ciudad</th>
+        <th scope = "col">Estado</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+
+
+    {% for u in delivery %}
+      <tr scope="row">
+        <td>{{ u.id }}</td>
+        <td>{{ u.comments }}</td>
+        <td>{{ u.status }}</td>
+        <td>{{ u.address }}</td>
+        <td>{{ u.city }}</td>
+        <td>{{ u.state }}</td>
+        <td><a href="#" class="color-secondary">Detalles</a></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
 {% endblock content %}
