@@ -139,23 +139,22 @@ def deliveryPost(request):
     if request.method == "POST":
         data = cart_data(request)
         recipe = data['recipe']
-        address = request.POST.get('address')
-        city = request.POST.get('city')
-        state = request.POST.get('state')
-        zip_code = request.POST.get('zip_code')
-        comments = request.POST.get('comments')
+        request_data = json.loads(request.body)
+        address = request_data.get('address')
+        city = request_data.get('city')
+        state = request_data.get('state')
+        zip_code = request_data.get('postal_code')
+        comments = request_data.get('comments')
         payment, createdP = Payment.objects.get_or_create(recipe=recipe)
 
         # Check if a Delivery object with the same recipe_id already exists
         delivery, created = Delivery.objects.get_or_create(
             recipe=recipe,
-            defaults={
-                'address': address,
-                'city': city,
-                'state': state,
-                'zip_code': zip_code,
-                'comments': comments
-            }
+            address=address,
+            city=city,
+            state=state,
+            zip_code=zip_code,
+            comments=comments
         )
 
         # If the Delivery object was created, send a success response

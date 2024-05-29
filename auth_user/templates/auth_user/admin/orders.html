@@ -24,20 +24,19 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <h5>Boleta: </h5>
-            Cliente: {{u.client}} <br>
-            Orden creada en:  {{u.created_at}}<br>
-            {%for p in u.recipedetails_set.all %}
-            <h5>----------------------------------------</h5>
-            <h5>Detalles de la compra:</h5>
-            Producto: {{p.product}}<br>
-            Cantidad : {{p.quantity}}<br>
-            Total de compra: ${{p.get_total | intcomma}}<br>
-            {%endfor%}
+            <h5 class="footer-header color-secondary">Boleta</h5>
+            <p>Cliente: {{u.client}}</p>
+            <p>Orden creada en: {{u.created_at}}</p>
+            <p>Estado: {% if u.payment.status == 'A' %} <span class="text-success">Aceptado</span> {% elif u.payment.status == 'R' %}<span class="text-danger">Rechazado</span> {% else %} <span class="text-warning">Pendiente</span> {% endif %}</p>
+            <span class="filter-divider mb-2"></span>
+            <h5 class="footer-header color-secondary">Resumen de la compra</h5>
+            <p>Cantidad de Productos: {{u.get_cart_items}}</p>
+            <p>Total de compra: ${{u.get_cart_total | intcomma}}</p>
             
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <a href="{% url 'dash-detailorder' u.id%}" class="btn btn-secondary back-secondary">Ver mas</a>
         </div>
       </div>
     </div>
@@ -46,8 +45,8 @@
         <td>{{ u.id }}</td>
         <td>{{ u.client }}</td>
         <td>{{ u.created_at }}</td>
-        <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#{{u.id}}modal">
-            Detalles
+        <td><button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#{{u.id}}modal">
+            <i class='bx bx-dots-horizontal-rounded fs-3 color-secondary'></i>
           </button></td>
       </tr>
     {% endfor %}
