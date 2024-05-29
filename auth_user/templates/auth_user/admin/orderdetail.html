@@ -1,0 +1,56 @@
+{% extends "auth_user/admin/template.html" %}
+{% load humanize %}
+{% load static %}
+{% block sources %}
+<script>
+    const id = "{{order.delivery.id}}";
+</script>
+<script src="{% static 'js/order.js'%}"></script>
+{% endblock sources %}
+{% block content %}
+<div class="row mt-5 p-4">
+    <div class="col-md-8 col-sm-12">
+        <h5 class="product-header fw-bold fs-3 color-secondary">Detalle de la orden</h5>
+        {% for d in details %}
+        <div class="card border-0 p-3 mb-3 pe-none">  
+            <div class="d-flex flex-row flex-wrap gap-2">
+                <img src="{{d.product.getImage}}" alt="{{d.product.name}}" width="100px" style="object-fit: contain;">
+                <div class="">
+                    <p>Producto: {{d.product.name}}</p>
+                    <p>Cantidad: {{d.quantity}}</p>
+                    <p>Precio: ${{d.product.price | intcomma}}</p>
+                    <p>Subtotal: ${{d.get_total | intcomma}}</p>
+                </div>
+            </div>
+
+        </div>
+        {% endfor %}
+    </div>
+    <div class="col-md-4 col-sm-12">
+        <div class="card border-0 p-3 pe-none">
+            <h5 class="product-header fw-bold fs-3 color-secondary">Resumen</h5>
+            <p>Cliente: {{order.client}}</p>
+            <p>Orden creada en: {{order.created_at}}</p>
+            <p>Estado: {% if order.payment.status == 'A' %} <span class="text-success">Aceptado</span> {% elif order.payment.status == 'R' %}<span class="text-danger">Rechazado</span> {% else %} <span class="text-warning">Pendiente</span> {% endif %}</p>
+            <span class="filter-divider mb-3"></span>
+            <p>Cantidad de Productos: {{order.get_cart_items}}</p>
+            <p>Total de compra: ${{order.get_cart_total | intcomma}}</p>
+            <p>Tarjeta: {% if order.payment.type == 'D'%}Debito{% elif order.payment.type == 'C' %}Credito{% else %}Transferencia{% endif %}</p>
+        </div>
+        <div class="card border-0 p-3">
+            <h5 class="product-header fw-bold fs-3 color-secondary">Delivery</h5>
+            <p>Id: <small>{{order.delivery.id}}</small></p>
+            <p>Status: 
+                <select name="delivery" id="delivery">
+                    <option value="P" {% if order.delivery.status == 'P' %} selected {% endif %}>Pendiente</option>
+                    <option value="E" {% if order.delivery.status == 'E' %} selected {% endif %}>Enviado</option>
+                    <option value="R" {% if order.delivery.status == 'R' %} selected {% endif %}>Recibido</option>
+                </select>
+            </p>
+            <p class="text-danger" id="statusError" style="display: none;">Ocurrio un error al actualizar el pedido</p>
+            <p>Dirección: {{order.delivery.address}}, {{order.delivery.city}}, {{order.delivery.state}}</p>
+            <p>Codigo Postal: {{order.delivery.zip_code}}</p>
+        </div>
+    </div>
+</div>
+{% endblock content %}

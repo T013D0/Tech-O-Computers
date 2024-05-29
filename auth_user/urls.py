@@ -10,6 +10,7 @@ urlpatterns = [
     path('administration/products/<uuid:id>/', views.editproduct, name='dash-editproduct'),
     path("administration/products/remove/<uuid:id>/", views.removeproduct, name="dash-removeproduct"),
     path('administration/orders/', views.orders, name='dash-orders'),
+    path('administration/orders/<uuid:id>/', views.orderdetail, name='dash-detailorder'),
     path('administration/packages/', views.packages, name='dash-packages'),
     path('administration/transactions/', views.transactions, name='dash-transactions'),
     path('administration/users/', views.users, name='dash-users'),
@@ -24,8 +25,6 @@ urlpatterns = [
     path('administration/components/add/<str:type>', views.addcomponent, name='dash-addcomponent'),
     path('administration/components/edit/<str:type>/<uuid:id>', views.editComponent, name='dash-editcomponent'),
     path('administration/components/remove/<str:type>/<uuid:id>', views.removeComponent, name='dash-removecomponent'),
-
-
-
+    path('api/order/', views.editDeliveryStatus),
 
 ]

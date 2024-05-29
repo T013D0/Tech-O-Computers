@@ -7,6 +7,9 @@ from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.decorators import login_required, permission_required
 from store.models import Product, Notebook, Computer, AllInOne, Brand, Recipe, RecipeDetails, Delivery, Payment
 from django.db.models import Sum, F, IntegerField
+from django.views.decorators.http import require_POST
+from django.http import HttpResponse
+import json
 
 # Create your views here.
 def login(request):
@@ -73,11 +76,6 @@ def dashboard(request):
     products = Product.objects.all()
     context = { "count_products": count_products, "count_sell": count_sell, "profit": profit, "data": data, "products": products}
     return render(request, 'auth_user/admin/dashboard.html', context)
-
-@login_required
-@permission_required('auth_user.view_user')
-def orders(request):
-    return render(request, 'auth_user/admin/orders.html')
 
 @login_required
 @permission_required('auth_user.view_user')
@@ -276,22 +274,38 @@ def list_products(request):
     return render(request, 'auth_user/admin/products/list.html', context)
 
 @login_required
+@permission_required('auth_user.view_user')
 def users(request):
     user = User.objects.all()
     context = {'usuarios' : user}
     return render(request, 'auth_user/admin/users.html', context)
 
 @login_required
+@permission_required('auth_user.view_user')
 def delivery(request):
     delivery = Delivery.objects.all()
     context = {'delivery' : delivery}
     return render(request, 'auth_user/admin/delivery.html', context)
 
 @login_required
+@permission_required('auth_user.view_user')
 def orders(request):
     orders = Recipe.objects.filter(complete=True).all()
     context = {'orders' : orders}
     return render(request, 'auth_user/admin/orders.html', context)
+
+@login_required
+@permission_required('auth_user.view_user')
+def orderdetail(request, id):
+    order = Recipe.objects.get(id=id)
+
+    if order is None:
+        messages.error(request, 'La orden no existe')
+        return redirect('dash-orders')
+    
+    details = RecipeDetails.objects.filter(recipe=order).all()
+    context = {'order' : order, 'details': details}
+    return render(request, 'auth_user/admin/orderdetail.html', context)
 
 @login_required
 @permission_required('auth_user.view_user')
@@ -608,6 +622,19 @@ def editComponent(request, type, id):
         case _:
             messages.error(request, 'Tipo de componente no valido')
             return redirect('dash-components')
+        
+@require_POST
+def editDeliveryStatus(request):
+    data = json.loads(request.body)
+    id = data['id']
+    status = data['status']
+    delivery = Delivery.objects.get(id=id)
+    if delivery is None:
+        return HttpResponse({'message': 'El despacho no existe'}, status=404)
+    
+    delivery.status = status
+    delivery.save()
+    return HttpResponse({'message': 'Despacho actualizado correctamente'}, status=200)
         
 @login_required
 @permission_required('auth_user.view_user')
