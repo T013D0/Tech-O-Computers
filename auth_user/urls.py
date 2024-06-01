@@ -1,10 +1,15 @@
 from . import views;
 from django.urls import path
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('accounts/login/', views.login, name='login'),
     path('accounts/register/', views.register, name='register'),
     path('accounts/logout/', views.logout_view, name="logout"),
+    path('reset_password/', auth_views.PasswordResetView.as_view(template_name='auth_user/resetpassword.html', html_email_template_name='auth_user/emails/passemail.html'), name='reset_password'),
+    path('reset_password_sent/', auth_views.PasswordResetDoneView.as_view(template_name='auth_user/passwordresetsend.html'), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='auth_user/passwordresetform.html'), name='password_reset_confirm'),
+    path('reset_password_complete/', auth_views.PasswordResetCompleteView.as_view(template_name='auth_user/passwordresetcomplete.html'), name='password_reset_complete'),
     path('administration/dashboard/', views.dashboard, name='dashboard'),
     path('administration/products/', views.list_products, name='dash-list-products'),
     path('administration/products/<uuid:id>/', views.editproduct, name='dash-editproduct'),

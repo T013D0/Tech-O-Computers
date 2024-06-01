@@ -15,6 +15,10 @@ from transbank.common.options import WebpayOptions
 from transbank.common.integration_commerce_codes import IntegrationCommerceCodes
 from transbank.common.integration_api_keys import IntegrationApiKeys
 import random
+import datetime
+from django.core.mail import send_mail
+from django.conf import settings
+import pytz
 
 # Create your views here.
 
@@ -246,11 +250,22 @@ def commit_pay(request):
             else:
                 payment.type = 'T'
 
+            payment.date_paid = datetime.datetime.now(tz=pytz.timezone('America/Santiago'))
             payment.paid = (response.get('status') == 'AUTHORIZED')
             payment.authorization_code = response.get('authorization_code')
 
             if response.get('status') == 'AUTHORIZED':
                 payment.status = 'A'
+
+                #send email
+                subject = 'Nueva Compra'
+                message = 'Gracias por su compra, su transacción ha sido aprobada.'
+                email_template_name = 'store/emails/payment_confirmation.html'
+                to_email = request.user.email
+                from_email = settings.EMAIL_HOST_USER
+
+                send_mail(subject, message, html_message=render(request, email_template_name, {'recipe': recipe, 'items': data['items']}).content.decode('utf-8'), recipient_list=[to_email], from_email=from_email, fail_silently=False)
+
             else:
                 payment.status = 'R'
             payment.save()
