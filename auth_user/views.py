@@ -9,6 +9,10 @@ from store.models import Product, Notebook, Computer, AllInOne, Brand, Recipe, R
 from django.db.models import Sum, F, IntegerField
 from django.views.decorators.http import require_POST
 from django.http import HttpResponse
+from django.contrib.auth.forms import PasswordResetForm
+from django.http import JsonResponse
+from django.core.serializers import serialize
+import json
 import json
 
 # Create your views here.
@@ -239,9 +243,6 @@ def list_products(request):
             case "all-in-one":
                 products = AllInOne.objects.all()
 
-    name = request.GET.get("search")
-    if name != "" and name is not None:
-        products = products.filter(name__icontains=name)
     
     orderBy = request.GET.get("orderBy")
     if orderBy != "" and orderBy is not None:
@@ -270,14 +271,28 @@ def list_products(request):
     if page is None or page == "":
         page = 1
 
-    context = { "products": paginator.get_page(page).object_list, "page_obj": paginator.get_page(page), "per_page": paginator.per_page, "total": products.count(), "brands": brands}
+    product_json = []
+    for product in products:
+        product_json.append({
+            "id": product.id,
+            "name": product.name,
+            "price": product.price,
+            "stock": product.stock,
+            "brand": product.brand.name,
+            "image": product.image.url
+        })
+
+    context = { "products": paginator.get_page(page).object_list, "page_obj": paginator.get_page(page), "per_page": paginator.per_page, "total": products.count(), "brands": brands, "product_json": product_json}
     return render(request, 'auth_user/admin/products/list.html', context)
 
 @login_required
 @permission_required('auth_user.view_user')
 def users(request):
     user = User.objects.all()
-    context = {'usuarios' : user}
+    serialize_data = serialize('json', user, use_natural_foreign_keys=True)
+    serialize_data = json.loads(serialize_data)
+
+    context = {'usuarios' : user, "user_json": serialize_data}
     return render(request, 'auth_user/admin/users.html', context)
 
 @login_required

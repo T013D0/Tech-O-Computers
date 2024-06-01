@@ -83,7 +83,9 @@
                         <ul class="list-group" style="max-height: 51vh;overflow-y: scroll;">
                             {% for product in products %}
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                {{product.name}}
+                                <a href="{% url 'dash-editproduct' product.id%}" class="text-black">
+                                    {{product.name}}
+                                </a>
                                 <span class="badge back-secondary rounded-pill">{{product.stock}}</span>
                             </li>
                             {% endfor %}

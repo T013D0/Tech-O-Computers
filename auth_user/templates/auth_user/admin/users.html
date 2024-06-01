@@ -11,7 +11,7 @@
         <th scope="col">Acciones</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="user-table">
 
 
     {% for u in usuarios %}
@@ -20,7 +20,17 @@
         <td>{{ u.rut }}</td>
         <td>{{ u.first_name }}</td>
         <td>{{ u.last_name }}</td>
-        <td><a href="#" class="color-secondary">Detalles</a></td>
+        <td>
+          <div class="dropdown">
+            <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class='bx bx-dots-horizontal-rounded fs-3 color-secondary'></i>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Editar</a></li>
+              <li><a class="dropdown-item" href="#">Ver Pedidos</a></li>
+            </ul>
+          </div>
+        </td>
       </tr>
     {% endfor %}
     </tbody>

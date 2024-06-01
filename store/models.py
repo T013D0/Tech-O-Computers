@@ -1,6 +1,7 @@
 from django.db import models
 import uuid
 from auth_user.models import User
+import datetime
 
 # Create your models here.
 
@@ -228,6 +229,7 @@ class Payment(models.Model):
     }
 
     paid = models.BooleanField(default=False)
+    date_paid = models.DateTimeField(auto_now_add=True)
     type = models.CharField(max_length=1, choices=TYPE)
     recipe = models.OneToOneField(Recipe, on_delete=models.CASCADE, null=True, blank=True)
     status = models.CharField(max_length=1, choices=STATUS, default='P')

@@ -15,7 +15,7 @@
         <div class="card border-0 p-3 mb-3 pe-none">  
             <div class="d-flex flex-row flex-wrap gap-2">
                 <img src="{{d.product.getImage}}" alt="{{d.product.name}}" width="100px" style="object-fit: contain;">
-                <div class="">
+                <div>
                     <p>Producto: {{d.product.name}}</p>
                     <p>Cantidad: {{d.quantity}}</p>
                     <p>Precio: ${{d.product.price | intcomma}}</p>
@@ -35,6 +35,7 @@
             <span class="filter-divider mb-3"></span>
             <p>Cantidad de Productos: {{order.get_cart_items}}</p>
             <p>Total de compra: ${{order.get_cart_total | intcomma}}</p>
+            <p>Fecha de pago: {{order.payment.date_paid}}</p>
             <p>Tarjeta: {% if order.payment.type == 'D'%}Debito{% elif order.payment.type == 'C' %}Credito{% else %}Transferencia{% endif %}</p>
         </div>
         <div class="card border-0 p-3">

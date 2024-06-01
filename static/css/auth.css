@@ -24,6 +24,18 @@ label::after {
   text-align: center;
 }
 
+#id_new_password1_helptext > ul {
+  margin: 0;
+  padding: 0;
+}
+#id_new_password1_helptext {
+  height: fit-content;
+}
+
+#id_new_password1_helptext > ul > li {
+  color: rgb(117, 0, 0);
+}
+
 #or::before,
 #or::after {
   position: absolute;

@@ -106,14 +106,6 @@
                 <i class='bx bx-group nav_icon'></i>
                 <span class="nav_name">Usuarios</span>
             </a>
-            <a href="{% url 'dash-transactions'%}" class="nav_link {% if request.path == '/accounts/transactions/' %} active {% endif %}">
-                <i class='bx bx-credit-card nav_icon'></i>
-                <span class="nav_name">Transacciones</span>
-            </a>
-            <a href="{% url 'dash-packages'%}" class="nav_link {% if request.path == '/accounts/packages/' %} active {% endif %}">
-              <i class='bx bxs-truck nav_icon'></i>
-              <span class="nav_name">Envios</span>
-            </a>
           </div>
         </div>
         <a href="{% url 'index'%}" class="nav_link">

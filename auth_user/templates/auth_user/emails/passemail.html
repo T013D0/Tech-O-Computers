@@ -1,0 +1,8 @@
+{% extends 'auth_user/emails/base.html'%} 
+{% block content %}
+<h1>Restablecimiento de Contraseña</h1>
+<p>Estimado/a usuario/a,</p>
+<p>Hemos recibido una solicitud para restablecer la contraseña de tu cuenta. Si has olvidado tu contraseña o deseas crear una nueva, por favor sigue los pasos a continuación para restablecerla:</p>
+<a href="{{ protocol }}://{{ domain }}{% url 'password_reset_confirm' uidb64=uid token=token %}" class="button">Restablecer Contraseña</a>
+<p>Si no has solicitado restablecer tu contraseña, ignora este mensaje. La seguridad de tu cuenta es muy importante para nosotros.</p>
+{% endblock %}

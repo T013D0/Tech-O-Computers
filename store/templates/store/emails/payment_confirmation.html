@@ -1,0 +1,28 @@
+{% extends 'auth_user/emails/base.html'%} 
+{% load humanize %}
+{% block content %}
+<h1>Confirmación de Pago</h1>
+<p>Estimado/a {{ user.first_name }} {{user.last_name}},</p>
+<p>Hemos recibido tu pago por un total de ${{ recipe.get_cart_total }}. A continuación, te proporcionamos los detalles de tu compra:</p>
+
+<table>
+    <thead>
+        <tr>
+            <th style="text-align: start;">Producto</th>
+            <th style="text-align: start;">Cantidad</th>
+            <th style="text-align: start;">Precio</th>
+        </tr>
+    </thead>
+    <tbody style="text-align: start;">
+        {% for item in items %}
+        <tr style="text-align: start;">
+            <td style="text-align: start;">{{ item.product.name }}</td>
+            <td style="text-align: start;">{{ item.quantity }}</td>
+            <td style="text-align: start;">${{ item.get_total | intcomma }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<p>Si tienes alguna pregunta o inquietud sobre tu compra, no dudes en contactar a nuestro equipo de soporte.</p>
+<p>Gracias por tu compra.</p>
+{% endblock content %}
