@@ -142,8 +142,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'josetoledoo6421@gmail.com'
-EMAIL_HOST_PASSWORD = 'onwy ytfn vzqt rjjr'
+EMAIL_HOST_USER = 'contactotechocomputers@gmail.com'
+EMAIL_HOST_PASSWORD = 'alld ceqx vsfc fuma'
 
 #404 500 error pages
 handler404 = 'core.views.error_404'

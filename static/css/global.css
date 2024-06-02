@@ -3,6 +3,32 @@
   font-family: "Open Sans", sans-serif;
   scroll-behavior: smooth;
 }
+.toaster {
+  position: fixed;
+  margin: 10px;
+  border-radius: 5px;
+  color: white;
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  font-size: 15px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  letter-spacing: 0.4px;
+  font-family: sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.toast-icon svg {
+  width: 30px;
+  height: 20px;
+  fill: #fff;
+}
+
+.toast-content {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
 body,
 #body {
   background-color: #f5f5f5;

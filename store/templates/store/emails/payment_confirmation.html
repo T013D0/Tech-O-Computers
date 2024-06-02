@@ -3,7 +3,7 @@
 {% block content %}
 <h1>Confirmación de Pago</h1>
 <p>Estimado/a {{ user.first_name }} {{user.last_name}},</p>
-<p>Hemos recibido tu pago por un total de ${{ recipe.get_cart_total }}. A continuación, te proporcionamos los detalles de tu compra:</p>
+<p>Hemos recibido tu pago por un total de ${{ recipe.get_cart_total | intcomma }}. A continuación, te proporcionamos los detalles de tu compra:</p>
 
 <table>
     <thead>
