@@ -70,7 +70,17 @@
           aria-atomic="true"
         >
           <div class="toast-header back-secondary text-white">
-            <strong class="me-auto">{{message.tags | title}}</strong>
+            <strong class="me-auto">
+              {% if message.tags == 'success' %}
+              <i class="fa-solid fs-6 text-white fa-check"></i>
+              {% elif message.tags == 'warning' %}
+              <i class="fa-solid fs-6 text-white fa-exclamation"></i>
+              {% elif message.tags == 'error' %}
+              <i class="fa-solid fs-6 text-white  fa-xmark"></i>
+              {% else %}
+              <i class="fa-solid fs-6 text-white  fa-info"></i>
+              {% endif %}
+              {{message.tags | title}}</strong>
             <button
               type="button"
               class="btn-close"
