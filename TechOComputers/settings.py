@@ -144,3 +144,8 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'josetoledoo6421@gmail.com'
 EMAIL_HOST_PASSWORD = 'onwy ytfn vzqt rjjr'
+
+#404 500 error pages
+handler404 = 'core.views.error_404'
+handler500 = 'core.views.error_500'
+handler403 = 'core.views.error_403'

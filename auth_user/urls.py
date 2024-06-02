@@ -6,7 +6,7 @@ urlpatterns = [
     path('accounts/login/', views.login, name='login'),
     path('accounts/register/', views.register, name='register'),
     path('accounts/logout/', views.logout_view, name="logout"),
-    path('reset_password/', auth_views.PasswordResetView.as_view(template_name='auth_user/resetpassword.html', html_email_template_name='auth_user/emails/passemail.html'), name='reset_password'),
+    path('reset_password/', auth_views.PasswordResetView.as_view(template_name='auth_user/resetpassword.html', html_email_template_name='auth_user/emails/passemail.html', extra_email_context={'title': 'Cambio de contraseña'}), name='reset_password'),
     path('reset_password_sent/', auth_views.PasswordResetDoneView.as_view(template_name='auth_user/passwordresetsend.html'), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='auth_user/passwordresetform.html'), name='password_reset_confirm'),
     path('reset_password_complete/', auth_views.PasswordResetCompleteView.as_view(template_name='auth_user/passwordresetcomplete.html'), name='password_reset_complete'),
@@ -31,5 +31,4 @@ urlpatterns = [
     path('administration/components/edit/<str:type>/<uuid:id>', views.editComponent, name='dash-editcomponent'),
     path('administration/components/remove/<str:type>/<uuid:id>', views.removeComponent, name='dash-removecomponent'),
     path('api/order/', views.editDeliveryStatus),
-
 ]
