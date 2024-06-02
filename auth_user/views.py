@@ -62,13 +62,14 @@ def register(request):
         return redirect('login')
     return render(request, 'auth_user/register.html')
 
+@login_required
 def logout_view(request):
     logout(request)
     messages.success(request, 'Sesión cerrada correctamente')
     return redirect('login')
 
 @login_required
-@permission_required('auth_user.view_user')
+@permission_required('auth_user.view_user', raise_exception=True)
 def dashboard(request):
     count_products = Product.objects.all().count()
     count_sell = Recipe.objects.filter(complete=True).all().count()
@@ -82,45 +83,45 @@ def dashboard(request):
     return render(request, 'auth_user/admin/dashboard.html', context)
 
 @login_required
-@permission_required('auth_user.view_user')
+@permission_required('auth_user.view_user', raise_exception=True)
 def packages(request):
     return render(request, 'auth_user/admin/packages.html')
 
 @login_required
-@permission_required('auth_user.view_user')
+@permission_required('auth_user.view_user', raise_exception=True)
 def transactions(request):
     return render(request, 'auth_user/admin/transactions.html')
 
 @login_required
-@permission_required('auth_user.view_user')
+@permission_required('auth_user.view_user', raise_exception=True)
 def brands(request):
     brands = Brand.objects.all()
     context = {'brands' : brands}
     return render(request, 'auth_user/admin/products/brands.html', context)
 
 @login_required
-@permission_required('auth_user.view_user')
+@permission_required('auth_user.view_user', raise_exception=True)
 def graphics(request):
     graphics = GraphicCard.objects.all()
     context = {'graphics' : graphics}
     return render(request, 'auth_user/admin/products/graphics.html', context)
 
 @login_required
-@permission_required('auth_user.view_user')
+@permission_required('auth_user.view_user', raise_exception=True)
 def processor(request):
     processor = Processor.objects.all()
     context = {'processor' : processor}
     return render(request, 'auth_user/admin/products/processor.html', context)
 
 @login_required
-@permission_required('auth_user.view_user')
+@permission_required('auth_user.view_user', raise_exception=True)
 def ram(request):
     ram = Ram.objects.all()
     context = {'ram' : ram}
     return render(request, 'auth_user/admin/products/ram.html', context)
 
 @login_required
-@permission_required('auth_user.view_user')
+@permission_required('auth_user.view_user', raise_exception=True)
 def screen(request):
     screen = Screen.objects.all()
     context = {'screen' : screen}
@@ -128,7 +129,7 @@ def screen(request):
 
 
 @login_required
-@permission_required('auth_user.view_user')
+@permission_required('auth_user.view_user', raise_exception=True)
 def storage(request):
     storage = Storage.objects.all()
     context = {'storage' : storage}
@@ -136,12 +137,12 @@ def storage(request):
 
 
 @login_required
-@permission_required('auth_user.view_user')
+@permission_required('auth_user.view_user', raise_exception=True)
 def components(request):
     return render(request, 'auth_user/admin/products/components.html')
 
 @login_required
-@permission_required('auth_user.view_user')
+@permission_required('auth_user.view_user', raise_exception=True)
 def addproduct(request):
 
     brands = Brand.objects.all()
@@ -229,7 +230,7 @@ def addproduct(request):
     return render(request, 'auth_user/admin/products/addproduct.html', context)
 
 @login_required
-@permission_required('auth_user.view_user')
+@permission_required('auth_user.view_user', raise_exception=True)
 def list_products(request):
     products = Product.objects.all()
     brands =  Brand.objects.all()
@@ -286,7 +287,7 @@ def list_products(request):
     return render(request, 'auth_user/admin/products/list.html', context)
 
 @login_required
-@permission_required('auth_user.view_user')
+@permission_required('auth_user.view_user', raise_exception=True)
 def users(request):
     user = User.objects.all()
     serialize_data = serialize('json', user, use_natural_foreign_keys=True)
@@ -296,21 +297,21 @@ def users(request):
     return render(request, 'auth_user/admin/users.html', context)
 
 @login_required
-@permission_required('auth_user.view_user')
+@permission_required('auth_user.view_user', raise_exception=True)
 def delivery(request):
     delivery = Delivery.objects.all()
     context = {'delivery' : delivery}
     return render(request, 'auth_user/admin/delivery.html', context)
 
 @login_required
-@permission_required('auth_user.view_user')
+@permission_required('auth_user.view_user', raise_exception=True)
 def orders(request):
     orders = Recipe.objects.filter(complete=True).all()
     context = {'orders' : orders}
     return render(request, 'auth_user/admin/orders.html', context)
 
 @login_required
-@permission_required('auth_user.view_user')
+@permission_required('auth_user.view_user', raise_exception=True)
 def orderdetail(request, id):
     order = Recipe.objects.get(id=id)
 
@@ -323,7 +324,7 @@ def orderdetail(request, id):
     return render(request, 'auth_user/admin/orderdetail.html', context)
 
 @login_required
-@permission_required('auth_user.view_user')
+@permission_required('auth_user.view_user', raise_exception=True)
 def editproduct(request, id):
     product = Product.objects.get(id=id)
 
@@ -425,7 +426,7 @@ def editproduct(request, id):
     return render(request, 'auth_user/admin/products/edit.html', context)
 
 @login_required
-@permission_required('auth_user.view_user')
+@permission_required('auth_user.view_user', raise_exception=True)
 def removeproduct(request, id):
     product = Product.objects.get(id=id)
     if product is None:
@@ -437,7 +438,7 @@ def removeproduct(request, id):
     return redirect('dash-list-products')
 
 @login_required
-@permission_required('auth_user.view_user')
+@permission_required('auth_user.view_user', raise_exception=True)
 def addcomponent(request, type):
     match (type):
         case "ram":
@@ -532,7 +533,7 @@ def addcomponent(request, type):
             return redirect('dash-components')
         
 @login_required
-@permission_required('auth_user.view_user')
+@permission_required('auth_user.view_user', raise_exception=True)
 def editComponent(request, type, id):
     match (type):
         case "ram":
@@ -652,7 +653,7 @@ def editDeliveryStatus(request):
     return HttpResponse({'message': 'Despacho actualizado correctamente'}, status=200)
         
 @login_required
-@permission_required('auth_user.view_user')
+@permission_required('auth_user.view_user', raise_exception=True)
 def removeComponent(request, type, id):
 
     match (type):

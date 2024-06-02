@@ -15,9 +15,12 @@
                         <input type="email" class="form-control border-0 border-bottom rounded-0 bg-transparent" name="email" id="email" placeholder="name@example.com" required>
                         <label for="email">Email address</label>
                     </div>
-                    <div class="form-floating mb-3">
+                    <div class="form-floating">
                         <input type="password" class="form-control border-0 border-bottom rounded-0 bg-transparent" name="password" id="password" placeholder="password" required>
                         <label for="password">Contraseña</label>
+                    </div>
+                    <div class="mb-3 text-end">
+                        <a class="color-secondary text-decoration-none" href="{% url 'reset_password' %}">Olvidaste tu contraseña?</a>
                     </div>
                     <button type="submit" class="btn btn-back w-100">Ingresa</button>
                     <div id="or">O</div>

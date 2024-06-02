@@ -27,3 +27,5 @@ urlpatterns = [
     path('shipping/', deliveryPost),
     path('webpay-plus-create/commitpay/', commit_pay, name='commit_pay'),
 ]
+
+handler404 = 'core.views.error_404'
