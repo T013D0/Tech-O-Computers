@@ -296,6 +296,17 @@ def users(request):
     context = {'usuarios' : user, "user_json": serialize_data}
     return render(request, 'auth_user/admin/users.html', context)
 
+
+
+@login_required
+@permission_required('auth_user.view_user', raise_exception=True)
+def userorders(request, id):
+    user = User.objects.get(rut=id)
+    orders = Recipe.objects.filter(complete=True, client=user ).all()
+    context = {'orders' : orders}
+    return render(request, 'auth_user/admin/ordersusers.html', context)
+
+
 @login_required
 @permission_required('auth_user.view_user', raise_exception=True)
 def delivery(request):

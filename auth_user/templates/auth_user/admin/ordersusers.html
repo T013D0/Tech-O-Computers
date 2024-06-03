@@ -1,0 +1,55 @@
+{% extends "auth_user/admin/template.html" %}
+{%load humanize%}
+{% block content %}
+<h5 class="product-header fw-bold fs-3">Ordenes</h5>
+<table class="table ">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Cliente</th>
+        <th scope="col">Fecha de la transacción</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+        
+
+    {% for u in orders %}
+   
+  <div class="modal fade" id="{{u.id}}modal" tabindex="-1" aria-labelledby="{{u.id}}modallabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="{{u.id}}modallabel">Detalle de la orden</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <h5 class="footer-header color-secondary">Boleta</h5>
+            <p>Cliente: {{u.client}}</p>
+            <p>Orden creada en: {{u.created_at}}</p>
+            <p>Estado: {% if u.payment.status == 'A' %} <span class="text-success">Aceptado</span> {% elif u.payment.status == 'R' %}<span class="text-danger">Rechazado</span> {% else %} <span class="text-warning">Pendiente</span> {% endif %}</p>
+            <span class="filter-divider mb-2"></span>
+            <h5 class="footer-header color-secondary">Resumen de la compra</h5>
+            <p>Cantidad de Productos: {{u.get_cart_items}}</p>
+            <p>Total de compra: ${{u.get_cart_total | intcomma}}</p>
+            
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <a href="{% url 'dash-detailorder' u.id%}" class="btn btn-secondary back-secondary">Ver mas</a>
+        </div>
+      </div>
+    </div>
+  </div>
+      <tr scope="row">
+        <td>{{ u.id }}</td>
+        <td>{{ u.client }}</td>
+        <td>{{ u.created_at }}</td>
+        <td><button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#{{u.id}}modal">
+            <i class='bx bx-dots-horizontal-rounded fs-3 color-secondary'></i>
+          </button></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endblock content %}
