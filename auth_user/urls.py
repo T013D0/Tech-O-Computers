@@ -16,6 +16,7 @@ urlpatterns = [
     path("administration/products/remove/<uuid:id>/", views.removeproduct, name="dash-removeproduct"),
     path('administration/orders/', views.orders, name='dash-orders'),
     path('administration/orders/<uuid:id>/', views.orderdetail, name='dash-detailorder'),
+    path('administration/ordersusers/<str:id>/', views.userorders, name='dash-ordersusers'),
     path('administration/packages/', views.packages, name='dash-packages'),
     path('administration/transactions/', views.transactions, name='dash-transactions'),
     path('administration/users/', views.users, name='dash-users'),
