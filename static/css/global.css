@@ -87,6 +87,12 @@ body,
   place-content: center;
 }
 
+#map {
+  width: 400px;
+  height: 300px;
+  border: 1px solid black;
+}
+
 .product-list-index {
   grid-gap: 16px;
   gap: 16px;
