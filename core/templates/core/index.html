@@ -1,4 +1,5 @@
-{% extends "core/template.html" %} {% load humanize%} {% load static%} {% block content %}
+{% extends "core/template.html" %} {% load humanize%} {% load static%} 
+{% block content %}
 <div class="container-fluid">
   <div
     id="carouselExampleIndicators"
@@ -71,17 +72,19 @@
   </div>
   <div class="d-flex flex-column align-items-center mt-5">
     <h3 class="border-b-primary color-primary">No te pierdas</h3>
-    <div class="product-list">
+    <div class="product-list-index">
       {% for product in top_prods %}
       <a class="card-product border-0" href="{% url 'details' product.id %}">
         <img
           src="{{product.getImage}}"
           class="card-img-top"
           alt="Pc Escritorio Asus"
-          style="height: 300px; object-fit: contain;"
+          style="height: 300px; object-fit: contain"
         />
         <div class="body-card">
-          <h5 class="card-title color-secondary fs-6 fw-bold">{{product.brand}}</h5>
+          <h5 class="card-title color-secondary fs-6 fw-bold">
+            {{product.brand}}
+          </h5>
           <p class="text-card text-secondary fs-sm">{{ product.name }}</p>
         </div>
         <div class="footer-card">
@@ -90,10 +93,8 @@
           </p>
         </div>
       </a>
-        {% endfor %}
-      </div>
+      {% endfor %}
     </div>
-
   </div>
 </div>
 {% endblock content%}
