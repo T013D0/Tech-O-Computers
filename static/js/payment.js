@@ -67,6 +67,11 @@ $(document).ready(() => {
     const postal_code = $("#zip").val();
     const comments = $("#comments").val();
 
+    if (amount <= 0) {
+      alert("El monto total debe ser mayor a 0.");
+      return;
+    }
+
     fetch("/shipping/", {
       method: "POST",
       headers: {

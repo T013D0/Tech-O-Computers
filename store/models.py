@@ -183,7 +183,7 @@ class Recipe(models.Model):
 class RecipeDetails(models.Model):
 
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
     quantity = models.IntegerField(default=0)
 
     def __str__(self):
