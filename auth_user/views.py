@@ -438,6 +438,35 @@ def editproduct(request, id):
 
 @login_required
 @permission_required('auth_user.view_user', raise_exception=True)
+def addbrand(request):
+
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        if Brand.objects.filter(name=name).exists():
+            messages.error(request, 'La marca ya se encuentra registrada')
+            return('addbrand')
+        
+        brand = Brand.objects.create(name=name)
+        brand.save()
+        messages.success(request, 'Marca registrada correctamente')
+        return redirect('dash-brands')
+    return render(request, 'auth_user/admin/products/components/addbrands.html')
+
+@login_required
+@permission_required('auth_user.view_user', raise_exception=True)
+def removebrand(request, id):
+
+    brand = Brand.objects.get(id=id)
+    if brand is None:
+        messages.error(request, 'La marca no existe')
+        return redirect('dash-brands')
+    
+    brand.delete()
+    messages.success(request, 'Marca eliminada correctamente')
+    return redirect('dash-brands')
+
+@login_required
+@permission_required('auth_user.view_user', raise_exception=True)
 def removeproduct(request, id):
     product = Product.objects.get(id=id)
     if product is None:

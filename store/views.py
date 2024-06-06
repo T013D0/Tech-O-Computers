@@ -135,6 +135,11 @@ def shipping(request):
     data = cart_data(request)
     items = data['items']
     recipe = data['recipe']
+
+    if items.count() == 0:
+        messages.error(request, 'No hay productos en el carrito')
+        return redirect('store')
+
     context = { "items": items, "recipe": recipe}
     return render(request, 'store/shipping.html', context)
 
@@ -188,6 +193,8 @@ def webpay_plus_create(request):
     tx = Transaction(WebpayOptions(IntegrationCommerceCodes.WEBPAY_PLUS, IntegrationApiKeys.WEBPAY))
     response = tx.create(buy_order, session_id, amount, return_url)
     return JsonResponse({'url': response['url'], 'token': response['token']}) 
+
+@login_required
 
 @csrf_exempt 
 def commit_pay(request):
