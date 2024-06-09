@@ -8,6 +8,9 @@ $(document).ready(function () {
 
     $("#state").val(region);
     $("#city").val(city);
+    $(".input-disabled").prop("disabled", false);
+    $("#shippingForm").show();
+    $(".shipping-loader-container").remove();
     initMap({ latitude: data.latitude, longitude: data.longitude });
   });
 
@@ -19,7 +22,7 @@ $(document).ready(function () {
       console.log(data);
       initMap({ latitude: data.latitude, longitude: data.longitude });
     });
-  });*/   
+  });*/
 });
 
 let map;
@@ -29,6 +32,6 @@ async function initMap({ latitude, longitude } = {}) {
 
   map = new Map(document.getElementById("map"), {
     center: { lat: latitude, lng: longitude },
-    zoom: 12,
+    zoom: 15,
   });
 }

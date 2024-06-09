@@ -37,6 +37,17 @@
         return cookieValue;
       }
       const csrftoken = getCookie("csrftoken");
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const loader = document.getElementById("loader");
+        const loaderContainer = document.querySelector(".loader-container");
+        const content = document.getElementById("content");
+
+        setTimeout(() => {
+          loaderContainer.style.display = "none";
+          content.style.display = "block";
+        }, 500);
+      });
     </script>
     {% block sources %} {% endblock sources %}
   </head>
@@ -71,11 +82,11 @@
             <span class="nav_logo-name">Tech-o-Computers</span>
           </a>
           <div class="nav_list">
-            <a href="{% url 'dashboard'%}" class="nav_link {% if request.path == '/accounts/dashboard/' %} active {% endif %}">
+            <a href="{% url 'dashboard'%}" class="nav_link {% if request.path == '/administration/dashboard/' %} active {% endif %}">
                 <i class='bx bxs-dashboard nav_icon'></i>
                 <span class="nav_name">Dashboard</span>
             </a>
-            <a data-bs-toggle="collapse" href="#collapseOrders" role="button" aria-expanded="false" aria-controls="collapseOrders" class="nav_link {% if request.path == '/accounts/products/' %} active {% endif %}">
+            <a data-bs-toggle="collapse" href="#collapseOrders" role="button" aria-expanded="false" aria-controls="collapseOrders" class="nav_link {% if request.path == '/administration/products/' or request.path == '/administration/brands/' or request.path == '/administration/components/' %} active {% endif %}">
               <i class='bx bx-package nav_icon'></i>
                 <span class="nav_name">Productos</span>
             </a>
@@ -98,11 +109,11 @@
               </a>
             </div>
             
-            <a href="{% url 'dash-orders'%}" class="nav_link {% if request.path == '/accounts/orders/' %} active {% endif %}">
+            <a href="{% url 'dash-orders'%}" class="nav_link {% if request.path == '/administration/orders/' %} active {% endif %}">
               <i class='bx bx-cart nav_icon'></i>
               <span class="nav_name">Ordenes</span>
           </a>
-            <a href="{% url 'dash-users'%}" class="nav_link {% if request.path == '/accounts/users/' %} active {% endif %}">
+            <a href="{% url 'dash-users'%}" class="nav_link {% if request.path == '/administration/users/' %} active {% endif %}">
                 <i class='bx bx-group nav_icon'></i>
                 <span class="nav_name">Usuarios</span>
             </a>
@@ -115,8 +126,20 @@
       </nav>
     </div>
     <!--Container Main start-->
+    <div class="loader-container">
+      <div class="typing-indicator" id="loader">
+        <div class="typing-circle"></div>
+        <div class="typing-circle"></div>
+        <div class="typing-circle"></div>
+        <div class="typing-shadow"></div>
+        <div class="typing-shadow"></div>
+        <div class="typing-shadow"></div>
+      </div>
+    </div>
+    <div id="content" style="display: none;">
     <div id="body" class="height-100">
       {% block content %} {% endblock content %}
+    </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>
