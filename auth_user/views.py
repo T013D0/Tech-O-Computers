@@ -303,7 +303,7 @@ def users(request):
 def userorders(request, id):
     user = User.objects.get(rut=id)
     orders = Recipe.objects.filter(complete=True, client=user ).all()
-    context = {'orders' : orders}
+    context = {'orders' : orders, 'user': user}
     return render(request, 'auth_user/admin/ordersusers.html', context)
 
 

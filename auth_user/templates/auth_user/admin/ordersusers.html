@@ -1,7 +1,42 @@
 {% extends "auth_user/admin/template.html" %}
+{% load static %}
 {%load humanize%}
+{% block sources%}
+<link rel="stylesheet" href="{% static 'css/auth.css'%}">
+{% endblock sources%}
 {% block content %}
-<h5 class="product-header fw-bold fs-3">Ordenes</h5>
+<div class="row">
+  <div class="col-md-7">
+    <h5 class="product-header fw-bold fs-3">Ordenes de {{user.get_full_name}}</h5>
+  </div>
+  <div class="col-md-5">
+    <div class="form-floating mb-3">
+      <input type="text" class="form-control border-0 border-bottom rounded-0 bg-transparent" name="search" id="search" placeholder="name" required onkeyup="searchOrder()">
+      <label for="name">Buscar</label>
+  </div>
+  </div>
+</div>
+<script>
+  function searchOrder(){
+    let txtValue;
+    const input = document.getElementById("search");
+    const filter = input.value.toUpperCase();
+    const table = document.getElementById("order-table");
+    const tr = table.getElementsByTagName("tr");
+    for (let i = 0; i < tr.length; i++) {
+      const td = tr[i].getElementsByTagName("td")[0];
+      if (td) {
+        txtValue = td.textContent || td.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }
+    }
+  
+  }
+</script>
 <table class="table ">
     <thead>
       <tr>
@@ -11,7 +46,7 @@
         <th scope="col">Acciones</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="order-table">
         
 
     {% for u in orders %}

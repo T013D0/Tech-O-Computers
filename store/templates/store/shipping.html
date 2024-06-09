@@ -13,9 +13,19 @@
   <div class="row">
     <div class="col-md-7">
         <div class="footer-header">Shipping</div>
-        <div class="card border-0">
-          <div class="card-body">
-            <form action="" id="shippingForm">
+        <div class="card border-0 shipping-container" style="position: relative;">
+          <div class="shipping-loader-container">
+            <div class="typing-indicator shipping-loader" id="loader">
+              <div class="typing-circle"></div>
+              <div class="typing-circle"></div>
+              <div class="typing-circle"></div>
+              <div class="typing-shadow"></div>
+              <div class="typing-shadow"></div>
+              <div class="typing-shadow"></div>
+            </div>
+          </div>
+          <div class="card-body" style="height: 500px;">
+            <form action="" id="shippingForm" style="display: none;">
               {% csrf_token %}
               <div class="form-floating mb-3">
                   <input
@@ -23,25 +33,25 @@
                     name="address"
                     id="address"
                     placeholder="address"
-                    class="form-control border-0 border-bottom rounded-0 bg-transparent" required
+                    class="form-control border-0 border-bottom rounded-0 bg-transparent input-disabled" required disabled
                   />
                 <label for="address">Direccion</label>
               </div>
               <div class="form-floating mb-3">
-                  <input type="text" name="state" id="state" class="form-control border-0 border-bottom rounded-0 bg-transparent" placeholder="Region" required/>
+                  <input type="text" name="state" id="state" class="form-control border-0 border-bottom rounded-0 bg-transparent input-disabled" placeholder="Region" required disabled/>
                 <label for="state">Region</label>
               </div>
               <div class="form-floating mb-3">
-                  <input type="text" name="city" id="city" class="form-control border-0 border-bottom rounded-0 bg-transparent" placeholder="ciudad" required/>
+                  <input type="text" name="city" id="city" class="form-control border-0 border-bottom rounded-0 bg-transparent input-disabled" placeholder="ciudad" required disabled/>
                 <label for="city">Ciudad</label>
               </div>
               <div class="form-floating mb-3">
-                  <input type="text" name="zip" id="zip" class="form-control border-0 border-bottom rounded-0 bg-transparent" placeholder="Codigo postal" required/>
+                  <input type="text" name="zip" id="zip" class="form-control border-0 border-bottom rounded-0 bg-transparent input-disabled" placeholder="Codigo postal" required disabled/>
                 <label for="zip">Codigo postal</label>
               </div>
               <div class="mb-3">
                   <label for="zip">Comentarios</label>
-                    <textarea name="comments" id="comments" class="form-control border-0 border-bottom rounded-0 bg-transparent" style="resize: none;" required></textarea>
+                    <textarea name="comments" id="comments" class="form-control border-0 border-bottom rounded-0 bg-transparent input-disabled" style="resize: none;" required disabled></textarea>
             </div>
               <button type="submit" id="shipping-btn" class="btn btn-back mt-4 w-100">Pagar</button>
             </form>
