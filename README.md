@@ -1,10 +1,6 @@
 <a name="readme-top"></a>
 
 <div align="center">
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
 <a href="https://github.com/T013D0/Tech-O-Computers">
   <img width="300px" style="filter: drop-shadow(2px 2px 5px black)" src="https://i.imgur.com/52xkYdd.png" alt="Logo" width="800" />
 </a>
