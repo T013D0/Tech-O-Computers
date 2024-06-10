@@ -9,8 +9,8 @@ urlpatterns = [
     path('whoweare', views.whoweare, name='whoweare'),
     path('terms', views.terms, name='terms'),
     path('ppolicy', views.ppolicy, name='ppolicy'),
-    path('userdetails/<str:id>/', views.userdetails, name='userdetails'),
-    path('userhistory/<str:id>/', views.userhistory, name='userhistory'),
+    path('my-orders/', views.userdetails, name='userdetails'),
+    path('my-orders/<uuid:id>/', views.userhistory, name='userhistory'),
     
 
 

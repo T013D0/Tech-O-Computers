@@ -158,7 +158,7 @@
                 </button>
                 <ul class="dropdown-menu">
                   
-                  <li><a class="dropdown-item" href="{% url 'userdetails' user.rut %}">Mis compras</a></li>
+                  <li><a class="dropdown-item" href="{% url 'userdetails' %}">Mis compras</a></li>
                   
                   {% if user.is_staff %}
                   <li><a class="dropdown-item" href="{% url 'dashboard'%}">Administracion</a></li>
