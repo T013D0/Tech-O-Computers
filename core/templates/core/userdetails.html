@@ -1,0 +1,90 @@
+{% extends 'core/template.html' %}
+{% load static %}
+{%load humanize%}
+{% block sources%}
+<link rel="stylesheet" href="{% static 'css/auth.css'%}">
+{% endblock sources%}
+{% block content %}
+<div class="row">
+  <div class="col-md-7">
+    <h5 class="product-header fw-bold fs-3">Ordenes de {{user.get_full_name}}</h5>
+  </div>
+  <div class="col-md-5">
+    <div class="form-floating mb-3">
+      <input type="text" class="form-control border-0 border-bottom rounded-0 bg-transparent" name="search" id="search" placeholder="name" required onkeyup="searchOrder()">
+      <label for="name">Buscar</label>
+  </div>
+  </div>
+</div>
+<script>
+  function searchOrder(){
+    let txtValue;
+    const input = document.getElementById("search");
+    const filter = input.value.toUpperCase();
+    const table = document.getElementById("order-table");
+    const tr = table.getElementsByTagName("tr");
+    for (let i = 0; i < tr.length; i++) {
+      const td = tr[i].getElementsByTagName("td")[0];
+      if (td) {
+        txtValue = td.textContent || td.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }
+    }
+  
+  }
+</script>
+<table class="table ">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Cliente</th>
+        <th scope="col">Fecha de la transacción</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody id="order-table">
+        
+
+    {% for u in orders %}
+   
+  <div class="modal fade" id="{{u.id}}modal" tabindex="-1" aria-labelledby="{{u.id}}modallabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="{{u.id}}modallabel">Detalle de la orden</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <h5 class="footer-header color-secondary">Boleta</h5>
+            <p>Cliente: {{u.client}}</p>
+            <p>Orden creada en: {{u.created_at}}</p>
+            <p>Estado: {% if u.payment.status == 'A' %} <span class="text-success">Aceptado</span> {% elif u.payment.status == 'R' %}<span class="text-danger">Rechazado</span> {% else %} <span class="text-warning">Pendiente</span> {% endif %}</p>
+            <span class="filter-divider mb-2"></span>
+            <h5 class="footer-header color-secondary">Resumen de la compra</h5>
+            <p>Cantidad de Productos: {{u.get_cart_items}}</p>
+            <p>Total de compra: ${{u.get_cart_total | intcomma}}</p>
+            
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <a href="{% url 'userhistory' u.id%}" class="btn btn-secondary back-secondary">Ver mas</a>
+        </div>
+      </div>
+    </div>
+  </div>
+      <tr scope="row">
+        <td>{{ u.id }}</td>
+        <td>{{ u.client }}</td>
+        <td>{{ u.created_at }}</td>
+        <td><button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#{{u.id}}modal">
+          <i class='bx bx-dots-horizontal-rounded fs-3 color-secondary'></i>
+        </button></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endblock content %}

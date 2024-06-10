@@ -1,5 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from store.models import Product
+from auth_user.models import User
+from store.models import Product, Notebook, Computer, AllInOne, Brand, Recipe, RecipeDetails, Delivery, Payment
+from django.contrib import messages
+
+
 
 
 # Create your views here.
@@ -28,6 +33,23 @@ def whoweare(request):
 
 def error_404(request, exception):
     return render(request, 'core/404.html', status=404)
+
+def userdetails(request, id):
+    user = User.objects.get(rut=id)
+    orders = Recipe.objects.filter(complete=True, client=user ).all()
+    context = {'orders' : orders, 'user': user}
+    return render(request, 'core/userdetails.html', context)
+
+def userhistory(request, id):
+    order = Recipe.objects.get(id=id)
+
+    if order is None:
+        messages.error(request, 'La orden no existe')
+        return redirect('userdetails')
+    
+    details = RecipeDetails.objects.filter(recipe=order).all()
+    context = {'order' : order, 'details': details}
+    return render(request, 'core/userhistory.html', context)
 
 def error_500(request):
     return render(request, 'core/500.html', status=500)
