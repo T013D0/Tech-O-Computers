@@ -3,6 +3,8 @@ from store.models import Product
 from auth_user.models import User
 from store.models import Product, Notebook, Computer, AllInOne, Brand, Recipe, RecipeDetails, Delivery, Payment
 from django.contrib import messages
+from django.core.exceptions import PermissionDenied
+from django.contrib.auth.decorators import login_required
 
 
 
@@ -34,18 +36,32 @@ def whoweare(request):
 def error_404(request, exception):
     return render(request, 'core/404.html', status=404)
 
-def userdetails(request, id):
-    user = User.objects.get(rut=id)
-    orders = Recipe.objects.filter(complete=True, client=user ).all()
-    context = {'orders' : orders, 'user': user}
+@login_required
+def userdetails(request):
+    user = request.user
+    orders = Recipe.objects.filter(complete=True, client=user).all()
+
+    orderByDate = request.GET.get('orderByDate')
+    if orderByDate is not None:
+        if orderByDate == 'asc':
+            orders = orders.order_by('created_at')
+        elif orderByDate == 'desc':
+            orders = orders.order_by('-created_at')
+
+    context = {'user_orders': orders, 'user': user}
     return render(request, 'core/userdetails.html', context)
 
+@login_required
 def userhistory(request, id):
+
     order = Recipe.objects.get(id=id)
 
     if order is None:
         messages.error(request, 'La orden no existe')
         return redirect('userdetails')
+    
+    if request.user != order.client:
+        raise PermissionDenied
     
     details = RecipeDetails.objects.filter(recipe=order).all()
     context = {'order' : order, 'details': details}

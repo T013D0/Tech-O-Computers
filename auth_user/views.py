@@ -290,10 +290,8 @@ def list_products(request):
 @permission_required('auth_user.view_user', raise_exception=True)
 def users(request):
     user = User.objects.all()
-    serialize_data = serialize('json', user, use_natural_foreign_keys=True)
-    serialize_data = json.loads(serialize_data)
 
-    context = {'usuarios' : user, "user_json": serialize_data}
+    context = {'usuarios' : user}
     return render(request, 'auth_user/admin/users.html', context)
 
 
@@ -303,6 +301,14 @@ def users(request):
 def userorders(request, id):
     user = User.objects.get(rut=id)
     orders = Recipe.objects.filter(complete=True, client=user ).all()
+
+    orderByDate = request.GET.get('orderByDate')
+    if orderByDate is not None:
+        if orderByDate == 'asc':
+            orders = orders.order_by('created_at')
+        elif orderByDate == 'desc':
+            orders = orders.order_by('-created_at')
+
     context = {'orders' : orders, 'user': user}
     return render(request, 'auth_user/admin/ordersusers.html', context)
 
@@ -318,6 +324,14 @@ def delivery(request):
 @permission_required('auth_user.view_user', raise_exception=True)
 def orders(request):
     orders = Recipe.objects.filter(complete=True).all()
+
+    orderByDate = request.GET.get('orderByDate')
+    if orderByDate is not None:
+        if orderByDate == 'asc':
+            orders = orders.order_by('created_at')
+        elif orderByDate == 'desc':
+            orders = orders.order_by('-created_at')
+            
     context = {'orders' : orders}
     return render(request, 'auth_user/admin/orders.html', context)
 

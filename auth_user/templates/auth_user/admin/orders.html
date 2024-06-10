@@ -42,7 +42,14 @@
       <tr>
         <th scope="col">ID</th>
         <th scope="col">Cliente</th>
-        <th scope="col">Fecha de la transacción</th>
+        <th scope="col">          
+          <form action="" method="get" id="orderForm">
+          <select name="orderByDate" id="orderByDate" class="border-0 bg-transparent fw-bold">
+            <option selected >Fecha de transacción</option>
+            <option value="asc" onclick="$('#orderForm').submit()">Mas antiguas primero</option>
+            <option value="desc" onclick="$('#orderForm').submit()">Mas nuevas primero</option>
+          </select>
+        </form></th>
         <th scope="col">Acciones</th>
       </tr>
     </thead>
