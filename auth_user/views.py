@@ -294,6 +294,46 @@ def users(request):
     context = {'usuarios' : user}
     return render(request, 'auth_user/admin/users.html', context)
 
+@login_required
+@permission_required('auth_user.view_user', raise_exception=True)
+def removeuser(request, id):
+
+    user = User.objects.get(rut=id)
+    if user is None:
+        messages.error(request, 'El usuario no existe')
+        return redirect('dash-users')
+    
+    user.delete()
+    messages.success(request, 'Usuario eliminado correctamente')
+    return redirect('dash-users')
+
+
+@login_required
+@permission_required('auth_user.change_user', raise_exception=True)
+def edituser(request, id):
+        user = User.objects.get(rut=id)
+
+        if user is None:
+            messages.error(request, 'Usuario no encontrado')
+            return redirect('dash-users')
+
+        if request.method == 'POST':
+            # Retrieve the form data
+            username = request.POST.get('username')
+            email = request.POST.get('email')
+            first_name = request.POST.get('first_name')
+            last_name = request.POST.get('last_name')
+            # Update the user object
+            user.username = username
+            user.email = email
+            user.first_name = first_name
+            user.last_name = last_name
+            user.save()
+            messages.success(request, 'Usuario actualizado correctamente')
+            return redirect('dash-users')
+
+        context = {'user': user}
+        return render(request, 'auth_user/admin/editusers.html', context)
 
 
 @login_required
