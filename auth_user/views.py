@@ -319,12 +319,12 @@ def edituser(request, id):
 
         if request.method == 'POST':
             # Retrieve the form data
-            username = request.POST.get('username')
+            rut = request.POST.get('rut')
             email = request.POST.get('email')
             first_name = request.POST.get('first_name')
             last_name = request.POST.get('last_name')
             # Update the user object
-            user.username = username
+            user.rut = rut
             user.email = email
             user.first_name = first_name
             user.last_name = last_name
