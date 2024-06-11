@@ -46,27 +46,44 @@
       </tr>
     </thead>
     <tbody id="user-table">
-
-
-    {% for u in usuarios %}
-      <tr scope="row">
-        <td>{{ u.email }}</td>
-        <td>{{ u.rut }}</td>
-        <td>{{ u.first_name }}</td>
-        <td>{{ u.last_name }}</td>
-        <td>
-          <div class="dropdown">
-            <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class='bx bx-dots-horizontal-rounded fs-3 color-secondary'></i>
-            </button>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Editar</a></li>
-              <li><a class="dropdown-item" href="{% url 'dash-ordersusers' u.rut %}">Ver Pedidos</a></li>
-            </ul>
+      {% for u in usuarios %}
+      <div class="modal fade" id="deleteModal{{u.rut}}" tabindex="-1" aria-labelledby="deleteModal{{u.rut}}Label" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="deleteModal{{u.rut}}Label">Estas seguro?</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <p>Estas seguro que deseas eliminar el usuario {{u.name}}?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <a href="{% url 'dash-removeuser' u.rut %}" class="btn btn-danger">Eliminar</a>
+            </div>
           </div>
-        </td>
-      </tr>
-    {% endfor %}
-    </tbody>
+        </div>
+      </div>
+        <tr scope="row">
+          <td>{{ u.email }}</td>
+          <td>{{ u.rut }}</td>
+          <td>{{ u.first_name }}</td>
+          <td>{{ u.last_name }}</td>
+          <td>
+            <div class="dropdown">
+              <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class='bx bx-dots-horizontal-rounded fs-3 color-secondary'></i>
+              </button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{% url 'dash-ordersusers' u.rut %}">Ver Pedidos</a></li>
+                <li><a class="dropdown-item" href="{% url 'dash-edituser' u.rut %}">Editar</a></li>
+                <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deleteModal{{u.rut}}">Eliminar</a></li>
+              </ul>
+            </div>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+
   </table>
 {% endblock content %}
