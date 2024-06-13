@@ -290,12 +290,50 @@ def list_products(request):
 @permission_required('auth_user.view_user', raise_exception=True)
 def users(request):
     user = User.objects.all()
-    serialize_data = serialize('json', user, use_natural_foreign_keys=True)
-    serialize_data = json.loads(serialize_data)
 
-    context = {'usuarios' : user, "user_json": serialize_data}
+    context = {'usuarios' : user}
     return render(request, 'auth_user/admin/users.html', context)
 
+@login_required
+@permission_required('auth_user.view_user', raise_exception=True)
+def removeuser(request, id):
+
+    user = User.objects.get(rut=id)
+    if user is None:
+        messages.error(request, 'El usuario no existe')
+        return redirect('dash-users')
+    
+    user.delete()
+    messages.success(request, 'Usuario eliminado correctamente')
+    return redirect('dash-users')
+
+
+@login_required
+@permission_required('auth_user.change_user', raise_exception=True)
+def edituser(request, id):
+        user = User.objects.get(rut=id)
+
+        if user is None:
+            messages.error(request, 'Usuario no encontrado')
+            return redirect('dash-users')
+
+        if request.method == 'POST':
+            # Retrieve the form data
+            username = request.POST.get('username')
+            email = request.POST.get('email')
+            first_name = request.POST.get('first_name')
+            last_name = request.POST.get('last_name')
+            # Update the user object
+            user.username = username
+            user.email = email
+            user.first_name = first_name
+            user.last_name = last_name
+            user.save()
+            messages.success(request, 'Usuario actualizado correctamente')
+            return redirect('dash-users')
+
+        context = {'user': user}
+        return render(request, 'auth_user/admin/editusers.html', context)
 
 
 @login_required
@@ -303,6 +341,14 @@ def users(request):
 def userorders(request, id):
     user = User.objects.get(rut=id)
     orders = Recipe.objects.filter(complete=True, client=user ).all()
+
+    orderByDate = request.GET.get('orderByDate')
+    if orderByDate is not None:
+        if orderByDate == 'asc':
+            orders = orders.order_by('created_at')
+        elif orderByDate == 'desc':
+            orders = orders.order_by('-created_at')
+
     context = {'orders' : orders, 'user': user}
     return render(request, 'auth_user/admin/ordersusers.html', context)
 
@@ -318,6 +364,14 @@ def delivery(request):
 @permission_required('auth_user.view_user', raise_exception=True)
 def orders(request):
     orders = Recipe.objects.filter(complete=True).all()
+
+    orderByDate = request.GET.get('orderByDate')
+    if orderByDate is not None:
+        if orderByDate == 'asc':
+            orders = orders.order_by('created_at')
+        elif orderByDate == 'desc':
+            orders = orders.order_by('-created_at')
+            
     context = {'orders' : orders}
     return render(request, 'auth_user/admin/orders.html', context)
 

@@ -33,5 +33,10 @@ urlpatterns = [
     path('administration/components/add/<str:type>', views.addcomponent, name='dash-addcomponent'),
     path('administration/components/edit/<str:type>/<uuid:id>', views.editComponent, name='dash-editcomponent'),
     path('administration/components/remove/<str:type>/<uuid:id>', views.removeComponent, name='dash-removecomponent'),
+    path("administration/users/remove/<str:id>/", views.removeuser, name="dash-removeuser"),
+    path("administration/editusers/<str:id>/", views.edituser, name="dash-edituser"),
+    
+
+
     path('api/order/', views.editDeliveryStatus),
 ]
