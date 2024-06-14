@@ -35,7 +35,7 @@
           <h6 class="filter-header">Marca</h6>
           <div class="filter-body">
             {% for brand in brands%}
-            <a class="text-decoration-none text-secondary" href="?brand={{brand.name}}">
+            <a class="text-decoration-none text-secondary brand-list" href="?brand={{brand.name}}">
               {{brand.name}}
             </a>
             {% endfor %}
@@ -61,7 +61,7 @@
         <h6 class="filter-header">Marca</h6>
         <div class="filter-body">
         {% for brand in brands%}
-        <a class="text-decoration-none text-secondary" href="?brand={{brand.name}}">
+        <a class="text-decoration-none text-secondary brand-list" href="?brand={{brand.name}}">
           {{brand.name}}
         </a>
         {% endfor %}
@@ -80,7 +80,7 @@
     </div>
   </div>
   <div class="col-xs-12 col-sm-9 col-lg-10">
-    <div class="product-list">
+    <div class="product-list overflow-y-hidden">
       {% for product in products %}
       <a class="card-product border-0" href="{% url 'details' product.id %}">
         <img
