@@ -56,6 +56,12 @@ body,
 .back-secondary {
   background-color: #6226d9;
 }
+.b-secondary {
+  border-color: #6226d9 !important;
+}
+.b-primary {
+  border-color: #441b9b !important;
+}
 .btn.back-secondary {
   transition: all 250ms ease-in-out;
 }
