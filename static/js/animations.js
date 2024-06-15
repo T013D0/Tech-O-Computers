@@ -1,8 +1,6 @@
 $(document).ready(() => {
   const $cards = [...$(".card-product")];
 
-  console.log($cards);
-
   gsap.from($cards, {
     opacity: 0,
     y: 20,
