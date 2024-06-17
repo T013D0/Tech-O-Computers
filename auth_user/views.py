@@ -6,14 +6,52 @@ from django.core.paginator import Paginator
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.decorators import login_required, permission_required
 from store.models import Product, Notebook, Computer, AllInOne, Brand, Recipe, RecipeDetails, Delivery, Payment
+from django.contrib.sites.shortcuts import get_current_site
 from django.db.models import Sum, F, IntegerField
 from django.views.decorators.http import require_POST
 from django.http import HttpResponse
 from django.contrib.auth.forms import PasswordResetForm
+from .tokens import account_activation_token
 from django.http import JsonResponse
 from django.core.serializers import serialize
 import json
 import json
+from django.core.mail import send_mail
+from django.conf import settings
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
+from django.contrib.auth import get_user_model
+
+def activate(request, uidb64, token):
+    User = get_user_model()
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except:
+        user = None
+
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+
+        messages.success(request, 'Tu cuenta fue verificada ya puedes iniciar sesion')
+        return redirect('login')
+    else:
+        messages.error(request, 'Link de activacion invalido!')
+
+    
+    return redirect('index')
+
+def emailActivation(request, user, to_email):
+    #send email
+    subject = 'Completa tu registro'
+    message = 'Confirma tu registro para acceder a tu cuenta'
+    email_template_name = 'auth_user/emails/registration.html'
+    from_email = settings.EMAIL_HOST_USER
+    to_email = to_email
+    
+    send_mail(subject, message, html_message=render(request, email_template_name, {'uid': urlsafe_base64_encode(force_bytes(user.pk)), 'token': account_activation_token.make_token(user), 'domain': get_current_site(request).domain, 'user': user.get_full_name, 'protocol': 'https' if request.is_secure() else 'http'}).content.decode('utf-8'), recipient_list=[to_email], from_email=from_email, fail_silently=False)
+    messages.success(request, 'Se envio un correo para que confirmes tu cuenta, recuerda verificar tu carpeta de spam')
 
 # Create your views here.
 def login(request):
@@ -54,11 +92,12 @@ def register(request):
         
         if User.objects.filter(email=email).exists():
             messages.error(request, 'El email ya se encuentra registrado')
-            return render(request, 'auth_user/register.html')
+            return render(request, 'auth_user/register.html')   
         
         user = User.objects.create_user(first_name=first_name, last_name=last_name, rut=rut, email=email, password=password)
+        user.is_active = False
         user.save()
-        messages.success(request, 'Usuario registrado correctamente')
+        emailActivation(request, user, email)
         return redirect('login')
     return render(request, 'auth_user/register.html')
 
