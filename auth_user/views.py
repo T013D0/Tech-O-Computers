@@ -6,10 +6,12 @@ from django.core.paginator import Paginator
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.decorators import login_required, permission_required
 from store.models import Product, Notebook, Computer, AllInOne, Brand, Recipe, RecipeDetails, Delivery, Payment
+from django.contrib.sites.shortcuts import get_current_site
 from django.db.models import Sum, F, IntegerField
 from django.views.decorators.http import require_POST
 from django.http import HttpResponse
 from django.contrib.auth.forms import PasswordResetForm
+from .tokens import account_activation_token
 from django.http import JsonResponse
 from django.core.serializers import serialize
 from .tokens import account_activation_token
@@ -38,8 +40,6 @@ def activate(request, uidb64, token):
         return redirect('login')
     else:
         messages.error(request, 'Link de activacion invalido!')
-
-
     return redirect('index')
 
 def emailActivation(request, user, to_email):
@@ -48,7 +48,6 @@ def emailActivation(request, user, to_email):
     message = 'Confirma tu registro para acceder a tu cuenta'
     email_template_name = 'auth_user/emails/registration.html'
     from_email = settings.EMAIL_HOST_USER
-
     send_mail(subject, message, html_message=render(request, email_template_name, {'uid': urlsafe_base64_encode(force_bytes(user.pk)), 'token': account_activation_token.make_token(user), 'domain': get_current_site(request).domain, 'user': user.get_full_name, 'protocol': 'https' if request.is_secure() else 'http'}).content.decode('utf-8'), recipient_list=[to_email], from_email=from_email, fail_silently=False)
     messages.success(request, 'Se envio un correo para que confirmes tu cuenta, recuerda verificar tu carpeta de spam')
 
@@ -88,7 +87,6 @@ def register(request):
             emailActivation(request, user, form.cleaned_data.get('email'))
             return redirect('login')
         else:
-
             if form.errors.get('rut') is not None:
                 messages.error(request, 'El rut ya se encuentra registrado')
             elif form.errors.get('email') is not None:
@@ -101,7 +99,7 @@ def register(request):
                 messages.error(request, 'El apellido es requerido')
             else:
                 messages.error(request, 'Error al registrar el usuario')
-            return render(request, 'auth_user/register.html')
+            return redirect('register')
         
     context = {'form': RegisterForm()}
     return render(request, 'auth_user/register.html', context)
