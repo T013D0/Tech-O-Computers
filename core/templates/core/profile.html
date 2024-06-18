@@ -1,0 +1,97 @@
+{% extends "core/template.html" %}
+{% load static %}
+{% load humanize %}
+{% block sources %}
+<link rel="stylesheet" href="{% static 'css/auth.css'%}">
+{% endblock sources %}
+{% block content %}
+<div class="row my-4 px-4">
+    <div class="col-md-4">
+        <div class="card border-0 p-2">
+            <h1 class="product-header px-2"> {{user.get_full_name | title}}</h1>
+            <div class="card-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control border-0 border-bottom rounded-0 bg-transparent" name="rut" id="rut" placeholder="rut" value="{{user.rut}}" required disabled readonly>
+                        <label for="rut">Rut</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control border-0 border-bottom rounded-0 bg-transparent" name="email" id="email" placeholder="name@example.com" value="{{user.email}}" required>
+                        <label for="email">Email</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control border-0 border-bottom rounded-0 bg-transparent" name="first_name" id="first_name" placeholder="nombre" value="{{user.first_name}}" required>
+                        <label for="first_name">Nombre</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control border-0 border-bottom rounded-0 bg-transparent" name="last_name" id="last_name" placeholder="nombre" value="{{user.last_name}}" required>
+                        <label for="last_name">Apellido</label>
+                    </div>
+                    <button type="submit" class="btn btn-border w-100">Actualizar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <table class="table ">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Cliente</th>
+                <th scope="col">
+                  <form action="" method="get" id="orderForm">
+                    <select name="orderByDate" id="orderByDate" class="border-0 bg-transparent fw-bold">
+                      <option selected >Fecha de transacción</option>
+                      <option value="asc" onclick="$('#orderForm').submit()">Mas antiguas primero</option>
+                      <option value="desc" onclick="$('#orderForm').submit()">Mas nuevas primero</option>
+                    </select>
+                  </form>
+                </th>
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="order-table">
+                
+        
+            {% for u in last_recipes %}
+           
+          <div class="modal fade" id="{{u.id}}modal" tabindex="-1" aria-labelledby="{{u.id}}modallabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="{{u.id}}modallabel">Detalle de la orden</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h5 class="footer-header color-secondary">Boleta</h5>
+                    <p>Cliente: {{u.client}}</p>
+                    <p>Orden creada en: {{u.created_at}}</p>
+                    <p>Estado: {% if u.payment.status == 'A' %} <span class="text-success">Aceptado</span> {% elif u.payment.status == 'R' %}<span class="text-danger">Rechazado</span> {% else %} <span class="text-warning">Pendiente</span> {% endif %}</p>
+                    <span class="filter-divider mb-2"></span>
+                    <h5 class="footer-header color-secondary">Resumen de la compra</h5>
+                    <p>Cantidad de Productos: {{u.get_cart_items}}</p>
+                    <p>Total de compra: ${{u.get_cart_total | intcomma}}</p>
+                    
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                  <a href="{% url 'userhistory' u.id%}" class="btn btn-secondary back-secondary">Ver mas</a>
+                </div>
+              </div>
+            </div>
+          </div>
+              <tr scope="row">
+                <td>{{ u.id }}</td>
+                <td>{{ u.client }}</td>
+                <td>{{ u.created_at }}</td>
+                <td><button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#{{u.id}}modal">
+                  <i class='fa-solid fa-ellipsis fs-3 color-secondary'></i>
+                </button></td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+    </div>
+</div>
+{% endblock content %}

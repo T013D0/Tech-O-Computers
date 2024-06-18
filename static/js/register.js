@@ -1,9 +1,19 @@
 $(document).ready(function () {
-  $("#rut").blur(() => {
+  $("#rut").keyup(() => {
     const rut = $("#rut").val();
 
-    if (rut.length === 0) return;
-    if (rut.length < 9) return;
+    if (
+      rut.length === 0 ||
+      rut.length < 9 ||
+      (rut.length > 9 && rut.length < 12)
+    ) {
+      $("#rut").addClass("is-invalid");
+      $("#save").prop("disabled", true);
+      return;
+    }
+
+    $("#rut").removeClass("is-invalid");
+    $("#save").prop("disabled", false);
 
     //Format rut
     const rutFormated = rut.replace(/\./g, "").replace(/\-/g, "");
@@ -29,7 +39,7 @@ $(document).ready(function () {
 });
 
 addEventListener("DOMContentLoaded", (event) => {
-  const password = document.getElementById("password");
+  const password = document.getElementById("password1");
   const password_2 = document.getElementById("password2");
   const passwordAlert = document.getElementById("password-alert");
   const requirements = document.querySelectorAll(".requirements");
