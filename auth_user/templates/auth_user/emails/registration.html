@@ -1,0 +1,8 @@
+{% extends 'auth_user/emails/base.html'%} 
+{% block content %}
+<h1>Activa tu cuenta</h1>
+<p>Estimado/a usuario/a,</p>
+<p>Se solicito un registro de cuenta en Tech o Computers, para activar tu cuenta da click en el boton de abajo:</p>
+<a href="{{ protocol }}://{{ domain }}{% url 'activate' uidb64=uid token=token %}" class="button">Activa tu cuenta</a>
+<p>Si no has solicitado una cuenta, ignora este mensaje. La seguridad de tu cuenta es muy importante para nosotros.</p>
+{% endblock %}

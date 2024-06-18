@@ -164,8 +164,8 @@ body,
 }
 .btn-border:hover {
   border: 1px solid #441b98;
-  color: #441b98;
-  filter: brightness(1.1);
+  color: white;
+  background-color: #441b98;
 }
 .desc-header {
   font-size: 1.148rem;

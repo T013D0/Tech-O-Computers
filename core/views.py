@@ -5,6 +5,7 @@ from store.models import Product, Notebook, Computer, AllInOne, Brand, Recipe, R
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 
 
 
@@ -50,6 +51,27 @@ def userdetails(request):
 
     context = {'user_orders': orders, 'user': user}
     return render(request, 'core/userdetails.html', context)
+
+@login_required
+def profile(request):
+
+    if request.method == 'POST':
+        user = request.user
+        
+        if User.objects.filter(email=request.POST.get('email')).exclude(rut=user.rut).exists():
+            messages.error(request, 'El email ya está en uso')
+            return redirect('profile')
+        
+        user.first_name = request.POST.get('first_name')
+        user.last_name = request.POST.get('last_name')
+        user.email = request.POST.get('email')
+        user.save()
+        messages.success(request, 'Perfil actualizado')
+        return redirect('profile')
+    
+    last_recipes = Recipe.objects.filter(client=request.user, complete=True).order_by('-created_at')[:5]
+    context = {'last_recipes': last_recipes}
+    return render(request, 'core/profile.html', context)
 
 @login_required
 def userhistory(request, id):

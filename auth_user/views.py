@@ -12,55 +12,99 @@ from django.http import HttpResponse
 from django.contrib.auth.forms import PasswordResetForm
 from django.http import JsonResponse
 from django.core.serializers import serialize
+from .tokens import account_activation_token
+from django.contrib.sites.shortcuts import get_current_site
+from .forms import RegisterForm, LoginForm
 import json
-import json
+from django.core.mail import send_mail
+from django.conf import settings
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
+from django.contrib.auth import get_user_model
+
+def activate(request, uidb64, token):
+    User = get_user_model()
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except:
+        user = None
+
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+
+        messages.success(request, 'Tu cuenta fue verificada ya puedes iniciar sesion')
+        return redirect('login')
+    else:
+        messages.error(request, 'Link de activacion invalido!')
+
+
+    return redirect('index')
+
+def emailActivation(request, user, to_email):
+    #send email
+    subject = 'Completa tu registro'
+    message = 'Confirma tu registro para acceder a tu cuenta'
+    email_template_name = 'auth_user/emails/registration.html'
+    from_email = settings.EMAIL_HOST_USER
+
+    send_mail(subject, message, html_message=render(request, email_template_name, {'uid': urlsafe_base64_encode(force_bytes(user.pk)), 'token': account_activation_token.make_token(user), 'domain': get_current_site(request).domain, 'user': user.get_full_name, 'protocol': 'https' if request.is_secure() else 'http'}).content.decode('utf-8'), recipient_list=[to_email], from_email=from_email, fail_silently=False)
+    messages.success(request, 'Se envio un correo para que confirmes tu cuenta, recuerda verificar tu carpeta de spam')
 
 # Create your views here.
 def login(request):
 
     if request.method == 'POST':
-        user = authenticate(email=request.POST.get('email'), password=request.POST.get('password'))
-        if user is not None:
-            auth_login(request, user)
-            messages.success(request, 'Bienvenido ' + user.first_name + ' ' + user.last_name + '!')
+        form = LoginForm(request.POST)
 
-            next = request.GET.get('next')
-            if next is not None and next != '':
-                return redirect(next)
+        if form.is_valid():
+            print(form.cleaned_data)
+            email = form.cleaned_data.get('email')
+            password = form.cleaned_data.get('password')
+            user = authenticate(email=email, password=password)
+            if user is not None:
+                auth_login(request, user)
+                messages.success(request, 'Bienvenido ' + user.get_full_name() +  '!')
+
+                next = request.GET.get('next')
+                if next is not None and next != '':
+                    return redirect(next)
+                else:
+                    return redirect('index')
             else:
-                return redirect('index')
-        else:
-            messages.error(request, 'Email o Contraseña incorrectos')
-            return redirect('login')
+                messages.error(request, 'Email o Contraseña incorrectos')
+                return redirect('login')
     return render(request, 'auth_user/login.html')
 
 def register(request):
 
     if request.method == 'POST':
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
-        rut = request.POST.get('rut')
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        password2 = request.POST.get('password2')
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.is_active = False
+            user.save()
+            emailActivation(request, user, form.cleaned_data.get('email'))
+            return redirect('login')
+        else:
 
-        if password != password2:
-            messages.error(request, 'Las contraseñas no coinciden')
+            if form.errors.get('rut') is not None:
+                messages.error(request, 'El rut ya se encuentra registrado')
+            elif form.errors.get('email') is not None:
+                messages.error(request, 'El email ya se encuentra registrado')
+            elif form.errors.get('password1') is not None:
+                messages.error(request, 'Las contraseñas no coinciden')
+            elif form.errors.get('first_name') is not None:
+                messages.error(request, 'El nombre es requerido')
+            elif form.errors.get('last_name') is not None:
+                messages.error(request, 'El apellido es requerido')
+            else:
+                messages.error(request, 'Error al registrar el usuario')
             return render(request, 'auth_user/register.html')
         
-        if User.objects.filter(rut=rut).exists():
-            messages.error(request, 'El rut ya se encuentra registrado')
-            return render(request, 'auth_user/register.html')
-        
-        if User.objects.filter(email=email).exists():
-            messages.error(request, 'El email ya se encuentra registrado')
-            return render(request, 'auth_user/register.html')
-        
-        user = User.objects.create_user(first_name=first_name, last_name=last_name, rut=rut, email=email, password=password)
-        user.save()
-        messages.success(request, 'Usuario registrado correctamente')
-        return redirect('login')
-    return render(request, 'auth_user/register.html')
+    context = {'form': RegisterForm()}
+    return render(request, 'auth_user/register.html', context)
 
 @login_required
 def logout_view(request):
@@ -319,12 +363,12 @@ def edituser(request, id):
 
         if request.method == 'POST':
             # Retrieve the form data
-            username = request.POST.get('username')
+            rut = request.POST.get('rut')
             email = request.POST.get('email')
             first_name = request.POST.get('first_name')
             last_name = request.POST.get('last_name')
             # Update the user object
-            user.username = username
+            user.rut = rut
             user.email = email
             user.first_name = first_name
             user.last_name = last_name

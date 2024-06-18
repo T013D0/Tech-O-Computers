@@ -11,6 +11,7 @@ urlpatterns = [
     path('ppolicy', views.ppolicy, name='ppolicy'),
     path('my-orders/', views.userdetails, name='userdetails'),
     path('my-orders/<uuid:id>/', views.userhistory, name='userhistory'),
+    path('profile/', views.profile, name='profile'),
     
 
 
