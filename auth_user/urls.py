@@ -37,6 +37,7 @@ urlpatterns = [
     path('administration/components/remove/<str:type>/<uuid:id>', views.removeComponent, name='dash-removecomponent'),
     path("administration/users/remove/<str:id>/", views.removeuser, name="dash-removeuser"),
     path("administration/editusers/<str:id>/", views.edituser, name="dash-edituser"),
+    path("administration/removeorder/<uuid:id>/", views.removeOrder, name="dash-removeorder"),
 
     
 

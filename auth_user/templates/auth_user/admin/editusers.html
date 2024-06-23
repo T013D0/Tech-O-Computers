@@ -1,39 +1,80 @@
-{% extends "auth_user/admin/template.html" %}
-{% load static %}
-
-{% block sources %}
-<link rel="stylesheet" href="{% static 'css/auth.css'%}">
+{% extends "auth_user/admin/template.html" %} {% load static %} 
+{% block sources%}
+<link rel="stylesheet" href="{% static 'css/auth.css'%}" />
 <script src="{% static 'js/userEdit.js'%}"></script>
-{% endblock sources %}
-{% block content %}
-<h5 class="product-header fw-bold fs-3">Editar Usuario</h5>
+{% endblock sources %} {% block content %}
+<form method="POST" class="">
+<div class="row gap-4">
+    <div class="col-md-6 col-sm-12 card p-4 border-0">
+        <h5 class="product-header fw-bold fs-3">Editar Usuario</h5>
+      {% csrf_token %}
+      <div class="form-floating mb-3">
+        <input
+          type="text"
+          value="{{user.rut}}"
+          class="form-control border-0 border-bottom rounded-0 bg-transparent"
+          placeholder="Rut"
+          id="rut"
+          name="rut"
+          required
+        />
+        <label for="rut">Rut</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input
+          type="text"
+          value="{{user.email}}"
+          class="form-control border-0 border-bottom rounded-0 bg-transparent"
+          placeholder="Email"
+          id="email"
+          name="email"
+          required
+        />
+        <label for="email">Email</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input
+          type="text"
+          value="{{user.first_name}}"
+          class="form-control border-0 border-bottom rounded-0 bg-transparent"
+          placeholder="Nombre"
+          id="first_name"
+          name="first_name"
+          required
+        />
+        <label for="first_name">Nombre</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input
+          type="text"
+          value="{{user.last_name}}"
+          class="form-control border-0 border-bottom rounded-0 bg-transparent"
+          placeholder="Apellido"
+          id="last_name"
+          name="last_name"
+          required
+        />
+        <label for="last_name">Apellido</label>
+      </div>
 
-<div class="row">
-    <div class="col-md-6 col-sm-12">
-        <form method="POST" class="card p-4 border-0">
-            {% csrf_token %}
-            <div class="form-floating mb-3">
-                <input type="text" value="{{user.rut}}" class="form-control border-0 border-bottom rounded-0 bg-transparent" placeholder="Rut" id="rut" name="rut" required>
-                <label for="rut">Rut</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="text" value="{{user.email}}" class="form-control border-0 border-bottom rounded-0 bg-transparent" placeholder="Email" id="email" name="email" required>
-                <label for="email">Email</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="text" value="{{user.first_name}}" class="form-control border-0 border-bottom rounded-0 bg-transparent" placeholder="Nombre" id="first_name" name="first_name" required>
-                <label for="first_name">Nombre</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="text" value="{{user.last_name}}" class="form-control border-0 border-bottom rounded-0 bg-transparent" placeholder="Apellido" id="last_name" name="last_name" required>
-                <label for="last_name">Apellido</label>
-            </div>
-            
-            
-            <button type="submit" class="btn btn-back px-4" id="save">Guardar</button>
-        </form>
+      <button type="submit" class="btn btn-back px-4" id="save">Guardar</button>
+    </div>
+    <div class="col-md-3 col-sm-12 card p-4 border-0 h-25">
+        <h5 class="product-header fw-bold fs-3">Otros</h5>
+        <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="admin" name="admin" {% if user.is_superuser %} checked {% endif %}>
+            <label for="admin" class="form-check-label">
+                Administrador
+            </label>
+        </div>
+        <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="staff" name="staff" {% if user.is_staff %} checked {% endif %}>
+            <label for="staff" class="form-check-label">
+                Staff
+            </label>
+        </div>
     </div>
 </div>
-    
+</form>
 
 {% endblock content %}

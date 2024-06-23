@@ -345,10 +345,35 @@ def removeuser(request, id):
         messages.error(request, 'El usuario no existe')
         return redirect('dash-users')
     
+    if user == request.user:
+        messages.error(request, 'No puedes eliminarte a ti mismo')
+        return redirect('dash-users')
+    
+    if user.is_superuser:
+        messages.error(request, 'No puedes eliminar un usuario administrador')
+        return redirect('dash-users')
+    
+    if user.is_staff:
+        messages.error(request, 'No puedes eliminar un usuario staff')
+        return redirect('dash-users')
+    
+    
     user.delete()
     messages.success(request, 'Usuario eliminado correctamente')
     return redirect('dash-users')
 
+
+@login_required
+@permission_required('auth_user.view_user', raise_exception=True)
+def removeOrder(request, id):
+    order = Recipe.objects.get(id=id)
+    if order is None:
+        messages.error(request, 'La orden no existe')
+        return redirect('dash-orders')
+    
+    order.delete()
+    messages.success(request, 'Orden eliminada correctamente')
+    return redirect('dash-orders')
 
 @login_required
 @permission_required('auth_user.change_user', raise_exception=True)
@@ -663,7 +688,7 @@ def addcomponent(request, type):
                 storage.save()
                 messages.success(request, 'Almacenamiento registrado correctamente')
                 return redirect('dash-storage')
-            return render(request, 'auth_user/admin/products/components/editStorage.html', {'storage': tech})
+            return render(request, 'auth_user/admin/products/components/addStorage.html', {'storage': tech})
         case _:
             messages.error(request, 'Tipo de componente no valido')
             return redirect('dash-components')
@@ -676,7 +701,7 @@ def editComponent(request, type, id):
             ram = Ram.objects.get(id=id)
             if request.method == 'POST':
                 name = request.POST.get('name')
-                if not Ram.objects.filter(ram=ram.id).exists():
+                if not Ram.objects.filter(id=ram.id).exists():
                     messages.error(request, 'La memoria ram no existe')
                     return redirect('dash-ram')
                 ram.name = name

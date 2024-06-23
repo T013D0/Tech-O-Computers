@@ -2,6 +2,24 @@
 {% load humanize %}
 {% load static %}
 {% block content %}
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">No puedes realizar una compra</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Antes de realizar una compra necesitas iniciar sesión o registrarte en nuestra tienda.
+        </div>
+        <div class="modal-footer">
+          <a href="{% url 'register' %}" class="btn btn-back px-2">Registrate</a>
+          <a href="{% url 'login' %}" class="btn btn-border px-2">Inicia Sesión</a>
+        </div>
+      </div>
+    </div>
+  </div>
     <div class="container mt-2 mb-2 bg-white p-4 rounded">
         <div class="row ">
             <div class="col-md-8">
@@ -14,7 +32,13 @@
                 <p class="d-flex flex-row justify-content-between fs-5 color-secondary fw-bold align-items-center"><strong class="text-black fs-6">Pago con WebPay: </strong>${{ product.price | intcomma }}</p>
                 <div class="d-flex flex-column gap-2 mb-2">
                     <button data-product="{{product.id}}" data-action="add" class="btn btn-border update-cart">Agregar al carro</button>
-                    <button class="btn btn-back">Comprar ahora</button>
+                    <button data-product="{{product.id}}" data-action="add" class="btn btn-back update-cart" >Comprar ahora</button>
+                    <button type="button" class="btn btn-border not-logged" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Comprar ahora
+                    </button>
+                    <button type="button" class="btn btn-back not-logged" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Agregar al carro
+                    </button>
                 </div>
                 <span class="filter-divider mb-3"></span>
                 <p class="d-flex flex-row justify-content-between fw-bold align-items-center"><span class="color-secondary d-flex flex-row align-items-center"><i class="fa-solid fa-shopping-cart color-secondary"></i>Stock</span> <span class="{% if product.stock < 6 %}text-danger {% else %} text-success {% endif %}">{{product.stock}} disponible</span></p>

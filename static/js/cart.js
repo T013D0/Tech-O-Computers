@@ -1,4 +1,11 @@
 $(document).ready(() => {
+  if (user === "AnonymousUser") {
+    $(".update-cart").hide();
+    $(".not-logged").show();
+  } else {
+    $(".update-cart").show();
+    $(".not-logged").hide();
+  }
   $(".update-cart").click((e) => {
     console.log(e);
     const productId =
