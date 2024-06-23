@@ -93,11 +93,14 @@ def register(request):
                 messages.error(request, 'El email ya se encuentra registrado')
             elif form.errors.get('password1') is not None:
                 messages.error(request, 'Las contraseñas no coinciden')
+            elif form.errors.get('password2') is not None:
+                messages.error(request, 'La contraseña es demasiado comun')
             elif form.errors.get('first_name') is not None:
                 messages.error(request, 'El nombre es requerido')
             elif form.errors.get('last_name') is not None:
                 messages.error(request, 'El apellido es requerido')
             else:
+                print(form.errors)
                 messages.error(request, 'Error al registrar el usuario')
             return redirect('register')
         
