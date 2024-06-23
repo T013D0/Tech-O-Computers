@@ -31,6 +31,7 @@ $(document).ready(function () {
           break;
         }
       }
+
       rutFormatedFinal += rutArray[i];
       count++;
     }

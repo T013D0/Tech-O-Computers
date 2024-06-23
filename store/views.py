@@ -252,9 +252,13 @@ def commit_pay(request):
                 item.product.stock -= item.quantity
                 item.product.save()
 
+            print(response.get('payment_type_code'))
+
             if response.get('payment_type_code') == 'VD':
                 payment.type = 'D'
             elif response.get('payment_type_code') == 'VN':
+                payment.type = 'C'
+            elif response.get('payment_type_code') == 'NC':
                 payment.type = 'C'
             else:
                 payment.type = 'T'
