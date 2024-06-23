@@ -100,7 +100,6 @@ def register(request):
             elif form.errors.get('last_name') is not None:
                 messages.error(request, 'El apellido es requerido')
             else:
-                print(form.errors)
                 messages.error(request, 'Error al registrar el usuario')
             return redirect('register')
         
