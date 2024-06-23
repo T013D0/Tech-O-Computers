@@ -41,13 +41,13 @@
         <div class="card border-0 p-3">
             <h5 class="product-header fw-bold fs-3 color-secondary">Delivery</h5>
             <p>Id: <small>{{order.delivery.id}}</small></p>
-            <p>Status: 
+            <p>Estado: 
                {% if order.delivery.status == 'P' %}
-                <button class="btn btn-sm btn-danger" id="updateStatus">Pendiente</button>
+                <span class="badge text-bg-danger" id="updateStatus">Pendiente</span>
                 {% elif order.delivery.status == 'E' %}
-                <button class="btn btn-sm btn-warning" id="updateStatus">Enviado</button>
+                <span class="badge text-bg-warning" id="updateStatus">Enviado</span>
                 {% else %}
-                <button class="btn btn-sm btn-success" id="updateStatus">Recibido</button>
+                <span class="badge text-bg-success" id="updateStatus">Recibido</span>
                 {% endif %}
             </p>
             <p class="text-danger" id="statusError" style="display: none;">Ocurrio un error al actualizar el pedido</p>

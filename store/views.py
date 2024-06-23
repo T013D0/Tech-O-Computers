@@ -19,6 +19,7 @@ import datetime
 from django.core.mail import send_mail
 from django.conf import settings
 import pytz
+from django.db.models import Q
 
 # Create your views here.
 
@@ -49,7 +50,7 @@ def products(request):
 
     name = request.GET.get("search")
     if name != "" and name is not None:
-        products = products.filter(name__icontains=name)
+        products = products.filter(Q(name__icontains=name) | Q(description__icontains=name) | Q(brand__name__icontains=name))
     
     orderBy = request.GET.get("orderBy")
     if orderBy != "" and orderBy is not None:
@@ -95,6 +96,7 @@ def details(request, id):
     context = { "product": product}
     return render(request, 'store/details.html', context)
 
+@require_POST
 def updateItem(request):
     data = json.loads(request.body)
     productId = data['productId']
@@ -260,6 +262,7 @@ def commit_pay(request):
             payment.date_paid = datetime.datetime.now(tz=pytz.timezone('America/Santiago'))
             payment.paid = (response.get('status') == 'AUTHORIZED')
             payment.authorization_code = response.get('authorization_code')
+            recipe.created_at = datetime.datetime.now(tz=pytz.timezone('America/Santiago'))
 
             if response.get('status') == 'AUTHORIZED':
                 payment.status = 'A'
@@ -276,6 +279,7 @@ def commit_pay(request):
             else:
                 payment.status = 'R'
             payment.save()
+            recipe.save()
 
             return render(request, 'store/commitpay.html', {'transaction_detail': transaction_detail})
         else:

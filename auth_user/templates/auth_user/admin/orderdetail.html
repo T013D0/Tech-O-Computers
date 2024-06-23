@@ -8,6 +8,23 @@
 <script src="{% static 'js/order.js'%}"></script>
 {% endblock sources %}
 {% block content %}
+<div class="modal fade" id="deleteModal{{order.id}}" tabindex="-1" aria-labelledby="deleteModal{{order.id}}Label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="deleteModal{{order.id}}Label">Estas seguro?</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Estas seguro que deseas eliminar la orden {{order.name}}?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <a href="{% url 'dash-removeorder' order.id %}" class="btn btn-danger">Eliminar</a>
+        </div>
+      </div>
+    </div>
+  </div>
 <div class="row mt-5 p-4">
     <div class="col-md-8 col-sm-12">
         <h5 class="product-header fw-bold fs-3 color-secondary">Detalle de la orden</h5>
@@ -26,7 +43,7 @@
         </div>
         {% endfor %}
     </div>
-    <div class="col-md-4 col-sm-12">
+    <div class="col-md-4 col-sm-12 justify-content-end d-flex flex-column">
         <div class="card border-0 p-3 pe-none">
             <h5 class="product-header fw-bold fs-3 color-secondary">Resumen</h5>
             <p>Cliente: {{order.client}}</p>
@@ -52,6 +69,7 @@
             <p>Dirección: {{order.delivery.address}}, {{order.delivery.city}}, {{order.delivery.state}}</p>
             <p>Codigo Postal: {{order.delivery.zip_code}}</p>
         </div>
+        <a class="btn btn-danger mt-4" data-bs-toggle="modal" data-bs-target="#deleteModal{{order.id}}">Eliminar</a>
     </div>
 </div>
 {% endblock content %}
