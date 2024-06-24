@@ -32,7 +32,7 @@
                 <p class="d-flex flex-row justify-content-between fs-5 color-secondary fw-bold align-items-center"><strong class="text-black fs-6">Pago con WebPay: </strong>${{ product.price | intcomma }}</p>
                 <div class="d-flex flex-column gap-2 mb-2">
                     <button data-product="{{product.id}}" data-action="add" class="btn btn-border update-cart">Agregar al carro</button>
-                    <a data-product="{{product.id}}" data-action="add" class="btn btn-back update-cart" href="{% url 'shipping'%}">Comprar ahora</a>
+                    <a data-product="{{product.id}}" data-action="add" class="btn btn-back update-cart" data-buy="true" >Comprar ahora</a>
                     <button type="button" class="btn btn-border not-logged" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         Comprar ahora
                     </button>

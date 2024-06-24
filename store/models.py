@@ -226,11 +226,12 @@ class Payment(models.Model):
         "T": "TRANSFERENCIA",
         "C": "CREDITO",
         "D": "DEBITO",
+        "CC": "CREDITO A CUOTAS"
     }
 
     paid = models.BooleanField(default=False)
     date_paid = models.DateTimeField(auto_now_add=True)
-    type = models.CharField(max_length=1, choices=TYPE)
+    type = models.CharField(max_length=2, choices=TYPE)
     recipe = models.OneToOneField(Recipe, on_delete=models.CASCADE, null=True, blank=True)
     status = models.CharField(max_length=1, choices=STATUS, default='P')
     authorization_code = models.CharField(max_length=100, null=True, blank=True)

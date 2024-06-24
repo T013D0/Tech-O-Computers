@@ -230,7 +230,7 @@ def commit_pay(request):
                 pay_type = 'Tarjeta de Débito'
             if response.get('payment_type_code') == 'VN':
                 pay_type = 'Tarjeta de Crédito'
-            if response.get('payment_type_code') == 'VC':
+            if response.get('payment_type_code') == 'VC' or response.get("payment_type_code") == 'NC':
                 pay_type = 'Tarjeta de Crédito en cuotas'
             amount = int(response.get('amount'))
             amount = f'{amount:,.0f}'.replace(',', '.')
@@ -262,8 +262,8 @@ def commit_pay(request):
                 payment.type = 'D'
             elif response.get('payment_type_code') == 'VN':
                 payment.type = 'C'
-            elif response.get('payment_type_code') == 'VC':
-                payment.type = 'C'
+            elif response.get('payment_type_code') == 'VC' or response.get("payment_type_code") == 'NC':
+                payment.type = 'CC'
             else:
                 payment.type = 'T'
 

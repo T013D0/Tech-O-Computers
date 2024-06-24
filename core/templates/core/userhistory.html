@@ -36,7 +36,7 @@
             <p>Cantidad de Productos: {{order.get_cart_items}}</p>
             <p>Total de compra: ${{order.get_cart_total | intcomma}}</p>
             <p>Fecha de pago: {{order.payment.date_paid}}</p>
-            <p>Tarjeta: {% if order.payment.type == 'D'%}Debito{% elif order.payment.type == 'C' %}Credito{% else %}Transferencia{% endif %}</p>
+            <p>Tarjeta: {% if order.payment.type == 'D'%}Debito{% elif order.payment.type == 'C' %}Credito {% elif order.payment.type == 'CC'%}Credito a cuotas{% else %}Transferencia{% endif %}</p>
         </div>
         <div class="card border-0 p-3">
             <h5 class="product-header fw-bold fs-3 color-secondary">Delivery</h5>
