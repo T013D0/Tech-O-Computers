@@ -228,6 +228,10 @@ def commit_pay(request):
             pay_type = ''
             if response.get('payment_type_code') == 'VD':
                 pay_type = 'Tarjeta de Débito'
+            if response.get('payment_type_code') == 'VN':
+                pay_type = 'Tarjeta de Crédito'
+            if response.get('payment_type_code') == 'VC':
+                pay_type = 'Tarjeta de Crédito en cuotas'
             amount = int(response.get('amount'))
             amount = f'{amount:,.0f}'.replace(',', '.')
             transaction_date = dt.datetime.strptime(response.get('transaction_date'), '%Y-%m-%dT%H:%M:%S.%fZ')
@@ -258,7 +262,7 @@ def commit_pay(request):
                 payment.type = 'D'
             elif response.get('payment_type_code') == 'VN':
                 payment.type = 'C'
-            elif response.get('payment_type_code') == 'NC':
+            elif response.get('payment_type_code') == 'VC':
                 payment.type = 'C'
             else:
                 payment.type = 'T'
