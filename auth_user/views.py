@@ -210,44 +210,56 @@ def addproduct(request):
         storage = request.POST.get('storage')
         image = request.FILES.get('avatar')
 
+        if int(price) <= 0:
+            messages.error(request, 'El precio debe ser mayor a 0')
+            return redirect('dash-addproduct')
+        
+        if int(stock) <= 0:
+            messages.error(request, 'El stock debe ser mayor a 0')
+            return redirect('dash-addproduct')
+
         if Product.objects.filter(name=name).exists():
             messages.error(request, 'El producto ya se encuentra registrado')
-            return render(request, 'auth_user/admin/products/addproduct.html')
+            return redirect('dash-addproduct')
         
         brnd = Brand.objects.get(id=brand)
         if brnd is None:
             messages.error(request, 'La marca no existe')
-            return render(request, 'auth_user/admin/products/addproduct.html')
+            return redirect('dash-addproduct')
         
         if type == "notebook" or type == "all-in-one":
             scrn = Screen.objects.get(id=screen)
             if scrn is None:
                 messages.error(request, 'La pantalla no existe')
-                return render(request, 'auth_user/admin/products/addproduct.html')
+                return redirect('dash-addproduct')
 
         ram_array = ram.split(",")
 
         rms = Ram.objects.all().filter(id__in=ram_array)
         if not rms.exists():
             messages.error(request, 'La memoria ram no existe')
-            return render(request, 'auth_user/admin/products/addproduct.html')
+            return redirect('dash-addproduct')
         
         prcsr = Processor.objects.get(id=processor)
         if prcsr is None:
             messages.error(request, 'El procesador no existe')
-            return render(request, 'auth_user/admin/products/addproduct.html')
+            return redirect('dash-addproduct')
         
         grphc = GraphicCard.objects.get(id=graphic)
         if grphc is None:
             messages.error(request, 'La tarjeta grafica no existe')
-            return render(request, 'auth_user/admin/products/addproduct.html')
+            return redirect('dash-addproduct')
         
         strg_array = storage.split(",")
 
         strg = Storage.objects.all().filter(id__in=strg_array)
         if not strg.exists():
             messages.error(request, 'El almacenamiento no existe')
-            return render(request, 'auth_user/admin/products/addproduct.html')
+            return redirect('dash-addproduct')
+        
+        if image.name.split('.')[-1] not in ['jpg', 'jpeg', 'png', 'webp', 'svg']:
+            messages.error(request, 'Formato de imagen no valido')
+            return redirect('dash-addproduct')
         
         if image is None:
             messages.error(request, 'La imagen es requerida')
@@ -481,6 +493,15 @@ def editproduct(request, id):
     elif AllInOne.objects.filter(id=id).exists():
         product = AllInOne.objects.get(id=id)
 
+    if int(stock) <= 0:
+        messages.error(request, 'El stock debe ser mayor a 0')
+        return redirect('dash-editproduct', id=id)
+    
+    if int(price) <= 0:
+        messages.error(request, 'El precio debe ser mayor a 0')
+        return redirect('dash-editproduct', id=id)
+    
+
     if request.method == 'POST':
         name = request.POST.get('name')
         price = request.POST.get('price')
@@ -497,46 +518,46 @@ def editproduct(request, id):
 
         if not Product.objects.filter(name=name).exists():
             messages.error(request, 'El producto no existe')
-            return render(request, 'auth_user/admin/products/addproduct.html')
+            return redirect('dash-list-products')
         
         brnd = Brand.objects.get(id=brand)
         if brnd is None:
             messages.error(request, 'La marca no existe')
-            return render(request, 'auth_user/admin/products/addproduct.html')
+            return redirect('dash-editproduct', id=id)
         
         if type == "notebook" or type == "all-in-one":
             scrn = Screen.objects.get(id=screen)
             if scrn is None:
                 messages.error(request, 'La pantalla no existe')
-                return render(request, 'auth_user/admin/products/addproduct.html')
+                return redirect('dash-editproduct', id=id)
 
         ram_array = ram.split(",")
 
         rms = Ram.objects.all().filter(id__in=ram_array)
         if not rms.exists():
             messages.error(request, 'La memoria ram no existe')
-            return render(request, 'auth_user/admin/products/addproduct.html')
+            return redirect('dash-editproduct', id=id)
         
         prcsr = Processor.objects.get(id=processor)
         if prcsr is None:
             messages.error(request, 'El procesador no existe')
-            return render(request, 'auth_user/admin/products/addproduct.html')
+            return redirect('dash-editproduct', id=id)
         
         grphc = GraphicCard.objects.get(id=graphic)
         if grphc is None:
             messages.error(request, 'La tarjeta grafica no existe')
-            return render(request, 'auth_user/admin/products/addproduct.html')
+            return redirect('dash-editproduct', id=id)
         
         strg_array = storage.split(",")
 
         strg = Storage.objects.all().filter(id__in=strg_array)
         if not strg.exists():
             messages.error(request, 'El almacenamiento no existe')
-            return render(request, 'auth_user/admin/products/addproduct.html')
+            return redirect('dash-editproduct', id=id)
         
         if image is None and product.image is None:
             messages.error(request, 'La imagen es requerida')
-            return render(request, 'auth_user/admin/products/addproduct.html')
+            return redirect('dash-editproduct', id=id)
         
         if image is None:
             image = product.image
@@ -610,7 +631,7 @@ def addcomponent(request, type):
                 name = request.POST.get('name')
                 if Ram.objects.filter(name=name).exists():
                     messages.error(request, 'La memoria ram ya se encuentra registrada')
-                    return render(request, 'auth_user/admin/products/components/addRam.html')
+                    return redirect('dash-ram')
                 
                 ram = Ram.objects.create(name=name)
                 ram.save()
