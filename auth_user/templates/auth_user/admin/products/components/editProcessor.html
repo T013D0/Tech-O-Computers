@@ -16,11 +16,11 @@
                 <label for="name">Nombre</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="number" value="{{processor.speed}}" class="form-control border-0 border-bottom rounded-0 bg-transparent" placeholder="velocidad" id="speed" name="speed" required>
+                <input type="number" min=0 value="{{processor.speed}}" class="form-control border-0 border-bottom rounded-0 bg-transparent" placeholder="velocidad" id="speed" name="speed" required>
                 <label for="vram">Frecuencia</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="number" value="{{processor.coreq}}" class="form-control border-0 border-bottom rounded-0 bg-transparent" placeholder="Nucleos" id="coreq" name="coreq" required>
+                <input type="number" min=0 value="{{processor.coreq}}" class="form-control border-0 border-bottom rounded-0 bg-transparent" placeholder="Nucleos" id="coreq" name="coreq" required>
                 <label for="fanquantity">Nucleos</label>
             </div>
             
