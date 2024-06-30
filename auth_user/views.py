@@ -58,7 +58,6 @@ def login(request):
         form = LoginForm(request.POST)
 
         if form.is_valid():
-            print(form.cleaned_data)
             email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password')
             user = authenticate(email=email, password=password)
@@ -74,6 +73,9 @@ def login(request):
             else:
                 messages.error(request, 'Email o Contraseña incorrectos')
                 return redirect('login')
+        else:
+            messages.error(request, 'Email o Contraseña incorrectos')
+            return redirect('login')
     return render(request, 'auth_user/login.html')
 
 def register(request):
