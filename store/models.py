@@ -124,7 +124,6 @@ class Product(models.Model):
     stock = models.IntegerField(default=0)
     image = models.ImageField(upload_to='static/products', null=True, blank=True)
 
-
     def __str__(self):
         return self.name
     

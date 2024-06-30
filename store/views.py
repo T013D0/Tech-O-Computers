@@ -98,6 +98,10 @@ def details(request, id):
 
 @require_POST
 def updateItem(request):
+
+    if request.user.is_superuser:
+        return JsonResponse({'success': False})
+
     data = json.loads(request.body)
     productId = data['productId']
     action = data['action']
@@ -125,6 +129,10 @@ def updateItem(request):
 
 @login_required
 def cart(request):
+    if request.user.is_superuser:
+        messages.error(request, 'No tienes permisos para comprar si eres un administrador.')
+        return redirect('index')
+    
     data = cart_data(request)
     items = data['items']
     recipe = data['recipe']
@@ -134,6 +142,8 @@ def cart(request):
 
 @login_required
 def shipping(request):
+
+    
     data = cart_data(request)
     items = data['items']
     recipe = data['recipe']
@@ -147,6 +157,9 @@ def shipping(request):
 
 @require_POST
 def deliveryPost(request):
+    if request.user.is_superuser:
+        return JsonResponse({'success': False})
+    
     if request.method == "POST":
         data = cart_data(request)
         recipe = data['recipe']
