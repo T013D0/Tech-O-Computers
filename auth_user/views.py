@@ -393,7 +393,19 @@ def edituser(request, id):
             return redirect('dash-users')
 
         if request.method == 'POST':
-            # Retrieve the form data
+
+            if user == request.user:
+                messages.error(request, 'No puedes editar tu propio usuario')
+                return redirect('dash-users')
+            
+            if user.is_superuser:
+                messages.error(request, 'No puedes editar un usuario administrador')
+                return redirect('dash-users')
+            
+            if user.is_staff:
+                messages.error(request, 'No puedes editar un usuario staff')
+                return redirect('dash-users')
+            
             rut = request.POST.get('rut')
             email = request.POST.get('email')
             first_name = request.POST.get('first_name')
@@ -401,7 +413,7 @@ def edituser(request, id):
             admin = request.POST.get('admin') == 'on'
             staff = request.POST.get('staff') == 'on'
             active = request.POST.get('active') == 'on'
-            # Update the user object
+            
             user.rut = rut
             user.email = email
             user.first_name = first_name
