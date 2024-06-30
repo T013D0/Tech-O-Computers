@@ -73,6 +73,12 @@
                 Staff
             </label>
         </div>
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" id="active" name="active" {% if user.is_active %} checked {% endif %}>
+          <label for="active" class="form-check-label">
+              Verificado
+          </label>
+      </div>
     </div>
 </div>
 </form>

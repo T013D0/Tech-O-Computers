@@ -14,12 +14,13 @@ Tech o Computers es una empresa ficticia diseñada para el proyecto de desarroll
 <details>
 <summary>Tabla de contenidos</summary>
 
-- [Características principales](#características-principales)
-  - [Capturas de pantalla de Tech O Computers](#capturas-de-pantalla-de-la-web)
-- [Para empezar](#para-empezar)
-  - [Prerequisitos](#prerequisitos)
-  - [Instalación](#instalación)
-- [🛠️ Stack](#️-stack)
+- [📱 Características principales](#características-principales)
+  - [📸 Capturas de pantalla de Tech O Computers](#capturas-de-pantalla-de-la-web)
+- [🏁 Para empezar](#para-empezar)
+  - [📄 Prerequisitos](#prerequisitos)
+  - [🖥️ Instalación](#instalación)
+- [⚙️ Apis](#apis)
+- [🛠️ Stack](#️stack)
 
 </details>
 
@@ -70,15 +71,54 @@ Tech o Computers es una empresa ficticia diseñada para el proyecto de desarroll
 
 <p align="right">(<a href="#readme-top">volver arriba</a>)</p>
 
-## 🛠️ Stack
+## Apis
+
+- [Transbank API](https://www.transbankdevelopers.cl/referencia/webpay)
+  - 
+  ```@ensure_csrf_cookie
+    @csrf_exempt
+    def webpay_plus_create(request):
+      data = json.loads(request.body)
+      amount = data.get('amount')
+      buy_order = str(random.randrange(1000000, 99999999))
+      session_id = str(random.randrange(1000000, 99999999))
+      return_url = request.build_absolute_uri(location='commitpay/')
+
+      tx = Transaction(WebpayOptions(IntegrationCommerceCodes.WEBPAY_PLUS, IntegrationApiKeys.WEBPAY))
+      response = tx.create(buy_order, session_id, amount, return_url)
+      return JsonResponse({'url': response['url'], 'token': response['token']}) 
+  ```
+  [Tech-O-Computers/store/views.py](https://github.com/T013D0/Tech-O-Computers/blob/main/store/views.py#L188)
+
+- [BigData Cloud API](https://www.bigdatacloud.com)
+  - 
+  ```
+    const url =
+    "https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=XXXXXXXXXXXX&longitude=XXXXXXXXXXXX&localityLanguage=es";
+
+  $.get(url, function (data) {
+    const region = data.principalSubdivision;
+    const city = data.locality;
+
+    $("#state").val(region);
+    $("#city").val(city);
+    $(".input-disabled").prop("disabled", false);
+    $("#shippingForm").show();
+    $(".shipping-loader-container").remove();
+    initMap({ latitude: data.latitude, longitude: data.longitude });
+  });
+  ```
+  [Tech-O-Computers/static/js/shipping.js](https://github.com/T013D0/Tech-O-Computers/blob/main/static/js/shipping.js)
+
+## Stack
 
 - [![Django][django-badge]][django-url] - The web framework.
 - [![Bootstrap][bootstrap-badge]][bootstrap-url] - A CSS framework for responsive building custom designs.
 
 <p align="right">(<a href="#readme-top">volver arriba</a>)</p>
 
-[django-url]: https://astro.build/
-[bootstrap-url]: https://www.typescriptlang.org/
+[django-url]: https://www.djangoproject.com
+[bootstrap-url]: https://getbootstrap.com
 [django-badge]: https://img.shields.io/badge/Django-fff?style=for-the-badge&logo=django&logoColor=white&color=0C4B33
 [bootstrap-badge]: https://img.shields.io/badge/bootstrap-007ACC?style=for-the-badge&logo=bootstrap&logoColor=white&color=5468ff
 [contributors-shield]: https://img.shields.io/github/contributors/T013D0/Tech-O-Computers.svg?style=for-the-badge
@@ -89,6 +129,4 @@ Tech o Computers es una empresa ficticia diseñada para el proyecto de desarroll
 [stars-url]: https://github.com/T013D0/Tech-O-Computers/stargazers
 [issues-shield]: https://img.shields.io/github/issues/T013D0/Tech-O-Computers.svg?style=for-the-badge
 [issues-url]: https://github.com/T013D0/Tech-O-Computers/issues
-
-[![Contribuidores](https://contrib.rocks/image?repo=T013D0/Tech-O-Computers&max=500&columns=20)](https://github.com/T013D0/Tech-O-Computers/graphs/contributors)
 

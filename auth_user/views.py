@@ -210,11 +210,11 @@ def addproduct(request):
         storage = request.POST.get('storage')
         image = request.FILES.get('avatar')
 
-        if int(price) <= 0:
+        if int(price) < 0:
             messages.error(request, 'El precio debe ser mayor a 0')
             return redirect('dash-addproduct')
         
-        if int(stock) <= 0:
+        if int(stock) < 0:
             messages.error(request, 'El stock debe ser mayor a 0')
             return redirect('dash-addproduct')
 
@@ -322,24 +322,16 @@ def list_products(request):
         filter_price = price.split("-")
         if len(filter_price) == 2:
             products = products.filter(price__range=(int(filter_price[0]), int(filter_price[1])))
+
+
+    products = products.order_by("-created_at")
     
     paginator = Paginator(products, 12)
     page = request.GET.get('page')
     if page is None or page == "":
         page = 1
 
-    product_json = []
-    for product in products:
-        product_json.append({
-            "id": product.id,
-            "name": product.name,
-            "price": product.price,
-            "stock": product.stock,
-            "brand": product.brand.name,
-            "image": product.image.url
-        })
-
-    context = { "products": paginator.get_page(page).object_list, "page_obj": paginator.get_page(page), "per_page": paginator.per_page, "total": products.count(), "brands": brands, "product_json": product_json}
+    context = { "products": paginator.get_page(page).object_list, "page_obj": paginator.get_page(page), "per_page": paginator.per_page, "total_range": paginator.page_range, "total": products.count(), "brands": brands}
     return render(request, 'auth_user/admin/products/list.html', context)
 
 @login_required
@@ -404,11 +396,17 @@ def edituser(request, id):
             email = request.POST.get('email')
             first_name = request.POST.get('first_name')
             last_name = request.POST.get('last_name')
+            admin = request.POST.get('admin') == 'on'
+            staff = request.POST.get('staff') == 'on'
+            active = request.POST.get('active') == 'on'
             # Update the user object
             user.rut = rut
             user.email = email
             user.first_name = first_name
             user.last_name = last_name
+            user.is_superuser = admin
+            user.is_staff = staff
+            user.is_active = active
             user.save()
             messages.success(request, 'Usuario actualizado correctamente')
             return redirect('dash-users')
@@ -493,13 +491,7 @@ def editproduct(request, id):
     elif AllInOne.objects.filter(id=id).exists():
         product = AllInOne.objects.get(id=id)
 
-    if int(stock) <= 0:
-        messages.error(request, 'El stock debe ser mayor a 0')
-        return redirect('dash-editproduct', id=id)
-    
-    if int(price) <= 0:
-        messages.error(request, 'El precio debe ser mayor a 0')
-        return redirect('dash-editproduct', id=id)
+
     
 
     if request.method == 'POST':
@@ -515,6 +507,14 @@ def editproduct(request, id):
         ram = request.POST.get('ram')
         storage = request.POST.get('storage')
         image = request.FILES.get('avatar')
+
+        if int(stock) < 0:
+            messages.error(request, 'El stock debe ser mayor a 0')
+            return redirect('dash-editproduct', id=id)
+    
+        if int(price) < 0:
+            messages.error(request, 'El precio debe ser mayor a 0')
+            return redirect('dash-editproduct', id=id)
 
         if not Product.objects.filter(name=name).exists():
             messages.error(request, 'El producto no existe')
