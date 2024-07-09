@@ -112,6 +112,18 @@ Tech o Computers es una empresa ficticia diseñada para el proyecto de desarroll
 
 <p align="right">(<a href="#readme-top">volver arriba</a>)</p>
 
+## Datos Compra
+
+- Tarjeta Debito
+  - 4051 8856 0044 6623
+    CVV: 123 EXP: 12/28
+
+- Usuario Transbank
+  - Rut: 11.111.111-1
+  - Contraseña: 123
+
+<p align="right">(<a href="#readme-top">volver arriba</a>)</p>
+
 ## Stack
 
 - [![Django][django-badge]][django-url] - The web framework.
